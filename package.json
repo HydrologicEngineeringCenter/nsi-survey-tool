@@ -1,0 +1,28 @@
+{
+  "name": "web-map",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@corpsmap/corpsmap": "^0.1.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "3.4.3",
+    "redux-bundler": "^27.0.2",
+    "redux-bundler-react": "^1.2.0"
+  },
+  "scripts": {
+    "start": "react-scripts start"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
