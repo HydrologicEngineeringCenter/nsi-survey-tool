@@ -105,6 +105,9 @@ const initMap=function(store){
     } else {
       console.log("X coordinate is: " + closestFeature.getProperties().x)
       console.log("Y coordinate is: " + closestFeature.getProperties().y)
+      var url = "http://maps.google.com/maps?q=" + closestFeature.getProperties().y + "," + closestFeature.getProperties().x;
+      console.log(url);
+          window.open(url, "_blank");
     }
   }
   const parentUid = store.selectTreeViewRootId();
