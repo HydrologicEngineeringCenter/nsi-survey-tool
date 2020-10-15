@@ -52,13 +52,13 @@ const initMap=function(store){
   let vectorSource=new VectorSource({
     format: new GeoJSON({featureProjection:"EPSG:3857"}),
     loader:function(extent, resolution, projection) {
-      var url = `${apiHost}?fips=15005`;//hawaii
+      var url = `${apiHost}?fips=15005&fmt=fc`;//hawaii
       var xhr = new XMLHttpRequest();
       xhr.open('GET', url);
       xhr.onload = function() {
         if (xhr.status === 200) {
           let format=vectorSource.getFormat();
-          let resp = `{"type": "FeatureCollection","name": "NSI","crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },"features":${xhr.responseText}}`
+          let resp = xhr.responseText
           let features = format.readFeatures(resp)
           vectorSource.addFeatures(features);
         } else {
