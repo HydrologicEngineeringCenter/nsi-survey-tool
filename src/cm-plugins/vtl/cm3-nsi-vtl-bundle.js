@@ -1,7 +1,7 @@
 import MVT from 'ol/format/MVT';
 import VectorTileLayer from 'ol/layer/VectorTile';
 import VectorTileSource from 'ol/source/VectorTile';
-
+const apiHost=process.env.REACT_APP_APIHOST_NSI
 const NSI_VTL_INITALIZE_START='NSI_VTL_INITALIZE_START';
 const NSI_VTL_INITALIZE_END='NSI_VTL_INITALIZE_END';
 const MAP_INITIALIZED='MAP_INITIALIZED';
@@ -49,7 +49,7 @@ const initMap=function(store){
     source: new VectorTileSource({
       attributions: 'USACE',
       format: new MVT(),
-      url:"http://localhost:8086/tiles/{z}/{x}/{y}.pbf",
+      url:`${apiHost}/tiles/{z}/{x}/{y}.pbf`,
     })
   })
   const parentUid = store.selectTreeViewRootId();
