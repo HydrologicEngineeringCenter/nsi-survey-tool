@@ -5,38 +5,40 @@ class SurveyTray extends React.Component {
     //https://getbootstrap.com/docs/4.0/components/input-group/
   render(){
     return (
-        <nav id="sidebar" class="light bg-light">
-            <div class="sidebar-header">
+        <nav id="sidebar" className="light bg-light">
+            <div className="sidebar-header">
                 <h3>SURVEY INPUT DATA</h3>
             </div>
-            <div class="sidebar-content">
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Damage Category</button>
-                        <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">RESIDENTIAL</a>
-                        <a class="dropdown-item" href="#">COMMERCIAL</a>
-                        <a class="dropdown-item" href="#">INDUSTRIAL</a>
-                        <a class="dropdown-item" href="#">COMMERCIAL</a>
+            <div className="sidebar-content">
+                <div className="input-group mb-3">
+                    <div classname="input-group-prepend">
+                        <button className="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Damage Category</button>
+                        <div className="dropdown-menu" id="damcatDD">
+                            <button className="dropdown-item" type="button">RESIDENTIAL</button>
+                            <button className="dropdown-item" type="button">COMMERCIAL</button>
+                            <button className="dropdown-item" type="button">INDUSTRIAL</button>
+                            <button className="dropdown-item" type="button">COMMERCIAL</button>
                         </div>
                     </div>
+                    <input type="text" className="form-control" id="demo" aria-label="Text input with dropdown button">
+                    </input>
                 </div>
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Foundation Height</span>
+                <div className="input-group">
+                    <div className="input-group-prepend">
+                        <span className="input-group-text">Foundation Height</span>
                     </div>
-                    <input type="text" class="form-control"/>
+                    <input type="text" className="form-control"/>
                 </div>
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <button class="btn btn-outline-secondary" type="button" aria-haspopup="true" aria-expanded="false">Update Location</button>
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">x</span>
-                            <input type="text" class="form-control"/>
+                <div className="input-group">
+                    <div className="input-group-prepend">
+                        <button className="btn btn-outline-secondary" type="button" aria-haspopup="true" aria-expanded="false">Update Location</button>
+                        <div className="input-group-prepend">
+                            <span className="input-group-text">x</span>
+                            <input type="text" className="form-control"/>
                         </div>
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">y</span>
-                            <input type="text" class="form-control"/>
+                        <div className="input-group-prepend">
+                            <span className="input-group-text">y</span>
+                            <input type="text" className="form-control"/>
                         </div>
                     </div>
 
