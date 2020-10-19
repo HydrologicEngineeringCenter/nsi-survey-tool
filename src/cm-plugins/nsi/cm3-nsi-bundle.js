@@ -85,16 +85,7 @@ const initMap=function(store){
           fill:new Fill({
             color: 'rgba(0,0,255,0.0)'
           }),
-          /*text: new Text({
-            font: '11px "Open Sans", "Arial Unicode MS", "sans-serif"',
-            overflow:false,
-            stroke: new Stroke({color:"#FFF", width:2}),
-            fill: new Fill({
-              color: 'blue'
-            })
-          })*/
         })
-        //s.getText().setText(feature.get('occtype'));
         return s;
       } 
   });

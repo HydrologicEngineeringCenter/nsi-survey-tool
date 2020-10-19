@@ -5,7 +5,7 @@ import VectorTileSource from 'ol/source/VectorTile';
 const NSI_HexBin_INITALIZE_START='NSI_HexBin_INITALIZE_START';
 const NSI_HexBin_INITALIZE_END='NSI_HexBin_INITALIZE_END';
 const MAP_INITIALIZED='MAP_INITIALIZED';
-
+const apiHost=process.env.REACT_APP_APIHOST_NSI
 const hexbinLayers={
   'HB10K':'hexbin10k',
   'HB2500':'hexbin2500',
@@ -51,7 +51,7 @@ const initMap=function(store){
     source: new VectorTileSource({
       attributions: 'USACE',
       format: new MVT(),
-      url:"https://ec2-107-20-76-219.compute-1.amazonaws.com/services/hexbin10k/tiles/{z}/{x}/{y}.pbf",
+      url:`${apiHost}hexbin10k/tiles/{z}/{x}/{y}.pbf`,
     })
     //style: createMapboxStreetsV6Style(Style, Fill, Stroke, Icon, Text)
   })
