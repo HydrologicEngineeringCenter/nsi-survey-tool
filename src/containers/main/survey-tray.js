@@ -5,6 +5,7 @@ class SurveyTray extends React.Component {
     //https://getbootstrap.com/docs/4.0/components/input-group/
 
   render(){
+      const {doSelectOccupancyType, occupancyType} = this.props
     return (
         <nav id="sidebar" className="light bg-light">
             <div className="sidebar-header">
@@ -15,13 +16,14 @@ class SurveyTray extends React.Component {
                     <div classname="input-group-prepend">
                         <button className="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >Occupancy Type</button>
                         <div className="dropdown-menu" id="damcatDD">
-                            <button className="dropdown-item" type="button">RESIDENTIAL</button>
-                            <button className="dropdown-item" type="button">COMMERCIAL</button>
-                            <button className="dropdown-item" type="button">INDUSTRIAL</button>
-                            <button className="dropdown-item" type="button">COMMERCIAL</button>
+                            <button className="dropdown-item" type="button" onClick={() => doSelectOccupancyType("Residential")}>RESIDENTIAL</button>
+                            <button className="dropdown-item" type="button" onClick={() => doSelectOccupancyType("Commercial")}>COMMERCIAL</button>
+                            <button className="dropdown-item" type="button" onClick={() => doSelectOccupancyType("Industrial")}>INDUSTRIAL</button>
+                            <button className="dropdown-item" type="button" onClick={() => doSelectOccupancyType("Public")}>PUBLIC</button>
                         </div>
                     </div>
-                    <input type="text" className="form-control" id="demo" aria-label="Text input with dropdown button">
+                    <input type="text" className="form-control" id="demo" aria-label="Text input with dropdown button" value={occupancyType}>
+                        
                     </input>
                 </div>
                 <div className="input-group mb-3">
@@ -61,5 +63,7 @@ class SurveyTray extends React.Component {
   }
 }
 export default connect(
+    'doSelectOccupancyType',
+    'selectOccupancyType',
   SurveyTray,
 );
