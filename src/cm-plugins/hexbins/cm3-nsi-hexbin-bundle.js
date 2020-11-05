@@ -5,7 +5,7 @@ import VectorTileSource from 'ol/source/VectorTile';
 const NSI_HexBin_INITALIZE_START='NSI_HexBin_INITALIZE_START';
 const NSI_HexBin_INITALIZE_END='NSI_HexBin_INITALIZE_END';
 const MAP_INITIALIZED='MAP_INITIALIZED';
-const apiHost=process.env.REACT_APP_APIHOST_NSI
+const apiHost=process.env.REACT_APP_APIHOST_HB
 const hexbinLayers={
   'HB10K':'hexbin10k',
   'HB2500':'hexbin2500',
@@ -51,18 +51,35 @@ const initMap=function(store){
     source: new VectorTileSource({
       attributions: 'USACE',
       format: new MVT(),
-      url:`${apiHost}hexbin10k/tiles/{z}/{x}/{y}.pbf`,
+      url:`${apiHost}hb10k/tiles/{z}/{x}/{y}.pbf`,
     })
     //style: createMapboxStreetsV6Style(Style, Fill, Stroke, Icon, Text)
   })
   //map.addLayer(layer)
   const parentUid = store.selectTreeViewRootId();
   store.doAddLayer({
-    displayName: 'National Structure Inventory HexBins',
+    displayName: 'National Structure Inventory 10kHexBins',
     parentUid: parentUid,
     type:"notfolder",
     mapLayer: layer,
     visible: true,
     zoomTo: false,
   })
+  let layer2=new VectorTileLayer({
+  source: new VectorTileSource({
+    attributions: 'USACE',
+    format: new MVT(),
+    url:`${apiHost}hb2500/tiles/{z}/{x}/{y}.pbf`,
+  })
+  //style: createMapboxStreetsV6Style(Style, Fill, Stroke, Icon, Text)
+})
+//map.addLayer(layer)
+store.doAddLayer({
+  displayName: 'National Structure Inventory 2500HexBins',
+  parentUid: parentUid,
+  type:"notfolder",
+  mapLayer: layer2,
+  visible: true,
+  zoomTo: false,
+})
 };
