@@ -3,6 +3,9 @@ import { connect } from 'redux-bundler-react';
 
 class SurveyTray extends React.Component {
     //https://getbootstrap.com/docs/4.0/components/input-group/
+//need to add a way for the user to say "no residential structures here."
+//present to the user the occupancy type of the point - to guide what we want them to look at/for.
+//need a quick access button to define the occupancy type names to technical discriptions
 
   render(){
       const {doSelectOccupancyType, occupancyType} = this.props

@@ -82,4 +82,21 @@ store.doAddLayer({
   visible: true,
   zoomTo: false,
 })
+let layer3=new VectorTileLayer({
+  source: new VectorTileSource({
+    attributions: 'USACE',
+    format: new MVT(),
+    url:`${apiHost}hb500/tiles/{z}/{x}/{y}.pbf`,
+  })
+  //style: createMapboxStreetsV6Style(Style, Fill, Stroke, Icon, Text)
+})
+//map.addLayer(layer)
+store.doAddLayer({
+  displayName: 'National Structure Inventory 500HexBins',
+  parentUid: parentUid,
+  type:"notfolder",
+  mapLayer: layer3,
+  visible: true,
+  zoomTo: false,
+})
 };

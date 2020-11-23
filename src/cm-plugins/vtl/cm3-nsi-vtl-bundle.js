@@ -40,8 +40,8 @@ export default{
     }
   };
   const nsiLayers={
-    'NSIP1':'http://localhost:8086/',
-    'NSIP2':'http://localhost:8086/',
+    'NSIP1':'https://ml-dev.sec.usace.army.mil/nsi-ml/tileservice/services/structures',
+    'NSIP2':'https://ml-dev.sec.usace.army.mil/nsi-ml/tileservice/services/structures',
   }
 const initMap=function(store){
   const map = store.selectMap();
@@ -49,15 +49,31 @@ const initMap=function(store){
     source: new VectorTileSource({
       attributions: 'USACE',
       format: new MVT(),
-      url:`${apiHost}/tiles/{z}/{x}/{y}.pbf`,
+      url:`https://ml-dev.sec.usace.army.mil/nsi-ml/tileservice/services/nsi1/tiles/{z}/{x}/{y}.pbf`,
     })
   })
   const parentUid = store.selectTreeViewRootId();
   store.doAddLayer({
-    displayName: 'National Structure Inventory Vector Tile Layer',
+    displayName: 'NSI VTL 1',
     parentUid: parentUid,
     type:"notfolder",
     mapLayer: layer,
+    visible: true,
+    zoomTo: false,
+  })
+  let layer2=new VectorTileLayer({
+    source: new VectorTileSource({
+      attributions: 'USACE',
+      format: new MVT(),
+      url:`https://ml-dev.sec.usace.army.mil/nsi-ml/tileservice/services/nsi2/tiles/{z}/{x}/{y}.pbf`,
+    })
+  })
+  //const parentUid = store.selectTreeViewRootId();
+  store.doAddLayer({
+    displayName: 'NSI VTL 2',
+    parentUid: parentUid,
+    type:"notfolder",
+    mapLayer: layer2,
     visible: true,
     zoomTo: false,
   })
