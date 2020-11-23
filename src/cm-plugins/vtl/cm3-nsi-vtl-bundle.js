@@ -6,7 +6,7 @@ import Circle from 'ol/style/Circle'
 import MVT from 'ol/format/MVT';
 import VectorTileLayer from 'ol/layer/VectorTile';
 import VectorTileSource from 'ol/source/VectorTile';
-const apiHost=process.env.REACT_APP_APIHOST_NSI
+const apiHost=process.env.REACT_APP_APIHOST_TILES
 const NSI_VTL_INITALIZE_START='NSI_VTL_INITALIZE_START';
 const NSI_VTL_INITALIZE_END='NSI_VTL_INITALIZE_END';
 const MAP_INITIALIZED='MAP_INITIALIZED';
@@ -45,8 +45,8 @@ export default{
     }
   };
   const nsiLayers={
-    'NSIP1':'https://ml-dev.sec.usace.army.mil/nsi-ml/tileservice/services/nsi1/tiles',
-    'NSIP2':'https://ml-dev.sec.usace.army.mil/nsi-ml/tileservice/services/nsi2/tiles',
+    'NSIP1':`${apiHost}nsi1/tiles/{z}/{x}/{y}.pbf`,
+    'NSIP2':`${apiHost}nsi2/tiles/{z}/{x}/{y}.pbf`,
   }
 const initMap=function(store){
   const map = store.selectMap();
@@ -54,7 +54,7 @@ const initMap=function(store){
     source: new VectorTileSource({
       attributions: 'USACE',
       format: new MVT(),
-      url:`https://ml-dev.sec.usace.army.mil/nsi-ml/tileservice/services/nsi1/tiles/{z}/{x}/{y}.pbf`,
+      url:nsiLayers.NSIP1,
     })
   })
   const parentUid = store.selectTreeViewRootId();
@@ -63,32 +63,22 @@ const initMap=function(store){
     parentUid: parentUid,
     type:"notfolder",
     mapLayer: layer,
-    visible: false,
+    visible: true,
     zoomTo: false,
   })
   let layer2=new VectorTileLayer({
-    style:function(feature){
-      let s = new Style({
-        stroke: new Stroke({
-          color: '#CCC',
-          width: 3.0
-        })
-      })
-      return s;
-    },
     source: new VectorTileSource({
       attributions: 'USACE',
       format: new MVT(),
-      url:`https://ml-dev.sec.usace.army.mil/nsi-ml/tileservice/services/nsi2/tiles/{z}/{x}/{y}.pbf`,
+      url:nsiLayers.NSIP2,
     })
   })
-  //const parentUid = store.selectTreeViewRootId();
   store.doAddLayer({
     displayName: 'NSI VTL 2',
     parentUid: parentUid,
     type:"notfolder",
     mapLayer: layer2,
-    visible: false,
+    visible: true,
     zoomTo: false,
   })
 };

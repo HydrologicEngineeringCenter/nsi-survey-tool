@@ -5,7 +5,7 @@ import VectorTileSource from 'ol/source/VectorTile';
 const NSI_HexBin_INITALIZE_START='NSI_HexBin_INITALIZE_START';
 const NSI_HexBin_INITALIZE_END='NSI_HexBin_INITALIZE_END';
 const MAP_INITIALIZED='MAP_INITIALIZED';
-const apiHost=process.env.REACT_APP_APIHOST_HB
+const apiHost=process.env.REACT_APP_APIHOST_TILES
 const hexbinLayers={
   'HB10K':'hexbin10k',
   'HB2500':'hexbin2500',
@@ -62,7 +62,7 @@ const initMap=function(store){
     parentUid: parentUid,
     type:"notfolder",
     mapLayer: layer,
-    visible: false,
+    visible: true,
     zoomTo: false,
   })
   let layer2=new VectorTileLayer({
@@ -79,7 +79,7 @@ store.doAddLayer({
   parentUid: parentUid,
   type:"notfolder",
   mapLayer: layer2,
-  visible: false,
+  visible: true,
   zoomTo: false,
 })
 let layer3=new VectorTileLayer({
@@ -96,7 +96,7 @@ store.doAddLayer({
   parentUid: parentUid,
   type:"notfolder",
   mapLayer: layer3,
-  visible: false,
+  visible: true,
   zoomTo: false,
 })
 };
