@@ -1,3 +1,8 @@
+import Style from 'ol/style/Style';
+import Stroke from 'ol/style/Stroke';
+import Fill from 'ol/style/Fill';
+import Text from 'ol/style/Text';
+import Circle from 'ol/style/Circle'
 import MVT from 'ol/format/MVT';
 import VectorTileLayer from 'ol/layer/VectorTile';
 import VectorTileSource from 'ol/source/VectorTile';
@@ -40,8 +45,8 @@ export default{
     }
   };
   const nsiLayers={
-    'NSIP1':'https://ml-dev.sec.usace.army.mil/nsi-ml/tileservice/services/structures',
-    'NSIP2':'https://ml-dev.sec.usace.army.mil/nsi-ml/tileservice/services/structures',
+    'NSIP1':'https://ml-dev.sec.usace.army.mil/nsi-ml/tileservice/services/nsi1/tiles',
+    'NSIP2':'https://ml-dev.sec.usace.army.mil/nsi-ml/tileservice/services/nsi2/tiles',
   }
 const initMap=function(store){
   const map = store.selectMap();
@@ -58,10 +63,19 @@ const initMap=function(store){
     parentUid: parentUid,
     type:"notfolder",
     mapLayer: layer,
-    visible: true,
+    visible: false,
     zoomTo: false,
   })
   let layer2=new VectorTileLayer({
+    style:function(feature){
+      let s = new Style({
+        stroke: new Stroke({
+          color: '#CCC',
+          width: 3.0
+        })
+      })
+      return s;
+    },
     source: new VectorTileSource({
       attributions: 'USACE',
       format: new MVT(),
@@ -74,7 +88,7 @@ const initMap=function(store){
     parentUid: parentUid,
     type:"notfolder",
     mapLayer: layer2,
-    visible: true,
+    visible: false,
     zoomTo: false,
   })
 };

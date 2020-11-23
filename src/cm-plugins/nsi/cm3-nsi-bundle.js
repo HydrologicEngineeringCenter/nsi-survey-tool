@@ -107,7 +107,7 @@ const initMap=function(store){
     parentUid: parentUid,
     type:"notfolder",
     mapLayer: vectorLayer1,
-    visible: true,
+    visible: false,
     zoomTo: false,
   });
 

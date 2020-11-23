@@ -62,7 +62,7 @@ const initMap=function(store){
     parentUid: parentUid,
     type:"notfolder",
     mapLayer: layer,
-    visible: true,
+    visible: false,
     zoomTo: false,
   })
   let layer2=new VectorTileLayer({
@@ -79,7 +79,7 @@ store.doAddLayer({
   parentUid: parentUid,
   type:"notfolder",
   mapLayer: layer2,
-  visible: true,
+  visible: false,
   zoomTo: false,
 })
 let layer3=new VectorTileLayer({
@@ -96,7 +96,7 @@ store.doAddLayer({
   parentUid: parentUid,
   type:"notfolder",
   mapLayer: layer3,
-  visible: true,
+  visible: false,
   zoomTo: false,
 })
 };
