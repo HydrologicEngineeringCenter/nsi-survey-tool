@@ -50,7 +50,61 @@ export default{
   }
 const initMap=function(store){
   const map = store.selectMap();
+  let fRes = new Fill({
+        color: 'red'
+      })
+  let styleRes = new Style({
+      image: new Circle({
+        radius:2,
+        fill: fRes,
+      }),
+      fill:fRes,
+    })
+    let fCom = new Fill({
+      color: 'blue'
+    })
+let stylecom = new Style({
+    image: new Circle({
+      radius:2,
+      fill: fCom,
+    }),
+    fill:fCom,
+  })
+  let fInd = new Fill({
+    color: 'yellow'
+  })
+let styleInd = new Style({
+  image: new Circle({
+    radius:2,
+    fill: fInd,
+  }),
+  fill:fInd,
+})
+let fPub = new Fill({
+  color: 'green'
+})
+let stylePub = new Style({
+image: new Circle({
+  radius:2,
+  fill: fPub,
+}),
+fill:fPub,
+})
+
+
   let layer=new VectorTileLayer({
+    style: function(feature, resolution){
+      //console.log(feature)
+     if (feature.properties_.st_damcat == "RES"){
+       return styleRes
+     }else if (feature.properties_.st_damcat == "PUB"){
+       return stylePub
+     }else if (feature.properties_.st_damcat == "IND"){
+      return styleInd
+     }else {
+       return stylecom
+     }
+    },
     source: new VectorTileSource({
       attributions: 'USACE',
       format: new MVT(),
@@ -67,7 +121,20 @@ const initMap=function(store){
     zoomTo: false,
   })
   let layer2=new VectorTileLayer({
+    style: function(feature, resolution){
+      //console.log(feature)
+     if (feature.properties_.st_damcat == "RES"){
+       return styleRes
+     }else if (feature.properties_.st_damcat == "PUB"){
+       return stylePub
+     }else if (feature.properties_.st_damcat == "IND"){
+      return styleInd
+     }else {
+       return stylecom
+     }
+    },
     source: new VectorTileSource({
+      
       attributions: 'USACE',
       format: new MVT(),
       url:nsiLayers.NSIP2,
