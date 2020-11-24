@@ -48,10 +48,12 @@ export default{
     'NSIP1':`${apiHost}nsi1/tiles/{z}/{x}/{y}.pbf`,
     'NSIP2':`${apiHost}nsi2/tiles/{z}/{x}/{y}.pbf`,
   }
+
+
 const initMap=function(store){
   const map = store.selectMap();
   let fRes = new Fill({
-        color: 'red'
+        color: 'pink'
       })
   let styleRes = new Style({
       image: new Circle({
@@ -147,5 +149,27 @@ fill:fPub,
     mapLayer: layer2,
     visible: true,
     zoomTo: false,
+  })
+  map.on('click',function(evt) {
+      var f = map.getFeaturesAtPixel(evt.pixel)
+      if (f.length == 0) {
+        //no feature?
+      } else {
+        //check if the property for x or y is undefined - if so, go to the next feature. if no feature has x or y property, skip.
+        var feature;
+        for(feature of f){
+          if(feature.getProperties().x){//truthy
+            //console.log("X coordinate is: " + feature.getProperties().x)
+            //console.log("Y coordinate is: " + feature.getProperties().y)
+            var url = "http://maps.google.com/maps?q=" + feature.getProperties().y + "," + feature.getProperties().x;
+            //console.log(url);
+            window.open(url, "_blank");
+            break;    
+          }else{//falsy
+            //console.log("falsy X coordinate is: " + feature.getProperties().x)
+          }         
+        }
+
+      }
   })
 };

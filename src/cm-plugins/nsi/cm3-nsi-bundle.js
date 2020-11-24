@@ -89,7 +89,7 @@ const initMap=function(store){
         return s;
       } 
   });
-  var logFeatureCoordinate = function (coordinate) {
+  /*var logFeatureCoordinate = function (coordinate) {
     var closestFeature = vectorSource.getClosestFeatureToCoordinate(coordinate);
     if (closestFeature === null) {
 
@@ -98,25 +98,25 @@ const initMap=function(store){
       console.log("Y coordinate is: " + closestFeature.getProperties().y)
       var url = "http://maps.google.com/maps?q=" + closestFeature.getProperties().y + "," + closestFeature.getProperties().x;
       console.log(url);
-          window.open(url, "_blank");
+      window.open(url, "_blank");
     }
-  }
+  }*/
   const parentUid = store.selectTreeViewRootId();
   store.doAddLayer({
     displayName: 'National Structure Inventory',
     parentUid: parentUid,
     type:"notfolder",
     mapLayer: vectorLayer1,
-    visible: false,
+    visible: true,
     zoomTo: false,
   });
 
-  vectorLayer1.getSource().on('change', function(event) {
+  /*vectorLayer1.getSource().on('change', function(event) {
     if(vectorLayer1.getSource().getState()==='ready'){
 
       map.on('click',function(evt) {
         logFeatureCoordinate(evt.coordinate)
       })
     }
-  });
+  });*/
 }
