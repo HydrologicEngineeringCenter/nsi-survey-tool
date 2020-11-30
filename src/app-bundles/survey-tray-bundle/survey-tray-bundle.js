@@ -70,7 +70,7 @@ export default{
       })
     },
     doSelectStructure: () =>({dispatch, store}) =>{
-      dispatch({type:"DRAWPOLYGONS_ACTIVATE", payload:{active: true}})
+      //dispatch({type:"DRAWPOLYGONS_ACTIVATE", payload:{active: true}})//this doesnt work...
       dispatch({
         type: SURVEY_TRAY_INITALIZE_END,
         payload: {
