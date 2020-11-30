@@ -162,7 +162,7 @@ fill:fPub,
             //console.log("X coordinate is: " + feature.getProperties().x)
             //console.log("Y coordinate is: " + feature.getProperties().y)
             var url = "http://maps.google.com/maps?q=" + feature.getProperties().y + "," + feature.getProperties().x;
-            //console.log(url);
+            console.log(feature.getProperties());
             window.open(url, "_blank");
             break;    
           }else{//falsy

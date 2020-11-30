@@ -8,7 +8,7 @@ class SurveyTray extends React.Component {
 //need a quick access button to define the occupancy type names to technical discriptions
 
   render(){
-      const {doSelectOccupancyType, occupancyType} = this.props
+      const {doSelectOccupancyType, occupancyType, doSelectDamCat, damCat,doSelectStructure,x} = this.props
     return (
         <nav id="sidebar" className="light bg-light">
             <div className="sidebar-header">
@@ -30,11 +30,25 @@ class SurveyTray extends React.Component {
                     </input>
                 </div>
                 <div className="input-group mb-3">
+                    <div classname="input-group-prepend">
+                        <button className="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >Damage Category</button>
+                        <div className="dropdown-menu" id="damcatDD">
+                            <button className="dropdown-item" type="button" onClick={() => doSelectDamCat("Residential")}>RESIDENTIAL</button>
+                            <button className="dropdown-item" type="button" onClick={() => doSelectDamCat("Commercial")}>COMMERCIAL</button>
+                            <button className="dropdown-item" type="button" onClick={() => doSelectDamCat("Industrial")}>INDUSTRIAL</button>
+                            <button className="dropdown-item" type="button" onClick={() => doSelectDamCat("Public")}>PUBLIC</button>
+                        </div>
+                    </div>
+                    <input type="text" className="form-control" id="demo" aria-label="Text input with dropdown button" value={damCat}>
+                        
+                    </input>
+                </div>
+                <div className="input-group mb-3">
                     <div className="input-group-prepend">
                         <button className="btn btn-outline-secondary" type="button" aria-haspopup="true" aria-expanded="false">Update Location</button>
                         <div className="input-group-prepend">
                             <span className="input-group-text">x</span>
-                            <input type="text" className="form-control"/>
+                            <input type="text" className="form-control" value={x}/>
                         </div>
                         <div className="input-group-prepend">
                             <span className="input-group-text">y</span>
@@ -60,6 +74,9 @@ class SurveyTray extends React.Component {
                     </div>
                     <input type="text" className="form-control"/>
                 </div>
+                <div className="input-group mb-3">
+                    <button type="button" onClick={() => doSelectStructure()}>Next Structure</button>
+                </div>
             </div>
         </nav>
     )
@@ -68,5 +85,9 @@ class SurveyTray extends React.Component {
 export default connect(
     'doSelectOccupancyType',
     'selectOccupancyType',
+    'doSelectDamCat',
+    'selectDamCat',
+    'doSelectStructure',
+    'selectX',
   SurveyTray,
 );
