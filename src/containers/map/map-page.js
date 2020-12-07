@@ -19,9 +19,9 @@ import {
   themeSwitcher
 } from "@corpsmap/corpsmap";
 import "@corpsmap/corpsmap/css/corpsmap.css";
-import nsi from '../../cm-plugins/nsi/index'
-import nsiHexBin from '../../cm-plugins/hexbins/index'
 import nsiVTL from '../../cm-plugins/vtl/index'
+/* import nsi from '../../cm-plugins/nsi/index'
+import nsiHexBin from '../../cm-plugins/hexbins/index' */
 class MapPage extends React.Component {
   render(){
     return (
@@ -43,9 +43,7 @@ class MapPage extends React.Component {
                 zoomHome,
                 zoomToBox,
                 printMap,
-                themeSwitcher,
-                nsi,
-                nsiHexBin,
+                themeSwitcher,               
                 nsiVTL
               ]}
             />        

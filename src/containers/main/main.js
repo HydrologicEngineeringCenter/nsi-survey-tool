@@ -9,11 +9,11 @@ class MainPage extends React.Component {
     return (
       <div >
         <Banner/>
-          <div class="row no-gutters">
-            <div class="col-md-9">
+          <div className="row no-gutters">
+            <div className="col-md-9">
               <Map/>
             </div>
-            <div class="col-md-3">
+            <div className="col-md-3">
               <SurveyTray/>
             </div>            
           </div>
