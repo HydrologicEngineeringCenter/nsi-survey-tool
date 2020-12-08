@@ -76,12 +76,14 @@ export default{
       })
     },
     doSelectFoundHt:(input) =>({dispatch, store}) =>{
-      dispatch({
-        type: SURVEY_TRAY_FNDHT_ENTERED,
-        payload: {
-          found_ht: input,
-        }
-      })
+      if(!isNaN(input)){
+        dispatch({
+          type: SURVEY_TRAY_FNDHT_ENTERED,
+          payload: {
+            found_ht: input,
+          }
+        })
+      }
     },
     doSelectNumStory:(input) =>({dispatch, store}) =>{
       dispatch({
