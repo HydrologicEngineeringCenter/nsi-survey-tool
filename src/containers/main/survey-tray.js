@@ -11,7 +11,7 @@ class SurveyTray extends React.Component {
 //need a quick access button to define the occupancy type names to technical discriptions
 
   render(){
-      const {doSelectOccupancyType, occupancyType, doSelectDamCat, damCat,doSelectStructure,doSelectFoundHt,x,foundHt,doSelectNumStory,NumStory,doSelectSqFt,SqFt} = this.props
+      const {doSelectOccupancyType, occupancyType, doSelectDamCat, damCat,doSelectStructure,doSelectFoundHt,x,foundHt,doSelectNumStory,numStory,doSelectSqFt,sqFt} = this.props
       const occs = [
           {DC: 'RES1'}, 
           {DC: 'RES2'},
@@ -69,21 +69,21 @@ class SurveyTray extends React.Component {
                     <SurveyTxtBox 
                     fieldName="Foundation Height"
                     event={doSelectFoundHt}
-                    validator={(val) =>{return isNaN(val)}}
+                    target = {foundHt}
                     />
                 </div>
                 <div>
                     <SurveyTxtBox 
                     fieldName="Number of Stories"
                     event={doSelectNumStory}
-                    validator={(val) =>{return isNaN(val)}}
+                    target={numStory}
                     />
                 </div>
                 <div>
                     <SurveyTxtBox 
                     fieldName="Occupied Square Feet"
                     event={doSelectSqFt}
-                    validator={(val) =>{return isNaN(val)}}
+                    target={sqFt}
                     />
                 </div>                
             </div>

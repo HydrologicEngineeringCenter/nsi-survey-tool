@@ -28,7 +28,8 @@ export default{
           case SURVEY_TRAY_INITALIZE_END:
           case SURVEY_TRAY_OCCUPANCY_TYPE_SELECTED:
           case SURVEY_TRAY_FNDHT_ENTERED:
-            // return Object.assign({}, state, payload);
+          case SURVEY_TRAY_NUMSTORY_ENTERED:
+          case SURVEY_TRAY_SQFT_ENTERED:
           case SURVEY_TRAY_DAMCAT_SELECTED:
             return Object.assign({}, state, payload);
           case MAP_INITIALIZED:
@@ -127,9 +128,9 @@ export default{
       return state.surveytraybundle.x
     },
     selectNumStory: (state)=>{
-      return state.surveytraybundle.x
+      return state.surveytraybundle.stories
     },
     selectSqFt: (state)=>{
-      return state.surveytraybundle.x
+      return state.surveytraybundle.sq_ft
     }
 };
