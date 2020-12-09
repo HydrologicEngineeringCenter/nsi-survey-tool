@@ -8,6 +8,7 @@ const MAP_INITIALIZED='MAP_INITIALIZED';
 const SURVEY_TRAY_FNDHT_ENTERED='SURVEY_TRAY_FNDHT_ENTERED';
 const SURVEY_TRAY_NUMSTORY_ENTERED='SURVEY_TRAY_NUMSTORY_ENTERED';
 const SURVEY_TRAY_SQFT_ENTERED='SURVEY_TRAY_SQFT_ENTERED';
+const SURVEY_TRAY_VAL_ENTERED='SURVEY_TRAY_VAL_ENTERED';
 
 export default{
     name:'surveytraybundle',
@@ -21,6 +22,12 @@ export default{
         found_ht: 0.0,
         stories: 0,
         sq_ft: 0.0,
+        found_type:"",
+        rsmeans_type:"",
+        quality:"",
+        const_type:"",
+        garage:"",
+        roof_style:"",
       };
       return (state = initialData, { type, payload }) => {
         switch(type){
@@ -31,6 +38,7 @@ export default{
           case SURVEY_TRAY_NUMSTORY_ENTERED:
           case SURVEY_TRAY_SQFT_ENTERED:
           case SURVEY_TRAY_DAMCAT_SELECTED:
+          case SURVEY_TRAY_VAL_ENTERED:
             return Object.assign({}, state, payload);
           case MAP_INITIALIZED:
             return Object.assign({}, state, {
@@ -53,6 +61,12 @@ export default{
           found_ht: 0.0,
           stories: 0,
           sq_ft: 0.0,
+          found_type: "",
+          rsmeans_type:"",
+          quality:"",
+          const_type:"",
+          garage:"",
+          roof_style:"",
         }
       })     
     },
@@ -86,20 +100,24 @@ export default{
       }
     },
     doSelectNumStory:(input) =>({dispatch, store}) =>{
-      dispatch({
-        type: SURVEY_TRAY_NUMSTORY_ENTERED,
-        payload: {
-          stories: input,
-        }
-      })
+      if(!isNaN(input)){
+        dispatch({
+          type: SURVEY_TRAY_NUMSTORY_ENTERED,
+          payload: {
+            stories: input,
+          }
+        })
+      }
     },
     doSelectSqFt:(input) =>({dispatch, store}) =>{
-      dispatch({
-        type: SURVEY_TRAY_SQFT_ENTERED,
-        payload: {
-          sq_ft: input,
-        }
-      })
+      if(!isNaN(input)){
+        dispatch({
+          type: SURVEY_TRAY_SQFT_ENTERED,
+          payload: {
+            sq_ft: input,
+          }
+        })
+      }
     },
     doSelectStructure: () =>({dispatch, store}) =>{
       //dispatch({type:"DRAWPOLYGONS_ACTIVATE", payload:{active: true}})//this doesnt work...
@@ -116,6 +134,24 @@ export default{
           sq_ft:"tomatoes",
         }
       })
+    },
+    doSelectGenericVal:(input, targetField, validator) =>({dispatch, store}) =>{
+      if(validator(input)){
+        dispatch({
+          type: SURVEY_TRAY_VAL_ENTERED,
+          payload: {
+            [targetField]: input
+          }
+        })
+      }
+    },
+    doSelectGenericDropDown:(input, targetField) =>({dispatch, store}) =>{
+      dispatch({
+        type: SURVEY_TRAY_VAL_ENTERED,
+        payload: {
+          [targetField]: input
+        }
+      })      
     },
     selectOccupancyType: (state)=>{
       return state.surveytraybundle.occupancyType
@@ -134,5 +170,23 @@ export default{
     },
     selectSqFt: (state)=>{
       return state.surveytraybundle.sq_ft
+    },
+    selectFoundType: (state)=>{
+      return state.surveytraybundle.found_type
+    },
+    selectRsmeansType: (state)=>{
+      return state.surveytraybundle.rsmeans_type
+    },
+    selectQuality: (state)=>{
+      return state.surveytraybundle.quality
+    },
+    selectConstType: (state)=>{
+      return state.surveytraybundle.const_type
+    },
+    selectGarage: (state)=>{
+      return state.surveytraybundle.garage
+    },
+    selectRoofStyle: (state)=>{
+      return state.surveytraybundle.roof_style
     }
 };

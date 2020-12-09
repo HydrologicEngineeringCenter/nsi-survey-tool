@@ -11,22 +11,57 @@ class SurveyTray extends React.Component {
 //need a quick access button to define the occupancy type names to technical discriptions
 
   render(){
-      const {doSelectOccupancyType, occupancyType, doSelectDamCat, damCat,doSelectStructure,doSelectFoundHt,x,foundHt,doSelectNumStory,numStory,doSelectSqFt,sqFt} = this.props
-      const occs = [
-          {DC: 'RES1'}, 
-          {DC: 'RES2'},
-          {DC: 'RES3'},
-          {DC: 'AGR'},
-          {DC: 'IND'},
-          {DC: 'COM'},
-          {DC: 'REL'},
-          {DC: 'GOV'}
-        ]
-      const damcats = [
-          {DC: 'RESIDENTIAL'}, 
-          {DC: 'INDUSTRIAL'}, 
-          {DC: 'COMMERCIAL'}, 
-          {DC: 'PUBLIC'}]
+      const {doSelectOccupancyType, occupancyType, doSelectDamCat, damCat,doSelectStructure,doSelectGenericDropDown,
+        doSelectFoundHt,x,foundHt,doSelectNumStory,numStory,doSelectSqFt,sqFt,doSelectGenericVal,foundType,
+        rsmeansType,quality,constType,garage,roofStyle} = this.props
+    const occs = [
+        {DC: 'RES1'}, 
+        {DC: 'RES2'},
+        {DC: 'RES3'},
+        {DC: 'AGR'},
+        {DC: 'IND'},
+        {DC: 'COM'},
+        {DC: 'REL'},
+        {DC: 'GOV'}
+    ]
+    const damcats = [
+        {DC: 'RESIDENTIAL'}, 
+        {DC: 'INDUSTRIAL'}, 
+        {DC: 'COMMERCIAL'}, 
+        {DC: 'PUBLIC'}
+    ]
+    const foundTypes = [
+        {DC: 'BASEMENT'},
+        {DC: 'CRAWL'},
+        {DC: 'PIER'}
+    ]
+    const rsMeansTypes = [
+        {DC: 'OFFICE'},
+        {DC: 'SINGLE-FAMILY RES'}
+    ]
+    const Qualities = [
+        {DC: 'LUXURY'},
+        {DC: 'CUSTOM'},
+        {DC: 'AVERAGE'},
+        {DC: 'ECONOMY'}
+    ]
+    const ConstTypes = [
+        {DC: 'BRICK'},
+        {DC: 'VINYL SIDING'},
+        {DC: 'STUCCO'},
+        {DC: 'CEMENT'}
+    ]
+    const GarageTypes = [
+        {DC: 'ONE CAR ATTACHED'},
+        {DC: 'ONE CAR DETACHED'},
+        {DC: 'TWO CAR ATTACHED'},
+        {DC: 'TWO CAR DETACHED'}
+    ]
+    const RoofStyles = [
+        {DC: 'HIP'},
+        {DC: 'FLAT'},
+        {DC: 'GABLE'}
+    ]
     return (
         <nav id="sidebar" className="light bg-light">
             <div className="sidebar-header">
@@ -37,20 +72,76 @@ class SurveyTray extends React.Component {
                     <SurveyDropDown 
                     ddName="Occupancy Class"
                     vals={occs}
-                    event={doSelectOccupancyType}
+                    event={doSelectGenericDropDown}
                     target={occupancyType}
+                    targetField='occupancyType'
                     />                    
                 </div>
                 <div className="input-group mb-3">
                     <SurveyDropDown 
                     ddName="Damage Category"
                     vals={damcats}
-                    event={doSelectDamCat}
+                    event={doSelectGenericDropDown}
                     target={damCat}
+                    targetField='damcat'
                     />                    
-                </div>               
+                </div>
+                <div className="input-group mb-3">
+                    <SurveyDropDown 
+                    ddName="Foundation Type"
+                    vals={foundTypes}
+                    event={doSelectGenericDropDown}
+                    target={foundType}
+                    targetField='found_type'
+                    />                    
+                </div>
+                <div className="input-group mb-3">
+                    <SurveyDropDown 
+                    ddName="RS Means Type"
+                    vals={rsMeansTypes}
+                    event={doSelectGenericDropDown}
+                    target={rsmeansType}
+                    targetField='rsmeans_type'
+                    />                    
+                </div>
+                <div className="input-group mb-3">
+                    <SurveyDropDown 
+                    ddName="Quality"
+                    vals={Qualities}
+                    event={doSelectGenericDropDown}
+                    target={quality}
+                    targetField='quality'
+                    />                    
+                </div>
+                <div className="input-group mb-3">
+                    <SurveyDropDown 
+                    ddName="Exterior Construction Type"
+                    vals={ConstTypes}
+                    event={doSelectGenericDropDown}
+                    target={constType}
+                    targetField='const_type'
+                    />                    
+                </div>
+                <div className="input-group mb-3">
+                    <SurveyDropDown 
+                    ddName="Garage Type"
+                    vals={GarageTypes}
+                    event={doSelectGenericDropDown}
+                    target={garage}
+                    targetField='garage'
+                    />                    
+                </div>
+                <div className="input-group mb-3">
+                    <SurveyDropDown 
+                    ddName="Roof Style"
+                    vals={RoofStyles}
+                    event={doSelectGenericDropDown}
+                    target={roofStyle}
+                    targetField='roof_style'
+                    />                    
+                </div>                     
                 {/* <div>
-                    <button onClick={() => {console.log(foundHt)}}>test</button>
+                    <button onClick={() => {console.log(occupancyType)}}>test</button>
                 </div> */}
                 <div className="input-group mb-3">
                     <div className="input-group-prepend">
@@ -68,24 +159,42 @@ class SurveyTray extends React.Component {
                 <div>
                     <SurveyTxtBox 
                     fieldName="Foundation Height"
-                    event={doSelectFoundHt}
-                    target = {foundHt}
+                    event={doSelectGenericVal}
+                    targetField='found_ht'
+                    validator={(val) =>{return !isNaN(val)}}
                     />
                 </div>
                 <div>
                     <SurveyTxtBox 
                     fieldName="Number of Stories"
-                    event={doSelectNumStory}
-                    target={numStory}
+                    event={doSelectGenericVal}
+                    targetField='stories'
+                    validator={(val) =>{return !isNaN(val)}}
                     />
                 </div>
                 <div>
                     <SurveyTxtBox 
                     fieldName="Occupied Square Feet"
-                    event={doSelectSqFt}
-                    target={sqFt}
+                    event={doSelectGenericVal}
+                    targetField='sq_ft'
+                    validator={(val) =>{return !isNaN(val)}}
                     />
-                </div>                
+                </div>
+                {/* <div className="input-group mb-3">
+                    <div className="input-group-prepend">
+                        <span className="input-group-text">Number of Stories</span>
+                    </div>
+                    <input type="text" className="form-control"/>
+                </div>
+                <div className="input-group mb-3">
+                    <div className="input-group-prepend">
+                        <button className="input-group-text" type="button" aria-haspopup="true" aria-expanded="false">Occupied Square Feet</button>
+                    </div>
+                    <input type="text" className="form-control"/>
+                </div> */}
+                <div className="input-group mb-3">
+                    <button type="button" onClick={() => doSelectStructure()}>Next Structure</button>
+                </div>
             </div>
         </nav>
     )
@@ -104,5 +213,13 @@ export default connect(
     'selectNumStory',
     'doSelectSqFt',
     'selectSqFt',
+    'doSelectGenericVal',
+    'doSelectGenericDropDown',
+    'selectFoundType',
+    'selectRsmeansType',
+    'selectQuality',
+    'selectConstType',
+    'selectGarage',
+    'selectRoofStyle',
   SurveyTray,
 );

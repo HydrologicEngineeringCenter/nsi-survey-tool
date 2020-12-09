@@ -2,19 +2,19 @@ import React from 'react'
 
 const SurveryTxtBox = (props) => {
     const fieldname = props.fieldName
-    const event = props.event    
-    const target = props.target     
+    // const event = props.event  
+    // const validator = props.validator
     return (
         <div className="input-group mb-3">
             <div className="input-group-prepend">
                 <span className="input-group-text">{fieldname}</span>
             </div>
-            <input type="text" className="form-control" value={target} onChange={(e)=>handleChange(event, e)}/>
+            <input type="text" className="form-control" onChange={(e)=>handleChange(props, e)}/>
         </div>
     )
 },
-handleChange = (doEvent, e) => {
-    console.log(e.target.value)
-    doEvent(e.target.value);
+handleChange = (props, e) => {
+    console.log(e.target.value)   
+    props.event(e.target.value, props.targetField, props.validator);
 }
 export default SurveryTxtBox
