@@ -5,17 +5,17 @@ const SurveyDropDown = (props) => {
     const vals = props.vals
     const event = props.event
     const target = props.target    
-    const targetField = props.targetField
+    const targetField = props.targetField       
     return(
         <div>
             <div style={{width: "375px", height: "24px"}}>
             <div className="input-group-prepend">
                 <button className="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >{valName}</button>
-                <div className="dropdown-menu" id="damcatDD">
-                {
+                <div className="dropdown-menu" id={target}>
+                {                    
                     vals.map((item,i) => {                        
                         return (
-                            <button className="dropdown-item" type="button" key={i} onClick={() => event(item.DC, targetField)}>{item.DC}</button>
+                            <button className="dropdown-item" type="button" key={i} onClick={() => event(item, targetField)}>{item}</button>
                         )
                     })                                                            
                 }   

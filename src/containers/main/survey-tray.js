@@ -14,70 +14,68 @@ class SurveyTray extends React.Component {
       const {doSelectOccupancyType, occupancyType, doSelectDamCat, damCat,doSelectStructure,doSelectGenericDropDown,
         doSelectFoundHt,x,foundHt,doSelectNumStory,numStory,doSelectSqFt,sqFt,doSelectGenericVal,foundType,
         rsmeansType,quality,constType,garage,roofStyle} = this.props
-    const occs = [
-        {DC: 'RES1'}, 
-        {DC: 'RES2'},
-        {DC: 'RES3'},
-        {DC: 'AGR'},
-        {DC: 'IND'},
-        {DC: 'COM'},
-        {DC: 'REL'},
-        {DC: 'GOV'}
-    ]
+    const occs = {
+        "Unknown": ['RES1','RES2','RES3','RES4','RES5','RES6','IND1','IND2','IND3','IND4','IND5','IND6','COM1','COM2','COM3','COM4','COM5','COM6','COM7','COM8','COM9','AGR1','GOV1','GOV2','REL1','EDU1','EDU2'],
+        "RESIDENTIAL": ['RES1','RES2','RES3','RES4','RES5','RES6'],
+        "INDUSTRIAL": ['IND1','IND2','IND3','IND4','IND5','IND6'],
+        "COMMERICAL": ['COM1','COM2','COM3','COM4','COM5','COM6','COM7','COM8','COM9','AGR1'],
+        "PUBLIC": ['GOV1','GOV2','REL1','EDU1','EDU2']      
+    }
     const damcats = [
-        {DC: 'RESIDENTIAL'}, 
-        {DC: 'INDUSTRIAL'}, 
-        {DC: 'COMMERCIAL'}, 
-        {DC: 'PUBLIC'}
+        'RESIDENTIAL',
+        'INDUSTRIAL',
+        'COMMERICAL',
+        'PUBLIC'      
     ]
     const foundTypes = [
-        {DC: 'BASEMENT'},
-        {DC: 'CRAWL'},
-        {DC: 'PIER'}
+        'BASEMENT',
+        'CRAWL',
+        'SOLID WALL',
+        'PIER',
+        'PILE',
+        'FILL',
+        'SLAB',
+        'UNKNOWN'      
     ]
-    const rsMeansTypes = [
-        {DC: 'OFFICE'},
-        {DC: 'SINGLE-FAMILY RES'}
-    ]
+    const rsMeansTypes = {
+        "Unknown": ['Apartment','Nursing Home','Hangar, Aircraft','Bus Terminal','School - Elementary','School - High','School - Vocational','Community Center','Post Office','Church','Fire Station','Police Station','Warehouse','Factory','Store, Retail','Garage, Repair','Restaurant','Post Frame Barn','Bowling Alley','Car Wash','Office','Convenience Store','Country Club','Funeral Home','Day Care Center','Fast Food Restaurant','Bank','Supermarket','Gymnasium','Hospital','Hotel','Motel','Medical Office','Garage, Service Station','Garage, Parking','Rink Hockey, Indoor Soccer','Auditorium','Garage, Auto Sales','Veterinary Hospital','Other'],
+        "RESIDENTIAL": ['Apartment', 'Nursing Home','Other'],
+        "INDUSTRIAL": ['Warehouse', 'Factory','Other'],
+        "COMMERICAL": ['Store, Retail','Garage, Repair','Restaurant','Post Frame Barn','Bowling Alley','Car Wash','Office','Convenience Store','Country Club','Funeral Home','Day Care Center','Fast Food Restaurant','Bank','Supermarket','Gymnasium','Hospital','Hotel','Motel','Medical Office','Garage, Service Station','Garage, Parking','Rink Hockey, Indoor Soccer','Auditorium','Garage, Auto Sales','Veterinary Hospital','Other'],
+        "PUBLIC": ['Hangar, Aircraft','Bus Terminal','School - Elementary','School - High','School - Vocational','Community Center','Post Office','Church','Fire Station','Police Station','Other']
+    }
     const Qualities = [
-        {DC: 'LUXURY'},
-        {DC: 'CUSTOM'},
-        {DC: 'AVERAGE'},
-        {DC: 'ECONOMY'}
+        'LUXURY',
+        'CUSTOM',
+        'AVERAGE',
+        'ECONOMY'      
     ]
     const ConstTypes = [
-        {DC: 'BRICK'},
-        {DC: 'VINYL SIDING'},
-        {DC: 'STUCCO'},
-        {DC: 'CEMENT'}
+        'MASONRY',
+        'WOOD',
+        'CONCRETE',
+        'STEEL',
+        'MANUFACTURED',
+        'UNKNOWN'      
     ]
     const GarageTypes = [
-        {DC: 'ONE CAR ATTACHED'},
-        {DC: 'ONE CAR DETACHED'},
-        {DC: 'TWO CAR ATTACHED'},
-        {DC: 'TWO CAR DETACHED'}
+        'ONE CAR ATTACHED',
+        'ONE CAR DETACHED',
+        'TWO CAR ATTACHED',
+        'TWO CAR DETACHED'     
     ]
     const RoofStyles = [
-        {DC: 'HIP'},
-        {DC: 'FLAT'},
-        {DC: 'GABLE'}
-    ]
+        'HIP',
+        'FLAT',
+        'GABLE'      
+    ]    
     return (
         <nav id="sidebar" className="light bg-light">
             <div className="sidebar-header">
                 <h3>SURVEY INPUT DATA</h3>
             </div>
             <div className="sidebar-content">
-                <div className="input-group mb-3">
-                    <SurveyDropDown 
-                    ddName="Occupancy Class"
-                    vals={occs}
-                    event={doSelectGenericDropDown}
-                    target={occupancyType}
-                    targetField='occupancyType'
-                    />                    
-                </div>
-                <div className="input-group mb-3">
+            <div className="input-group mb-3">
                     <SurveyDropDown 
                     ddName="Damage Category"
                     vals={damcats}
@@ -88,22 +86,31 @@ class SurveyTray extends React.Component {
                 </div>
                 <div className="input-group mb-3">
                     <SurveyDropDown 
+                    ddName="Occupancy Class"
+                    vals={occs[damCat]}
+                    event={doSelectGenericDropDown}
+                    target={occupancyType}
+                    targetField='occupancyType'
+                    />                    
+                </div>    
+                <div className="input-group mb-3">
+                    <SurveyDropDown 
+                    ddName="RS Means Type"
+                    vals={rsMeansTypes[damCat]}
+                    event={doSelectGenericDropDown}
+                    target={rsmeansType}
+                    targetField='rsmeans_type'
+                    />                    
+                </div>
+                <div className="input-group mb-3">
+                    <SurveyDropDown 
                     ddName="Foundation Type"
                     vals={foundTypes}
                     event={doSelectGenericDropDown}
                     target={foundType}
                     targetField='found_type'
                     />                    
-                </div>
-                <div className="input-group mb-3">
-                    <SurveyDropDown 
-                    ddName="RS Means Type"
-                    vals={rsMeansTypes}
-                    event={doSelectGenericDropDown}
-                    target={rsmeansType}
-                    targetField='rsmeans_type'
-                    />                    
-                </div>
+                </div>               
                 <div className="input-group mb-3">
                     <SurveyDropDown 
                     ddName="Quality"

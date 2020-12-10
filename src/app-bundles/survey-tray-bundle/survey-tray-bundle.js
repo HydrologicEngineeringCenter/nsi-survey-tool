@@ -16,7 +16,7 @@ export default{
       const initialData = {
         shouldInitialize: false,
         occupancyType: "",
-        damcat:"",
+        damcat:"Unknown",
         x: 0.0,
         y: 0.0,
         found_ht: 0.0,
@@ -55,7 +55,7 @@ export default{
         payload: {
           shouldInitialize: false,
           occupancyType: "",
-          damcat:"",
+          damcat:"Unknown",
           x: 0.0,
           y: 0.0,
           found_ht: 0.0,
@@ -119,8 +119,8 @@ export default{
         })
       }
     },
-    doSelectStructure: () =>({dispatch, store}) =>{
-      //dispatch({type:"DRAWPOLYGONS_ACTIVATE", payload:{active: true}})//this doesnt work...
+    doSelectStructure: () =>({dispatch, store}) =>{      
+          //dispatch({type:"DRAWPOLYGONS_ACTIVATE", payload:{active: true}})//this doesnt work...
       dispatch({
         type: SURVEY_TRAY_INITALIZE_END,
         payload: {
