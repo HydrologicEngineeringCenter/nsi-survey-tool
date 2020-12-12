@@ -75,24 +75,48 @@ class SurveyTray extends React.Component {
                 <h3>SURVEY INPUT DATA</h3>
             </div>
             <div className="sidebar-content">
-            <div className="input-group mb-3">
-                    <SurveyDropDown 
-                    ddName="Damage Category"
-                    vals={damcats}
-                    event={doSelectGenericDropDown}
-                    target={damCat}
-                    targetField='damcat'
-                    />                    
-                </div>
-                <div className="input-group mb-3">
-                    <SurveyDropDown 
-                    ddName="Occupancy Class"
-                    vals={occs[damCat]}
-                    event={doSelectGenericDropDown}
-                    target={occupancyType}
-                    targetField='occupancyType'
-                    />                    
-                </div>    
+                <fieldset style={{margin:'8px', border: '1px solid silver', padding:'8px', borderradius: '4px'}}>
+                    <legend style={{padding:'4px'}}>Classification</legend>
+                    <div className="input-group mb-3">
+                        <SurveyDropDown 
+                        ddName="Damage Category"
+                        vals={damcats}
+                        event={doSelectGenericDropDown}
+                        target={damCat}
+                        targetField='damcat'
+                        />                    
+                    </div>
+                    <div className="input-group mb-3">
+                        <SurveyDropDown 
+                        ddName="Occupancy Class"
+                        vals={occs[damCat]}
+                        event={doSelectGenericDropDown}
+                        target={occupancyType}
+                        targetField='occupancyType'
+                        />                    
+                    </div>                      
+                </fieldset>
+                <fieldset style={{margin:'8px', border: '1px solid silver', padding:'8px', borderradius: '4px'}}>
+                    <legend style={{padding:'2px'}}>Foundation Information</legend>
+                    <div className="input-group mb-3">
+                        <SurveyDropDown 
+                        ddName="Foundation Type"
+                        vals={foundTypes}
+                        event={doSelectGenericDropDown}
+                        target={foundType}
+                        targetField='found_type'
+                        />                    
+                    </div>   
+                    <div>
+                        <SurveyTxtBox 
+                        fieldName="Foundation Height"
+                        event={doSelectGenericVal}
+                        targetField='found_ht'
+                        validator={(val) =>{return !isNaN(val)}}
+                        />
+                    </div>                    
+                </fieldset>
+
                 <div className="input-group mb-3">
                     <SurveyDropDown 
                     ddName="RS Means Type"
@@ -102,15 +126,6 @@ class SurveyTray extends React.Component {
                     targetField='rsmeans_type'
                     />                    
                 </div>
-                <div className="input-group mb-3">
-                    <SurveyDropDown 
-                    ddName="Foundation Type"
-                    vals={foundTypes}
-                    event={doSelectGenericDropDown}
-                    target={foundType}
-                    targetField='found_type'
-                    />                    
-                </div>               
                 <div className="input-group mb-3">
                     <SurveyDropDown 
                     ddName="Quality"
@@ -147,9 +162,6 @@ class SurveyTray extends React.Component {
                     targetField='roof_style'
                     />                    
                 </div>                     
-                {/* <div>
-                    <button onClick={() => {console.log(occupancyType)}}>test</button>
-                </div> */}
                 <div className="input-group mb-3">
                     <div className="input-group-prepend">
                         <button className="btn btn-outline-secondary" type="button" aria-haspopup="true" aria-expanded="false">Update Location</button>
@@ -163,14 +175,7 @@ class SurveyTray extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div>
-                    <SurveyTxtBox 
-                    fieldName="Foundation Height"
-                    event={doSelectGenericVal}
-                    targetField='found_ht'
-                    validator={(val) =>{return !isNaN(val)}}
-                    />
-                </div>
+
                 <div>
                     <SurveyTxtBox 
                     fieldName="Number of Stories"

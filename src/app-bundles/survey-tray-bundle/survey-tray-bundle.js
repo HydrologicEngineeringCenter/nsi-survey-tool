@@ -146,12 +146,23 @@ export default{
       }
     },
     doSelectGenericDropDown:(input, targetField) =>({dispatch, store}) =>{
-      dispatch({
-        type: SURVEY_TRAY_VAL_ENTERED,
-        payload: {
-          [targetField]: input
-        }
-      })      
+      if (targetField==='damcat'){
+        dispatch({
+          type: SURVEY_TRAY_VAL_ENTERED,
+          payload: {
+            [targetField]: input,
+            occupancyType: ""
+          }
+        }) 
+      }else{
+        dispatch({
+          type: SURVEY_TRAY_VAL_ENTERED,
+          payload: {
+            [targetField]: input
+          }
+        })         
+      }
+     
     },
     selectOccupancyType: (state)=>{
       return state.surveytraybundle.occupancyType

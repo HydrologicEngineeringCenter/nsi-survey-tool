@@ -44,7 +44,7 @@ class MapPage extends React.Component {
                 zoomHome,
                 zoomToBox,
                 printMap,
-                themeSwitcher,               
+                themeSwitcher,
                 nsiVTL
               ]}
             />        
