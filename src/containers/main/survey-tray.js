@@ -12,7 +12,7 @@ class SurveyTray extends React.Component {
 
   render(){
       const {occupancyType, damCat,doModifyStructure,doModifyGenericDropDown,x,foundHt,numStory,sqFt,doModifyGenericVal,foundType,
-        rsmeansType,quality,constType,garage,roofStyle,foundHt_isInvalid} = this.props
+        rsmeansType,quality,constType,garage,roofStyle,foundHt_isInvalid,numStory_isInvalid,sqFt_isInvalid} = this.props
     const occs = {
         "Unknown": ['RES1','RES2','RES3','RES4','RES5','RES6','IND1','IND2','IND3','IND4','IND5','IND6','COM1','COM2','COM3','COM4','COM5','COM6','COM7','COM8','COM9','AGR1','GOV1','GOV2','REL1','EDU1','EDU2'],
         "RESIDENTIAL": ['RES1','RES2','RES3','RES4','RES5','RES6'],
@@ -183,6 +183,7 @@ class SurveyTray extends React.Component {
                     event={doModifyGenericVal}
                     targetField='stories'
                     target={numStory}
+                    isInValid = {numStory_isInvalid}
                     validator={(val) =>{return !isNaN(val)}}
                     />
                 </div>
@@ -192,6 +193,7 @@ class SurveyTray extends React.Component {
                     event={doModifyGenericVal}
                     targetField='sq_ft'
                     target={sqFt}
+                    isInValid = {sqFt_isInvalid}
                     validator={(val) =>{return !isNaN(val)}}
                     />
                 </div>
@@ -224,7 +226,9 @@ export default connect(
     'selectFoundHt',
     'selectX',
     'selectNumStory',
+    'selectNumStory_isInvalid',
     'selectSqFt',
+    'selectSqFt_isInvalid',
     'selectFoundType',
     'selectFoundHt_isInvalid',
     'selectRsmeansType',

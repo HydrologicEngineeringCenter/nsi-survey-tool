@@ -9,23 +9,19 @@ const SurveryTxtBox = (props) => {
             <div className="input-group-prepend">
                 <span className="input-group-text">{fieldname}</span>
             </div>
-            <input type="text" className="form-control" onChange={(e)=>handleChange(props, e)}/>
+            <input type="text" style={styler(props)} className="form-control" onChange={(e)=>handleChange(props, e)}/>
         </div>
     )
 },
 handleChange = (props, e) => {
     console.log(e.target.value)   
     props.event(e.target.value, props.targetField, props.validator);
-}/*,style={styler(props)}
+},
 styler = (props) =>{
     if(props.isInValid){
-        return{
-            backgroundcolor: "#ffdddd"
-        }
+        return {border: '5px solid red'}
     }else{
-        return{
-            backgroundcolor: "#ddffdd"
-        }
+        return {border: '1px solid #ced4da'}
     }
-}*/
+}
 export default SurveryTxtBox

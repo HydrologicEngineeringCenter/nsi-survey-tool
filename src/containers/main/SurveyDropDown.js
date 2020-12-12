@@ -21,7 +21,7 @@ const SurveyDropDown = (props) => {
                 }   
                 </div>
              
-            <input type="text" className="form-control" id="demo" aria-label="Text input with dropdown button" value={target}>                
+            <input type="text" className="form-control" aria-label="Text input with dropdown button" value={target}>                
             </input>
             </div>
             </div> 

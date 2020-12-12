@@ -61,7 +61,9 @@ export default{
           found_ht: 0.0,
           found_ht_invalid: false,
           stories: 0,
+          stories_invalid: false,
           sq_ft: 0.0,
+          sq_ft_invalid: false,
           found_type: "",
           rsmeans_type:"",
           quality:"",
@@ -141,7 +143,8 @@ export default{
         dispatch({
           type: SURVEY_TRAY_VAL_ENTERED,
           payload: {
-            [targetField]: input
+            [targetField]: input,
+            [`${targetField}_invalid`]: false
           }
         })
       }else{
@@ -190,8 +193,14 @@ export default{
     selectNumStory: (state)=>{
       return state.surveytraybundle.stories
     },
+    selectNumStory_isInvalid: (state) =>{
+      return state.surveytraybundle.stories_invalid
+    },
     selectSqFt: (state)=>{
       return state.surveytraybundle.sq_ft
+    },
+    selectSqFt_isInvalid: (state) =>{
+      return state.surveytraybundle.sq_ft_invalid
     },
     selectFoundType: (state)=>{
       return state.surveytraybundle.found_type
