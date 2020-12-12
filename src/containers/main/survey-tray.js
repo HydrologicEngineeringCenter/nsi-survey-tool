@@ -11,9 +11,8 @@ class SurveyTray extends React.Component {
 //need a quick access button to define the occupancy type names to technical discriptions
 
   render(){
-      const {doSelectOccupancyType, occupancyType, doSelectDamCat, damCat,doSelectStructure,doSelectGenericDropDown,
-        doSelectFoundHt,x,foundHt,doSelectNumStory,numStory,doSelectSqFt,sqFt,doSelectGenericVal,foundType,
-        rsmeansType,quality,constType,garage,roofStyle} = this.props
+      const {occupancyType, damCat,doModifyStructure,doModifyGenericDropDown,x,foundHt,numStory,sqFt,doModifyGenericVal,foundType,
+        rsmeansType,quality,constType,garage,roofStyle,foundHt_isInvalid} = this.props
     const occs = {
         "Unknown": ['RES1','RES2','RES3','RES4','RES5','RES6','IND1','IND2','IND3','IND4','IND5','IND6','COM1','COM2','COM3','COM4','COM5','COM6','COM7','COM8','COM9','AGR1','GOV1','GOV2','REL1','EDU1','EDU2'],
         "RESIDENTIAL": ['RES1','RES2','RES3','RES4','RES5','RES6'],
@@ -81,7 +80,7 @@ class SurveyTray extends React.Component {
                         <SurveyDropDown 
                         ddName="Damage Category"
                         vals={damcats}
-                        event={doSelectGenericDropDown}
+                        event={doModifyGenericDropDown}
                         target={damCat}
                         targetField='damcat'
                         />                    
@@ -90,7 +89,7 @@ class SurveyTray extends React.Component {
                         <SurveyDropDown 
                         ddName="Occupancy Class"
                         vals={occs[damCat]}
-                        event={doSelectGenericDropDown}
+                        event={doModifyGenericDropDown}
                         target={occupancyType}
                         targetField='occupancyType'
                         />                    
@@ -102,7 +101,7 @@ class SurveyTray extends React.Component {
                         <SurveyDropDown 
                         ddName="Foundation Type"
                         vals={foundTypes}
-                        event={doSelectGenericDropDown}
+                        event={doModifyGenericDropDown}
                         target={foundType}
                         targetField='found_type'
                         />                    
@@ -110,8 +109,10 @@ class SurveyTray extends React.Component {
                     <div>
                         <SurveyTxtBox 
                         fieldName="Foundation Height"
-                        event={doSelectGenericVal}
+                        event={doModifyGenericVal}
+                        target={foundHt}
                         targetField='found_ht'
+                        isInValid = {foundHt_isInvalid}
                         validator={(val) =>{return !isNaN(val)}}
                         />
                     </div>                    
@@ -121,7 +122,7 @@ class SurveyTray extends React.Component {
                     <SurveyDropDown 
                     ddName="RS Means Type"
                     vals={rsMeansTypes[damCat]}
-                    event={doSelectGenericDropDown}
+                    event={doModifyGenericDropDown}
                     target={rsmeansType}
                     targetField='rsmeans_type'
                     />                    
@@ -130,7 +131,7 @@ class SurveyTray extends React.Component {
                     <SurveyDropDown 
                     ddName="Quality"
                     vals={Qualities}
-                    event={doSelectGenericDropDown}
+                    event={doModifyGenericDropDown}
                     target={quality}
                     targetField='quality'
                     />                    
@@ -139,7 +140,7 @@ class SurveyTray extends React.Component {
                     <SurveyDropDown 
                     ddName="Exterior Construction Type"
                     vals={ConstTypes}
-                    event={doSelectGenericDropDown}
+                    event={doModifyGenericDropDown}
                     target={constType}
                     targetField='const_type'
                     />                    
@@ -148,7 +149,7 @@ class SurveyTray extends React.Component {
                     <SurveyDropDown 
                     ddName="Garage Type"
                     vals={GarageTypes}
-                    event={doSelectGenericDropDown}
+                    event={doModifyGenericDropDown}
                     target={garage}
                     targetField='garage'
                     />                    
@@ -157,7 +158,7 @@ class SurveyTray extends React.Component {
                     <SurveyDropDown 
                     ddName="Roof Style"
                     vals={RoofStyles}
-                    event={doSelectGenericDropDown}
+                    event={doModifyGenericDropDown}
                     target={roofStyle}
                     targetField='roof_style'
                     />                    
@@ -179,16 +180,18 @@ class SurveyTray extends React.Component {
                 <div>
                     <SurveyTxtBox 
                     fieldName="Number of Stories"
-                    event={doSelectGenericVal}
+                    event={doModifyGenericVal}
                     targetField='stories'
+                    target={numStory}
                     validator={(val) =>{return !isNaN(val)}}
                     />
                 </div>
                 <div>
                     <SurveyTxtBox 
                     fieldName="Occupied Square Feet"
-                    event={doSelectGenericVal}
+                    event={doModifyGenericVal}
                     targetField='sq_ft'
+                    target={sqFt}
                     validator={(val) =>{return !isNaN(val)}}
                     />
                 </div>
@@ -205,7 +208,7 @@ class SurveyTray extends React.Component {
                     <input type="text" className="form-control"/>
                 </div> */}
                 <div className="input-group mb-3">
-                    <button type="button" onClick={() => doSelectStructure()}>Next Structure</button>
+                    <button type="button" onClick={() => doModifyStructure()}>Next Structure</button>
                 </div>
             </div>
         </nav>
@@ -213,21 +216,17 @@ class SurveyTray extends React.Component {
   }
 }
 export default connect(
-    'doSelectOccupancyType',
+    'doModifyStructure',
+    'doModifyGenericVal',
+    'doModifyGenericDropDown',
     'selectOccupancyType',
-    'doSelectDamCat',
     'selectDamCat',
-    'doSelectStructure',
-    'doSelectFoundHt',
     'selectFoundHt',
     'selectX',
-    'doSelectNumStory',
     'selectNumStory',
-    'doSelectSqFt',
     'selectSqFt',
-    'doSelectGenericVal',
-    'doSelectGenericDropDown',
     'selectFoundType',
+    'selectFoundHt_isInvalid',
     'selectRsmeansType',
     'selectQuality',
     'selectConstType',

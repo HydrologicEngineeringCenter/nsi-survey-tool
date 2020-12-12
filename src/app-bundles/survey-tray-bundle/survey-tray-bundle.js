@@ -59,6 +59,7 @@ export default{
           x: 0.0,
           y: 0.0,
           found_ht: 0.0,
+          found_ht_invalid: false,
           stories: 0,
           sq_ft: 0.0,
           found_type: "",
@@ -73,7 +74,7 @@ export default{
     reactSurveyTrayShouldInitialize: (state) => {
       if(state.surveytraybundle.shouldInitialize) return { actionCreator: "doSurveyTrayInitialize" };
     },
-    doSelectOccupancyType: (input) => ({dispatch, store}) =>{
+    doModifyOccupancyType: (input) => ({dispatch, store}) =>{
         dispatch({
             type: SURVEY_TRAY_OCCUPANCY_TYPE_SELECTED,
             payload: {
@@ -81,7 +82,7 @@ export default{
             }
           }) 
     },
-    doSelectDamCat:(input) =>({dispatch, store}) =>{
+    doModifyDamCat:(input) =>({dispatch, store}) =>{
       dispatch({
         type: SURVEY_TRAY_DAMCAT_SELECTED,
         payload: {
@@ -89,7 +90,7 @@ export default{
         }
       })
     },
-    doSelectFoundHt:(input) =>({dispatch, store}) =>{
+    doModifyFoundHt:(input) =>({dispatch, store}) =>{
       if(!isNaN(input)){
         dispatch({
           type: SURVEY_TRAY_FNDHT_ENTERED,
@@ -99,7 +100,7 @@ export default{
         })
       }
     },
-    doSelectNumStory:(input) =>({dispatch, store}) =>{
+    doModifyNumStory:(input) =>({dispatch, store}) =>{
       if(!isNaN(input)){
         dispatch({
           type: SURVEY_TRAY_NUMSTORY_ENTERED,
@@ -109,7 +110,7 @@ export default{
         })
       }
     },
-    doSelectSqFt:(input) =>({dispatch, store}) =>{
+    doModifySqFt:(input) =>({dispatch, store}) =>{
       if(!isNaN(input)){
         dispatch({
           type: SURVEY_TRAY_SQFT_ENTERED,
@@ -119,7 +120,7 @@ export default{
         })
       }
     },
-    doSelectStructure: () =>({dispatch, store}) =>{      
+    doModifyStructure: () =>({dispatch, store}) =>{      
           //dispatch({type:"DRAWPOLYGONS_ACTIVATE", payload:{active: true}})//this doesnt work...
       dispatch({
         type: SURVEY_TRAY_INITALIZE_END,
@@ -135,7 +136,7 @@ export default{
         }
       })
     },
-    doSelectGenericVal:(input, targetField, validator) =>({dispatch, store}) =>{
+    doModifyGenericVal:(input, targetField, validator) =>({dispatch, store}) =>{
       if(validator(input)){
         dispatch({
           type: SURVEY_TRAY_VAL_ENTERED,
@@ -143,9 +144,16 @@ export default{
             [targetField]: input
           }
         })
+      }else{
+        dispatch({
+          type: SURVEY_TRAY_VAL_ENTERED,
+          payload: {
+            [`${targetField}_invalid`]: true
+          }
+        })
       }
     },
-    doSelectGenericDropDown:(input, targetField) =>({dispatch, store}) =>{
+    doModifyGenericDropDown:(input, targetField) =>({dispatch, store}) =>{
       if (targetField==='damcat'){
         dispatch({
           type: SURVEY_TRAY_VAL_ENTERED,
@@ -172,6 +180,9 @@ export default{
     },
     selectFoundHt: (state)=>{
       return state.surveytraybundle.found_ht
+    },
+    selectFoundHt_isInvalid: (state) =>{
+      return state.surveytraybundle.found_ht_invalid
     },
     selectX: (state)=>{
       return state.surveytraybundle.x
