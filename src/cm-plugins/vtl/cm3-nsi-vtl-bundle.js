@@ -1,7 +1,5 @@
 import Style from 'ol/style/Style';
-import Stroke from 'ol/style/Stroke';
 import Fill from 'ol/style/Fill';
-import Text from 'ol/style/Text';
 import Circle from 'ol/style/Circle'
 import MVT from 'ol/format/MVT';
 import VectorTileLayer from 'ol/layer/VectorTile';
@@ -97,11 +95,11 @@ fill:fPub,
   let layer=new VectorTileLayer({
     style: function(feature, resolution){
       //console.log(feature)
-     if (feature.properties_.st_damcat == "RES"){
+     if (feature.properties_.st_damcat === "RES"){
        return styleRes
-     }else if (feature.properties_.st_damcat == "PUB"){
+     }else if (feature.properties_.st_damcat === "PUB"){
        return stylePub
-     }else if (feature.properties_.st_damcat == "IND"){
+     }else if (feature.properties_.st_damcat === "IND"){
       return styleInd
      }else {
        return stylecom
@@ -122,14 +120,14 @@ fill:fPub,
     visible: true,
     zoomTo: false,
   })
-  let layer2=new VectorTileLayer({
+  /*let layer2=new VectorTileLayer({
     style: function(feature, resolution){
       //console.log(feature)
-     if (feature.properties_.st_damcat == "RES"){
+     if (feature.properties_.st_damcat === "RES"){
        return styleRes
-     }else if (feature.properties_.st_damcat == "PUB"){
+     }else if (feature.properties_.st_damcat === "PUB"){
        return stylePub
-     }else if (feature.properties_.st_damcat == "IND"){
+     }else if (feature.properties_.st_damcat === "IND"){
       return styleInd
      }else {
        return stylecom
@@ -142,7 +140,7 @@ fill:fPub,
       url:nsiLayers.NSIP2,
     })
   })
-  /* store.doAddLayer({
+  store.doAddLayer({
     displayName: 'NSI VTL 2',
     parentUid: parentUid,
     type:"notfolder",
@@ -152,7 +150,7 @@ fill:fPub,
   }) */
   map.on('click',function(evt) {
       var f = map.getFeaturesAtPixel(evt.pixel)
-      if (f.length == 0) {
+      if (f.length === 0) {
         //no feature?
       } else {
         //check if the property for x or y is undefined - if so, go to the next feature. if no feature has x or y property, skip.

@@ -20,7 +20,7 @@ import {
 } from "@corpsmap/corpsmap";
 import "@corpsmap/corpsmap/css/corpsmap.css";
 import nsiVTL from '../../cm-plugins/vtl/index'
-//import  nsiDL from '../../cm-plugins/nsi/index'
+import  nsiDL from '../../cm-plugins/nsi/index'
 /*import st from '../../cm-plugins/survey-tray/index'
  
 import nsiHexBin from '../../cm-plugins/hexbins/index' */
@@ -46,7 +46,8 @@ class MapPage extends React.Component {
                 zoomToBox,
                 printMap,
                 themeSwitcher,
-                nsiVTL
+                nsiVTL,
+                nsiDL
               ]}
             />        
         </div>

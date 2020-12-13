@@ -1,7 +1,7 @@
 const SURVEY_TRAY_INITALIZE_START='SURVEY_TRAY_INITALIZE_START';
 const SURVEY_TRAY_INITALIZE_END='SURVEY_TRAY_INITALIZE_END';
-const SURVEY_TRAY_POINT_SUBMITTED='SURVEY_TRAY_POINT_SUBMITTED';
-const SURVEY_TRAY_UPDATE_XY='SURVEY_TRAY_UPDATE_XY';
+//const SURVEY_TRAY_POINT_SUBMITTED='SURVEY_TRAY_POINT_SUBMITTED';
+//const SURVEY_TRAY_UPDATE_XY='SURVEY_TRAY_UPDATE_XY';
 const SURVEY_TRAY_OCCUPANCY_TYPE_SELECTED='SURVEY_TRAY_OCCUPANCY_TYPE_SELECTED';
 const SURVEY_TRAY_DAMCAT_SELECTED='SURVEY_TRAY_DAMCAT_SELECTED';
 const MAP_INITIALIZED='MAP_INITIALIZED';
@@ -54,7 +54,7 @@ export default{
         type: SURVEY_TRAY_INITALIZE_START,
         payload: {
           shouldInitialize: false,
-          occupancyType: "",
+          occupancyType: "RES1",
           damcat:"Unknown",
           x: 0.0,
           y: 0.0,
@@ -128,8 +128,8 @@ export default{
         type: SURVEY_TRAY_INITALIZE_END,
         payload: {
           shouldInitialize: false,
-          occupancyType: "invalid",
-          damcat:"filename",
+          occupancyType: "RES1",
+          damcat:'Unknown',//this has to be specified as a real value in the maps or it throws an exception because it creates the list for Occtype
           x: "12343",
           y: "fish",
           found_ht: "i like to",

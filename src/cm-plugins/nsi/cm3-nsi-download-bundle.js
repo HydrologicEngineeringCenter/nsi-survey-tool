@@ -2,7 +2,6 @@
 
 export default {
   name: "nsiDownload",
-
   getReducer: () => {
     const initialData = {
       fips: '15005',
@@ -26,5 +25,4 @@ export default {
       },
     });
   },
-
 };
