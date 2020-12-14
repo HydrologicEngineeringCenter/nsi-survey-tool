@@ -124,7 +124,11 @@ export default{
     },
     doModifyStructure: () =>({dispatch, store}) =>{    
 
-      //check for validity first.  
+      //check for validity first. 
+
+      //commit changes to database
+      // select a random structure
+      // update to the next structure 
         var url =  'https://nsi-dev.sec.usace.army.mil/nsiapi/structure/11357491'
         var xhr = new XMLHttpRequest();
         xhr.open('GET', url);
@@ -132,8 +136,8 @@ export default{
           if (xhr.status === 200) {
             let resp = xhr.responseText
             var obj = JSON.parse(resp)
-            console.log(resp)
-            console.log(obj.properties)
+            //console.log(resp)
+            //console.log(obj.properties)
             dispatch({
               type: SURVEY_TRAY_INITALIZE_START,
               payload: {
