@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-scripts": "3.4.3",
+    "@corpsmap/corpsmap": "^0.9.3",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
+    "react-scripts": "4.0.1",
     "redux-bundler": "^27.0.2",
     "redux-bundler-react": "^1.2.0"
   },
@@ -23,8 +24,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@babel/plugin-transform-react-jsx": "^7.12.7"
   }
 }
