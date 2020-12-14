@@ -1,5 +1,5 @@
 import React from 'react';
-import { SidebarPanelOpenerButton } from "@corpsmap/corpsmap/src/application-controls/sidebar-panel-opener";;
+import { SidebarPanelOpenerButton } from "@corpsmap/corpsmap";;
 
 class SurveyTrayButton extends React.Component {
   render() {
@@ -8,7 +8,7 @@ class SurveyTrayButton extends React.Component {
         iconClass="mdi mdi-google-maps"
         label="Survey Tray"
         title="Survey Tray"
-        panelComponent={"A", "B", "C"}
+        panelComponent={() => "A component is a function essentially..."}
       />
     );
   }
