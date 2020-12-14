@@ -23,9 +23,8 @@ import nsiVTL from '../../cm-plugins/vtl/index'
 import  nsiDL from '../../cm-plugins/nsi/index'
 import st from '../../cm-plugins/survey-tray/index'
 
-import fullscreen from '../../cm-plugins/fullscreen'
- /*
-import nsiHexBin from '../../cm-plugins/hexbins/index' */
+ /*import nsiHexBin from '../../cm-plugins/hexbins/index' */
+ 
 class MapPage extends React.Component {
   render(){
     return (
@@ -50,7 +49,7 @@ class MapPage extends React.Component {
                 themeSwitcher,
                 nsiVTL,
                 nsiDL,
-                fullscreen
+                st
               ]}
             />        
         </div>
