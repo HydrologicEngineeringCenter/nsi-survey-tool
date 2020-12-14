@@ -9,7 +9,7 @@ const SurveryTxtBox = (props) => {
             <div className="input-group-prepend">
                 <span className="input-group-text">{fieldname}</span>
             </div>
-            <input type="text" style={styler(props)} className="form-control" onChange={(e)=>handleChange(props, e)}/>
+            <input type="text" style={styler(props)} className="form-control" onChange={(e)=>handleChange(props, e)} value={props.target}/>
         </div>
     )
 },

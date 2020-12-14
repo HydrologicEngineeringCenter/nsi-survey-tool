@@ -122,21 +122,36 @@ export default{
         })
       }
     },
-    doModifyStructure: () =>({dispatch, store}) =>{      
-          //dispatch({type:"DRAWPOLYGONS_ACTIVATE", payload:{active: true}})//this doesnt work...
-      dispatch({
-        type: SURVEY_TRAY_INITALIZE_END,
-        payload: {
-          shouldInitialize: false,
-          occupancyType: "RES1",
-          damcat:'Unknown',//this has to be specified as a real value in the maps or it throws an exception because it creates the list for Occtype
-          x: "12343",
-          y: "fish",
-          found_ht: "i like to",
-          stories: "eat",
-          sq_ft:"tomatoes",
+    doModifyStructure: () =>({dispatch, store}) =>{    
+
+      //check for validity first.  
+        var url =  'https://nsi-dev.sec.usace.army.mil/nsiapi/structure/11357491'
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url);
+        xhr.onload = function() {
+          if (xhr.status === 200) {
+            let resp = xhr.responseText
+            var obj = JSON.parse(resp)
+            console.log(resp)
+            console.log(obj.properties)
+            dispatch({
+              type: SURVEY_TRAY_INITALIZE_START,
+              payload: {
+                shouldInitialize: false,
+                occupancyType: obj.properties.occtype,
+                damcat: "RESIDENTIAL",//obj.properties.st_damcat,//this has to be specified as a real value in the maps or it throws an exception because it creates the list for Occtype
+                x: obj.properties.x,
+                y: obj.properties.y,
+                found_ht: obj.properties.found_ht,
+                stories: obj.properties.num_story,
+                sq_ft: obj.properties.sqft,
+              }
+            })
+          } else {
+            console.log("ERROR LOADING FD_ID 11357491")
+          }
         }
-      })
+        xhr.send();
     },
     doModifyGenericVal:(input, targetField, validator) =>({dispatch, store}) =>{
       if(validator(input)){
