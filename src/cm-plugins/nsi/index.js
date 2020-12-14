@@ -8,13 +8,13 @@ import dlButton from './cm3-nsi-download'
     components:[]
   }*/
 const cm3NsiDownloadPlugin={
-    pluginName: 'NSI Download Plugin',
+    pluginName: 'NSIDownloadPlugin',
     enabled: true,
     bundle: nsiDlbundle,
     components:[{
       component: dlButton,
       region: 'basic-toolbar',
-      sortOrder: 8
+      sortOrder: 201
     }]
   }
 

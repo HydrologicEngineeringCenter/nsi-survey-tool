@@ -16,7 +16,7 @@ export default {
       }
     };
   },
-  doNsiDownload: () => ({ dispatch, store }) => {
+  doNsiDownload:() =>({ dispatch, store }) => {
     console.log("Clickty Clack")
     dispatch({
       type: "NSI_DOWNLOAD_STARTED",
@@ -25,4 +25,7 @@ export default {
       },
     });
   },
+  selectFips: (state) =>{
+    return state.nsiDownload.fips
+  }
 };
