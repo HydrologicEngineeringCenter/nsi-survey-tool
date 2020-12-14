@@ -1,2 +1,2 @@
 # nsi-survey-tool
-a tool to survey nsi's
+a tool to survey nsis
