@@ -15,6 +15,5 @@ const NSIDownloadButton = ({doNsiDownload}) =>{
 };
 export default connect(
     'doNsiDownload',
-    'selectFips',
     NSIDownloadButton
 );
