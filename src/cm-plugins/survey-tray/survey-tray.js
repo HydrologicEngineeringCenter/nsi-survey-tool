@@ -1,4 +1,4 @@
-//import mapLayersBundle from '@corpsmap/corpsmap/src/application-bundles/map-layers-bundle';
+
 import React from 'react';
 import { connect } from 'redux-bundler-react';
 import SurveyDropDown from "./SurveyDropDown.js"

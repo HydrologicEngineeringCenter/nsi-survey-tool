@@ -12,6 +12,7 @@ const SURVEY_TRAY_VAL_ENTERED='SURVEY_TRAY_VAL_ENTERED';
 
 export default{
     name:'surveytraybundle',
+
     getReducer: () => {
       const initialData = {
         shouldInitialize: false,
@@ -40,6 +41,8 @@ export default{
           case SURVEY_TRAY_DAMCAT_SELECTED:
           case SURVEY_TRAY_VAL_ENTERED:
             return Object.assign({}, state, payload);
+          case "MEASURE_DRAW_STOPPED":
+            return Object.assign({}, state, {sq_ft: 1234} )
           case MAP_INITIALIZED:
             return Object.assign({}, state, {
               shouldInitialize: true
@@ -48,6 +51,10 @@ export default{
             return state;
         }
       }
+    },
+    doSmoosh: () =>({dispatch, store}) =>{
+      const output =  store.selectMeasureOutput
+      return {sqft: output.val}
     },
     doSurveyTrayInitialize: () => ({ dispatch, store, anonGet }) => {
       dispatch({
