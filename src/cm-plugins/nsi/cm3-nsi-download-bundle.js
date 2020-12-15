@@ -25,9 +25,9 @@ export default {
       },
     });*/
     var p = store.selectDrawPolygonsLayer()
-    console.log(p.getSource().getExtent())//not in the right units
+    console.log(p.getSource().getExtent())//not in the right projection //cm is in espg 3857
     var bbox =`${p.getSource().getExtent()[0]},${p.getSource().getExtent()[1]},${p.getSource().getExtent()[0]},${p.getSource().getExtent()[3]},${p.getSource().getExtent()[2]},${p.getSource().getExtent()[3]},${p.getSource().getExtent()[2]},${p.getSource().getExtent()[1]},${p.getSource().getExtent()[0]},${p.getSource().getExtent()[1]}`
-    console.log(bbox)//not in the right units.
+    console.log(bbox)//not in the right projection or order, needs to be lon,lat (y,x)
     dispatch({
       type: "NSI_DOWNLOAD_STARTED",
       payload: {

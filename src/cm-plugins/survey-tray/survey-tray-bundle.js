@@ -1,3 +1,6 @@
+import {Point} from 'ol/geom';
+import {fromLonLat, transform} from 'ol/proj'
+import Projection from 'ol/proj/Projection';
 const SURVEY_TRAY_INITALIZE_START='SURVEY_TRAY_INITALIZE_START';
 const SURVEY_TRAY_INITALIZE_END='SURVEY_TRAY_INITALIZE_END';
 //const SURVEY_TRAY_POINT_SUBMITTED='SURVEY_TRAY_POINT_SUBMITTED';
@@ -144,6 +147,17 @@ export default{
             let resp = xhr.responseText
             var obj = JSON.parse(resp)
             //console.log(resp)
+            //zoom to the structure
+            /*why is this not working????
+            var map = store.selectMap()
+            var view = map.getView()
+            console.log(view.getProjection())
+            var src = new Projection("EPSG:4326");
+            var point = fromLonLat( obj.properties.y ,obj.properties.x )
+            var p2 = transform(point, src, view.getProjection());//@corpsmap is in espg:3857
+            view.fit(point,{padding: [170, 50, 30, 150], minResolution: 50})
+            */
+            //end zoom to the structure
             //console.log(obj.properties)
             dispatch({
               type: SURVEY_TRAY_INITALIZE_START,
