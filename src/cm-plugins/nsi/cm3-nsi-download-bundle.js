@@ -18,10 +18,26 @@ export default {
   },
   doNsiDownload:() =>({ dispatch, store }) => {
     console.log("Clickty Clack")
+    /*dispatch({
+      type: "DRAWPOLYGONS_ACTIVATE",
+      payload: {
+        active: true,
+      },
+    });*/
+    var p = store.selectDrawPolygonsLayer()
+    console.log(p.getSource().getExtent())//not in the right units
+    var bbox =`${p.getSource().getExtent()[0]},${p.getSource().getExtent()[1]},${p.getSource().getExtent()[0]},${p.getSource().getExtent()[3]},${p.getSource().getExtent()[2]},${p.getSource().getExtent()[3]},${p.getSource().getExtent()[2]},${p.getSource().getExtent()[1]},${p.getSource().getExtent()[0]},${p.getSource().getExtent()[1]}`
+    console.log(bbox)//not in the right units.
     dispatch({
       type: "NSI_DOWNLOAD_STARTED",
       payload: {
         fips: '15002',
+      },
+    });
+    dispatch({
+      type: "BASIC_TOOL_DEACTIVATE",
+      payload: {
+        activeTool: null,
       },
     });
   },
