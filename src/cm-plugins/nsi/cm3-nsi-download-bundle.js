@@ -1,10 +1,9 @@
-
-
 export default {
   name: "nsiDownload",
   getReducer: () => {
     const initialData = {
       fips: '15005',
+      bbox: "empty"
     };
 
     return (state = initialData, { type, payload }) => {

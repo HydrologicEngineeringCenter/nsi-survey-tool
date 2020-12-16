@@ -11,7 +11,7 @@ class SurveyTray extends React.Component {
 //need a quick access button to define the occupancy type names to technical discriptions
 
   render(){
-      const {occupancyType, damCat,doModifyStructure,doModifyGenericDropDown,x,foundHt,numStory,sqFt,doModifyGenericVal,foundType,
+      const {occupancyType, damCat,doModifyStructure,doModifyGenericDropDown, doModifyXY,xval,x_isInvalid,yval,y_isInvalid,foundHt,numStory,sqFt,doModifyGenericVal,foundType,
         rsmeansType,quality,constType,garage,roofStyle,foundHt_isInvalid,numStory_isInvalid,sqFt_isInvalid} = this.props
     const occs = {
         "Unknown": ['RES1','RES2','RES3','RES4','RES5','RES6','IND1','IND2','IND3','IND4','IND5','IND6','COM1','COM2','COM3','COM4','COM5','COM6','COM7','COM8','COM9','AGR1','GOV1','GOV2','REL1','EDU1','EDU2'],
@@ -165,19 +165,31 @@ class SurveyTray extends React.Component {
                     />                    
                 </div>                     
                 <div className="input-group mb-3">
-                    <div className="input-group-prepend">
-                        <button className="btn btn-outline-secondary" type="button" aria-haspopup="true" aria-expanded="false">Update Location</button>
-                        <div className="input-group-prepend">
-                            <span className="input-group-text">x</span>
-                            <input type="text" className="form-control" value={x}/>
+                        <div >
+                            <SurveyTxtBox 
+                                fieldName="X"
+                                event={doModifyGenericVal}
+                                targetField='x'
+                                target={xval}
+                                isInValid = {x_isInvalid}
+                                validator={(val) =>{return !isNaN(val)}}
+                            />
                         </div>
-                        <div className="input-group-prepend">
-                            <span className="input-group-text">y</span>
-                            <input type="text" className="form-control"/>
+                        <div>
+                        <SurveyTxtBox 
+                                fieldName="Y"
+                                event={doModifyGenericVal}
+                                targetField='y'
+                                target={yval}
+                                isInValid = {y_isInvalid}
+                                validator={(val) =>{return !isNaN(val)}}
+                            />
                         </div>
                     </div>
                 </div>
-
+                <div>
+                    <button className="btn btn-outline-secondary" type="button" aria-haspopup="true" aria-expanded="false" onClick={() => doModifyXY()}>Update Location</button>
+                </div>    
                 <div>
                     <SurveyTxtBox 
                     fieldName="Number of Stories"
@@ -213,7 +225,6 @@ class SurveyTray extends React.Component {
                 <div className="input-group mb-3">
                     <button type="button" onClick={() => doModifyStructure()}>Next Structure</button>
                 </div>
-            </div>
         </nav>
     )
   }
@@ -222,10 +233,14 @@ export default connect(
     'doModifyStructure',
     'doModifyGenericVal',
     'doModifyGenericDropDown',
+    'doModifyXY',
     'selectOccupancyType',
     'selectDamCat',
     'selectFoundHt',
-    'selectX',
+    'selectYval',
+    'selectY_isInvalid',
+    'selectXval',
+    'selectX_isInvalid',
     'selectNumStory',
     'selectNumStory_isInvalid',
     'selectSqFt',

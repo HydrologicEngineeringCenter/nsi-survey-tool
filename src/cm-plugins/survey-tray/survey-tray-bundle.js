@@ -4,7 +4,9 @@ import Projection from 'ol/proj/Projection';
 const SURVEY_TRAY_INITALIZE_START='SURVEY_TRAY_INITALIZE_START';
 const SURVEY_TRAY_INITALIZE_END='SURVEY_TRAY_INITALIZE_END';
 //const SURVEY_TRAY_POINT_SUBMITTED='SURVEY_TRAY_POINT_SUBMITTED';
-//const SURVEY_TRAY_UPDATE_XY='SURVEY_TRAY_UPDATE_XY';
+const SURVEY_TRAY_UPDATE_XY_STARTED='SURVEY_TRAY_UPDATE_XY_STARTED';
+const SURVEY_TRAY_UPDATE_XY_UPDATED='SURVEY_TRAY_UPDATE_XY_UPDATED';
+const SURVEY_TRAY_UPDATE_XY_FINISHED='SURVEY_TRAY_UPDATE_XY_FINISHED';
 const SURVEY_TRAY_OCCUPANCY_TYPE_SELECTED='SURVEY_TRAY_OCCUPANCY_TYPE_SELECTED';
 const SURVEY_TRAY_DAMCAT_SELECTED='SURVEY_TRAY_DAMCAT_SELECTED';
 const MAP_INITIALIZED='MAP_INITIALIZED';
@@ -19,14 +21,20 @@ export default{
     getReducer: () => {
       const initialData = {
         shouldInitialize: false,
-        occupancyType: "",
+        occupancyType: "RES1",
         damcat:"Unknown",
+        xy_updating: false,
         x: 0.0,
         y: 0.0,
+        x_invalid: false,
+        y_invalid: false,
         found_ht: 0.0,
+        found_ht_invalid: false,
         stories: 0,
+        stories_invalid: false,
         sq_ft: 0.0,
-        found_type:"",
+        sq_ft_invalid: false,
+        found_type: "",
         rsmeans_type:"",
         quality:"",
         const_type:"",
@@ -43,13 +51,10 @@ export default{
           case SURVEY_TRAY_SQFT_ENTERED:
           case SURVEY_TRAY_DAMCAT_SELECTED:
           case SURVEY_TRAY_VAL_ENTERED:
+          case SURVEY_TRAY_UPDATE_XY_STARTED:
+          case SURVEY_TRAY_UPDATE_XY_UPDATED:
+          case SURVEY_TRAY_UPDATE_XY_FINISHED:
             return Object.assign({}, state, payload);
-          case "MEASURE_DRAW_STOPPED":
-            return Object.assign({}, state, {sq_ft: 1234} )
-          case MAP_INITIALIZED:
-            return Object.assign({}, state, {
-              shouldInitialize: true
-            })
           default:
             return state;
         }
@@ -66,8 +71,11 @@ export default{
           shouldInitialize: false,
           occupancyType: "RES1",
           damcat:"Unknown",
+          xy_updating: false,
           x: 0.0,
           y: 0.0,
+          x_invalid: false,
+          y_invalid: false,
           found_ht: 0.0,
           found_ht_invalid: false,
           stories: 0,
@@ -139,20 +147,20 @@ export default{
       //commit changes to database
       // select a random structure
       // update to the next structure 
-        var url =  'https://nsi-dev.sec.usace.army.mil/nsiapi/structure/11357491'
-        var xhr = new XMLHttpRequest();
+        let url =  'https://nsi-dev.sec.usace.army.mil/nsiapi/structure/11357491'
+        let xhr = new XMLHttpRequest();
         xhr.open('GET', url);
         xhr.onload = function() {
           if (xhr.status === 200) {
             let resp = xhr.responseText
-            var obj = JSON.parse(resp)
+            let obj = JSON.parse(resp)
             //console.log(resp)
             //zoom to the structure
-            var map = store.selectMap()
-            var view = map.getView()
-            var coord = [obj.properties.x ,obj.properties.y]
-            var coord3857 = fromLonLat( coord )//@corpsmap is in espg:3857 the default.
-            var point = new Point(coord3857)
+            let map = store.selectMap()
+            let view = map.getView()
+            let coord = [obj.properties.x ,obj.properties.y]
+            let coord3857 = fromLonLat( coord )//@corpsmap is in espg:3857 the default.
+            let point = new Point(coord3857)
             view.fit(point,{ minResolution: 1})
             //end zoom to the structure
             dispatch({
@@ -163,6 +171,7 @@ export default{
                 damcat: "RESIDENTIAL",//obj.properties.st_damcat,//this has to be specified as a real value in the maps or it throws an exception because it creates the list for Occtype
                 x: obj.properties.x,
                 y: obj.properties.y,
+                xy_updating: false,
                 found_ht: obj.properties.found_ht,
                 stories: obj.properties.num_story,
                 sq_ft: obj.properties.sqft,
@@ -175,12 +184,47 @@ export default{
         xhr.send();
     },
     doModifyXY:() =>({dispatch, store}) =>{
+      if(store.selectXY_Updating()){
+        dispatch({
+          type: SURVEY_TRAY_UPDATE_XY_FINISHED,
+          payload:{
+            xy_updating: false
+          }
+        })
+        var map = store.selectMap()
+        //deregister the click event.
+        /*map.on('singleclick', function (evt) {
+          // convert coordinate to EPSG-4326
+          let coord = transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
+          dispatch({
+            type: SURVEY_TRAY_UPDATE_XY_UPDATING,
+            payload: {
+              x: coord[0],
+              y: coord[1],
+            }
+          })
+      });*/ 
+      }else{
+      dispatch({
+        type: SURVEY_TRAY_UPDATE_XY_STARTED,
+        payload:{
+          xy_updating: true
+        }
+      })
       var map = store.selectMap()
       map.on('singleclick', function (evt) {
-        console.log(evt.coordinate);
         // convert coordinate to EPSG-4326
-        console.log(ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326'));
-    });
+        let coord = transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
+        dispatch({
+          type: SURVEY_TRAY_UPDATE_XY_UPDATED,
+          payload: {
+            x: coord[0],
+            y: coord[1],
+          }
+        })
+    });        
+      }
+
     },
     doModifyGenericVal:(input, targetField, validator) =>({dispatch, store}) =>{
       if (targetField==="sq_ft"){
@@ -240,8 +284,20 @@ export default{
     selectFoundHt_isInvalid: (state) =>{
       return state.surveytraybundle.found_ht_invalid
     },
-    selectX: (state)=>{
+    selectXval: (state)=>{
       return state.surveytraybundle.x
+    },
+    selectX_isInvalid: (state)=>{
+      return state.surveytraybundle.x_invalid
+    },
+    selectYval: (state)=>{
+      return state.surveytraybundle.y
+    },
+    selectY_isInvalid: (state)=>{
+      return state.surveytraybundle.y_invalid
+    },
+    selectXY_Updating: (state)=>{
+      return state.surveytraybundle.xy_updating
     },
     selectNumStory: (state)=>{
       return state.surveytraybundle.stories
