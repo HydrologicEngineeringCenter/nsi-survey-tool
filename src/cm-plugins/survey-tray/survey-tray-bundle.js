@@ -148,17 +148,16 @@ export default{
             var obj = JSON.parse(resp)
             //console.log(resp)
             //zoom to the structure
-            /*why is this not working????
             var map = store.selectMap()
             var view = map.getView()
-            console.log(view.getProjection())
-            var src = new Projection("EPSG:4326");
-            var point = fromLonLat( obj.properties.y ,obj.properties.x )
-            var p2 = transform(point, src, view.getProjection());//@corpsmap is in espg:3857
-            view.fit(point,{padding: [170, 50, 30, 150], minResolution: 50})
-            */
+            var coord = [obj.properties.x ,obj.properties.y]
+            console.log(coord)
+            var point = fromLonLat( coord )//@corpsmap is in espg:3857 the default.
+            console.log(point)
+            var p3 = new Point(point)
+            console.log(p3)
+            view.fit(p3,{ minResolution: 1})
             //end zoom to the structure
-            //console.log(obj.properties)
             dispatch({
               type: SURVEY_TRAY_INITALIZE_START,
               payload: {
@@ -177,6 +176,14 @@ export default{
           }
         }
         xhr.send();
+    },
+    doModifyXY:() =>({dispatch, store}) =>{
+      var map = store.selectMap()
+      map.on('singleclick', function (evt) {
+        console.log(evt.coordinate);
+        // convert coordinate to EPSG-4326
+        console.log(ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326'));
+    });
     },
     doModifyGenericVal:(input, targetField, validator) =>({dispatch, store}) =>{
       if (targetField==="sq_ft"){
