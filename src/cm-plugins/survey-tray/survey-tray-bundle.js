@@ -151,12 +151,9 @@ export default{
             var map = store.selectMap()
             var view = map.getView()
             var coord = [obj.properties.x ,obj.properties.y]
-            console.log(coord)
-            var point = fromLonLat( coord )//@corpsmap is in espg:3857 the default.
-            console.log(point)
-            var p3 = new Point(point)
-            console.log(p3)
-            view.fit(p3,{ minResolution: 1})
+            var coord3857 = fromLonLat( coord )//@corpsmap is in espg:3857 the default.
+            var point = new Point(coord3857)
+            view.fit(point,{ minResolution: 1})
             //end zoom to the structure
             dispatch({
               type: SURVEY_TRAY_INITALIZE_START,
