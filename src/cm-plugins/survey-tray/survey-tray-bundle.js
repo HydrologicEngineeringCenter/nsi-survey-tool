@@ -181,11 +181,10 @@ export default{
     doModifyGenericVal:(input, targetField, validator) =>({dispatch, store}) =>{
       if (targetField==="sq_ft"){
         if(!validator(input)){
-          //check if it is ft2 or mi2
           var units = input.substring(input.length - 4,input.length)
           input = input.substring(0,input.length - 4)
-          if (units===" mi²"){
-            input = input*2.788e+7
+          if (units===" mi²"){//check if it is ft2 or mi2
+            input = input*2.788e+7//convert
           }
         }
       }
