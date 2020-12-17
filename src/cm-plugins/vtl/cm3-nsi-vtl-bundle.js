@@ -148,8 +148,8 @@ fill:fPub,
     visible: true,
     zoomTo: false,
   }) */
-  map.on('click',function(evt) {
-      var f = map.getFeaturesAtPixel(evt.pixel)
+  //map.on('click',function(evt) {
+      /*var f = map.getFeaturesAtPixel(evt.pixel)
       if (f.length === 0) {
         //no feature?
       } else {
@@ -168,6 +168,6 @@ fill:fPub,
           }         
         }
 
-      }
-  })
+      }*/
+  //})
 };

@@ -1,9 +1,5 @@
 import React from 'react';
 function USGDisclaimer(){
-    /*const[showDisclaimer,setShowDisclaimer] = useState(true);
-    const handleClose=()=>{
-        setShowDisclaimer(false);
-    } */
     return(
         <div className='modal' role='dialog' id="myModal">
             <div className="modal-dialog" role="document">
@@ -38,7 +34,7 @@ function USGDisclaimer(){
                 </p>
             </div>
             <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" data-dismiss="modal"><a href="/main">I Agree</a></button>
+                <button type="button" className="btn btn-secondary" data-dismiss="modal">I Agree</button>
             </div>
             </div>
             </div>

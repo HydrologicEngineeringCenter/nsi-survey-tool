@@ -139,12 +139,27 @@ export default{
           }
         })
       }
+    },doStreetViewByCoords:(coord)=>({dispatch,store}) =>{
+      var url = "http://maps.google.com/maps?q=" + coord[1] + "," + coord[0];
+      //console.log(feature.getProperties());
+      window.open(url, "_blank");
+    }
+    ,doZoomToCoords:(coord)=>({dispatch,store}) =>{
+      let map = store.selectMap()
+      let view = map.getView()
+      let coord3857 = fromLonLat( coord )//@corpsmap is in espg:3857 the default.
+      let point = new Point(coord3857)
+      view.fit(point,{ minResolution: 1})
     },
-    doModifyStructure: () =>({dispatch, store}) =>{    
+    doModifyStructure: (commit) =>({dispatch, store}) =>{    
 
       //check for validity first. 
 
-      //commit changes to database
+      
+      if (commit){
+        //commit changes to database
+        console.log("Committing to database")
+      }
       // select a random structure
       // update to the next structure 
         let url =  'https://nsi-dev.sec.usace.army.mil/nsiapi/structure/11357491'
@@ -156,12 +171,8 @@ export default{
             let obj = JSON.parse(resp)
             //console.log(resp)
             //zoom to the structure
-            let map = store.selectMap()
-            let view = map.getView()
             let coord = [obj.properties.x ,obj.properties.y]
-            let coord3857 = fromLonLat( coord )//@corpsmap is in espg:3857 the default.
-            let point = new Point(coord3857)
-            view.fit(point,{ minResolution: 1})
+            store.doZoomToCoords(coord)
             //end zoom to the structure
             dispatch({
               type: SURVEY_TRAY_INITALIZE_START,

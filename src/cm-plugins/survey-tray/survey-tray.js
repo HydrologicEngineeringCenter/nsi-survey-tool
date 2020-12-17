@@ -11,7 +11,7 @@ class SurveyTray extends React.Component {
 //need a quick access button to define the occupancy type names to technical discriptions
 
   render(){
-      const {occupancyType, damCat,doModifyStructure,doModifyGenericDropDown, doModifyXY,xval,x_isInvalid,yval,y_isInvalid,foundHt,numStory,sqFt,doModifyGenericVal,foundType,
+      const {occupancyType, damCat,doModifyStructure,doModifyGenericDropDown, doModifyXY, doZoomToCoords,doStreetViewByCoords,xval,x_isInvalid,yval,y_isInvalid,foundHt,numStory,sqFt,doModifyGenericVal,foundType,
         rsmeansType,quality,constType,garage,roofStyle,foundHt_isInvalid,numStory_isInvalid,sqFt_isInvalid} = this.props
     const occs = {
         "Unknown": ['RES1','RES2','RES3','RES4','RES5','RES6','IND1','IND2','IND3','IND4','IND5','IND6','COM1','COM2','COM3','COM4','COM5','COM6','COM7','COM8','COM9','AGR1','GOV1','GOV2','REL1','EDU1','EDU2'],
@@ -188,6 +188,8 @@ class SurveyTray extends React.Component {
                     </div>
                     <div>
                         <button className="btn btn-outline-secondary" type="button" aria-haspopup="true" aria-expanded="false" onClick={() => doModifyXY()}>Update Location</button>
+                        <button className="btn btn-outline-secondary" type="button" aria-haspopup="true" aria-expanded="false" onClick={() => doZoomToCoords([xval,yval])}>Zoom To Location</button>
+                        <button className="btn btn-outline-secondary" type="button" aria-haspopup="true" aria-expanded="false" onClick={() => doStreetViewByCoords([xval,yval])}>Street View</button>
                     </div> 
                 </div>
     
@@ -211,20 +213,9 @@ class SurveyTray extends React.Component {
                     validator={(val) =>{return !isNaN(val)}}
                     />
                 </div>
-                {/* <div className="input-group mb-3">
-                    <div className="input-group-prepend">
-                        <span className="input-group-text">Number of Stories</span>
-                    </div>
-                    <input type="text" className="form-control"/>
-                </div>
                 <div className="input-group mb-3">
-                    <div className="input-group-prepend">
-                        <button className="input-group-text" type="button" aria-haspopup="true" aria-expanded="false">Occupied Square Feet</button>
-                    </div>
-                    <input type="text" className="form-control"/>
-                </div> */}
-                <div className="input-group mb-3">
-                    <button type="button" onClick={() => doModifyStructure()}>Next Structure</button>
+                    <button type="button" onClick={() => doModifyStructure(true)}>Next Structure</button>
+                    <button type="button" onClick={() => doModifyStructure(false)}>Skip Structure</button>
                 </div>
         </nav>
     )
@@ -235,6 +226,8 @@ export default connect(
     'doModifyGenericVal',
     'doModifyGenericDropDown',
     'doModifyXY',
+    'doZoomToCoords',
+    'doStreetViewByCoords',
     'selectOccupancyType',
     'selectDamCat',
     'selectFoundHt',
