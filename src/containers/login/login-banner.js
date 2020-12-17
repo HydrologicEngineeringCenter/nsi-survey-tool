@@ -12,7 +12,7 @@ class LoginBanner extends React.Component{
                     <a href = "/"><img src={mapper} alt="NSI LOGO" style={{width:'45px'}}/></a>
                     <a className="navbar-brand" href="/" style={{paddingLeft:"15px", fontSize:'25px'}}><b>NSI Survey Tool</b></a>           
                 </div>
-                <button className="btn btn-secondary mr-2" onClick={ doAuthFetchTokens } disabled ={ authIsLoggedIn} >
+                <button className="btn btn-secondary mr-2" data-toggle="modal" data-target="#myModal" onClick={ doAuthFetchTokens } disabled ={ authIsLoggedIn} >
                     {(authIsLoggedIn)?
                         ("My Account"):
                         ("Sign In")
