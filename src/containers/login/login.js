@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'redux-bundler-react';
-import Banner from '../main/banner'
+import LoginBanner from './login-banner'
 
 class LoginPage extends React.Component {
   render(){
     return (
       <div >
-        <Banner/>
+        <LoginBanner/>
           <div className="container">
             <div>
               <h2>Welcome to the NSI Survey Tool</h2>              

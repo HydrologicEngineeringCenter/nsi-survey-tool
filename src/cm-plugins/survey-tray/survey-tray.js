@@ -186,10 +186,11 @@ class SurveyTray extends React.Component {
                             />
                         </div>
                     </div>
+                    <div>
+                        <button className="btn btn-outline-secondary" type="button" aria-haspopup="true" aria-expanded="false" onClick={() => doModifyXY()}>Update Location</button>
+                    </div> 
                 </div>
-                <div>
-                    <button className="btn btn-outline-secondary" type="button" aria-haspopup="true" aria-expanded="false" onClick={() => doModifyXY()}>Update Location</button>
-                </div>    
+    
                 <div>
                     <SurveyTxtBox 
                     fieldName="Number of Stories"
