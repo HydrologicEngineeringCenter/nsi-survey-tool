@@ -83,7 +83,7 @@ class SurveyTray extends React.Component {
                         vals={damcats}
                         event={doModifyGenericDropDown}
                         target={damCat}
-                        targetField='damcat'
+                        targetField='damcat'                        
                         />                    
                     </div>
                     <div className="input-group mb-3">

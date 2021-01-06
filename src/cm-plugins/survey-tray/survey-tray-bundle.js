@@ -15,6 +15,37 @@ const SURVEY_TRAY_NUMSTORY_ENTERED='SURVEY_TRAY_NUMSTORY_ENTERED';
 const SURVEY_TRAY_SQFT_ENTERED='SURVEY_TRAY_SQFT_ENTERED';
 const SURVEY_TRAY_VAL_ENTERED='SURVEY_TRAY_VAL_ENTERED';
 
+const damCatMap = {
+  "RES": "RESIDENTIAL",
+  "COM": "COMMERCIAL",
+  "IND": "INDUSTRIAL",
+  "PUB": "PUBLIC",
+  "RESIDENTIAL": "RES",
+  "COMMERCIAL": "COM",
+  "INDUSTRIAL": "IND",
+  "PUBLIC": "PUB"
+}
+const occMapRead = (occ)=>{
+  return left(occ, 4); 
+}
+const occMapWrite = ()=>{
+  switch(occupancyType){
+    case "RES1": 
+    const stories = max(min(floor(stories), 3),1)
+     switch(found_type){
+       case "BASEMENT":         
+        return occupancyType + "-" + stories + "SWB";      
+       default: 
+        return occupancyType + "-" + stories + "SNB";
+        // Split Level???
+     };
+    case "RES3":
+      return occupancyType; //A,B,C,D,E,F???
+    default:
+      return occupancyType;
+  }
+}
+
 export default{
     name:'surveytraybundle',
 
@@ -178,8 +209,8 @@ export default{
               type: SURVEY_TRAY_INITALIZE_START,
               payload: {
                 shouldInitialize: false,
-                occupancyType: obj.properties.occtype,
-                damcat: "RESIDENTIAL",//obj.properties.st_damcat,//this has to be specified as a real value in the maps or it throws an exception because it creates the list for Occtype
+                occupancyType: occMapRead(obj.properties.occtype),
+                damcat: damCatMap[obj.properties.damcat],
                 x: obj.properties.x,
                 y: obj.properties.y,
                 xy_updating: false,
