@@ -5,12 +5,13 @@ const SurveyDropDown = (props) => {
     const vals = props.vals
     const event = props.event
     const target = props.target    
-    const targetField = props.targetField       
+    const targetField = props.targetField     
+    const stylin = props.stylin  
     return(
         <div>
-            <div style={{width: "375px", height: "24px"}}>
+            <div style={stylin}>
             <div className="input-group-prepend">
-                <button className="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >{valName}</button>
+                <button className="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style={stylin}>{valName}</button>
                 <div className="dropdown-menu" id={target}>
                 {                    
                     vals.map((item,i) => {                        
@@ -21,7 +22,7 @@ const SurveyDropDown = (props) => {
                 }   
                 </div>
              
-            <input type="text" className="form-control" aria-label="Text input with dropdown button" value={target}>                
+            <input type="text" className="form-control" aria-label="Text input with dropdown button" style={stylin} value={target}>                
             </input>
             </div>
             </div> 

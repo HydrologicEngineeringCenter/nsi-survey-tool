@@ -69,21 +69,30 @@ class SurveyTray extends React.Component {
         'FLAT',
         'GABLE'      
     ]    
+    const SuperStylin = {         
+        maxHeight:'24px', 
+        fontSize:'12px',
+        padding:'2px',       
+        maxWidth:'275px',
+        marginBottom:'-8px'
+
+    }
     return (
-        <nav id="sidebar" className="light bg-light">
+        <nav id="sidebar" className="light bg-light" style={{minWidth: '600px'}}>
             <div className="sidebar-header">
                 <h3>SURVEY INPUT DATA</h3>
             </div>
             <div className="sidebar-content">
-                <fieldset style={{margin:'8px', border: '1px solid silver', padding:'8px', borderradius: '4px'}}>
-                    <legend style={{padding:'4px'}}>Classification</legend>
+                <fieldset style={{margin:'8px', border: '1px solid silver', padding:'4px', borderradius: '4px'}}>
+                    <legend style={{margin:'0px', fontSize:'15px', border: 'none'}}>Classification</legend>
                     <div className="input-group mb-3">
                         <SurveyDropDown 
                         ddName="Damage Category"
                         vals={damcats}
                         event={doModifyGenericDropDown}
                         target={damCat}
-                        targetField='damcat'                        
+                        targetField='damcat'
+                        stylin={SuperStylin}                        
                         />                    
                     </div>
                     <div className="input-group mb-3">
@@ -93,11 +102,12 @@ class SurveyTray extends React.Component {
                         event={doModifyGenericDropDown}
                         target={occupancyType}
                         targetField='occupancyType'
+                        stylin={SuperStylin}
                         />                    
                     </div>                      
                 </fieldset>
-                <fieldset style={{margin:'8px', border: '1px solid silver', padding:'8px', borderradius: '4px'}}>
-                    <legend style={{padding:'2px'}}>Foundation Information</legend>
+                <fieldset style={{margin:'8px', border: '1px solid silver', padding:'4px', borderradius: '4px'}}>
+                    <legend style={{margin:'0px', fontSize:'15px', border: 'none'}}>Foundation Information</legend>
                     <div className="input-group mb-3">
                         <SurveyDropDown 
                         ddName="Foundation Type"
@@ -105,6 +115,7 @@ class SurveyTray extends React.Component {
                         event={doModifyGenericDropDown}
                         target={foundType}
                         targetField='found_type'
+                        stylin={SuperStylin}
                         />                    
                     </div>   
                     <div>
@@ -115,6 +126,7 @@ class SurveyTray extends React.Component {
                         targetField='found_ht'
                         isInValid = {foundHt_isInvalid}
                         validator={(val) =>{return !isNaN(val)}}
+                        stylin={SuperStylin} 
                         />
                     </div>                    
                 </fieldset>
@@ -126,6 +138,7 @@ class SurveyTray extends React.Component {
                     event={doModifyGenericDropDown}
                     target={rsmeansType}
                     targetField='rsmeans_type'
+                    stylin={SuperStylin}
                     />                    
                 </div>
                 <div className="input-group mb-3">
@@ -135,6 +148,7 @@ class SurveyTray extends React.Component {
                     event={doModifyGenericDropDown}
                     target={quality}
                     targetField='quality'
+                    stylin={SuperStylin}
                     />                    
                 </div>
                 <div className="input-group mb-3">
@@ -144,6 +158,7 @@ class SurveyTray extends React.Component {
                     event={doModifyGenericDropDown}
                     target={constType}
                     targetField='const_type'
+                    stylin={SuperStylin}
                     />                    
                 </div>
                 <div className="input-group mb-3">
@@ -153,6 +168,7 @@ class SurveyTray extends React.Component {
                     event={doModifyGenericDropDown}
                     target={garage}
                     targetField='garage'
+                    stylin={SuperStylin}
                     />                    
                 </div>
                 <div className="input-group mb-3">
@@ -162,6 +178,7 @@ class SurveyTray extends React.Component {
                     event={doModifyGenericDropDown}
                     target={roofStyle}
                     targetField='roof_style'
+                    stylin={SuperStylin}
                     />                    
                 </div>                     
                 <div className="input-group mb-3">
@@ -173,6 +190,7 @@ class SurveyTray extends React.Component {
                                 target={xval}
                                 isInValid = {x_isInvalid}
                                 validator={(val) =>{return !isNaN(val)}}
+                                stylin={SuperStylin} 
                             />
                         </div>
                         <div>
@@ -183,6 +201,7 @@ class SurveyTray extends React.Component {
                                 target={yval}
                                 isInValid = {y_isInvalid}
                                 validator={(val) =>{return !isNaN(val)}}
+                                stylin={SuperStylin} 
                             />
                         </div>
                     </div>
@@ -201,6 +220,7 @@ class SurveyTray extends React.Component {
                     target={numStory}
                     isInValid = {numStory_isInvalid}
                     validator={(val) =>{return !isNaN(val)}}
+                    stylin={SuperStylin} 
                     />
                 </div>
                 <div>
@@ -211,6 +231,7 @@ class SurveyTray extends React.Component {
                     target={sqFt}
                     isInValid = {sqFt_isInvalid}
                     validator={(val) =>{return !isNaN(val)}}
+                    stylin={SuperStylin} 
                     />
                 </div>
                 <div className="input-group mb-3">
