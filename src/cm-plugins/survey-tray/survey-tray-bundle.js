@@ -26,7 +26,7 @@ const damCatMap = {
   "PUBLIC": "PUB"
 }
 const occMapRead = (occ)=>{
-  return left(occ, 4); 
+  return occ.substring(0,4);
 }
 const occMapWrite = ()=>{
   switch(occupancyType){
@@ -208,9 +208,9 @@ export default{
             dispatch({
               type: SURVEY_TRAY_INITALIZE_START,
               payload: {
-                shouldInitialize: false,
+                shouldInitialize: false,               
+                damcat: damCatMap[obj.properties.st_damcat],
                 occupancyType: occMapRead(obj.properties.occtype),
-                damcat: damCatMap[obj.properties.damcat],
                 x: obj.properties.x,
                 y: obj.properties.y,
                 xy_updating: false,

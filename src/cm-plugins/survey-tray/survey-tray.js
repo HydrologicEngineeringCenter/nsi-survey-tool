@@ -68,54 +68,64 @@ class SurveyTray extends React.Component {
         'HIP',
         'FLAT',
         'GABLE'      
-    ]    
-    const SuperStylin = {         
-        maxHeight:'24px', 
-        fontSize:'12px',
-        padding:'2px',       
-        maxWidth:'275px',
-        marginBottom:'-8px'
-
+    ]       
+    const superStylin = {
+        borderColor: '#898989',
+       
+        maxHeight: '24px',
+        fontSize: '12px',
+        padding: '5px',
+        width: '195px',
+        marginRight: '10px',  
+        marginBottom: '5px',
+        backgroundColor: '#ffffff',
+        textAlign: 'left'
     }
+    const btnStylin = {
+        marginRight: '5px',
+        marginTop: '5px',
+        backgroundColor: '#ffffff'
+    }
+  
     return (
-        <nav id="sidebar" className="light bg-light" style={{minWidth: '600px'}}>
-            <div className="sidebar-header">
-                <h3>SURVEY INPUT DATA</h3>
+        <nav id="sidebar" className="light" style={{minWidth: '400px', width: '400px'}}>
+            <div className="sidebar-header" style={{marginLeft: '10px'}}>
+                <h5>SURVEY INPUT DATA</h5>
             </div>
             <div className="sidebar-content">
                 <fieldset style={{margin:'8px', border: '1px solid silver', padding:'4px', borderradius: '4px'}}>
                     <legend style={{margin:'0px', fontSize:'15px', border: 'none'}}>Classification</legend>
-                    <div className="input-group mb-3">
+                    <div>
                         <SurveyDropDown 
                         ddName="Damage Category"
                         vals={damcats}
                         event={doModifyGenericDropDown}
                         target={damCat}
-                        targetField='damcat'
-                        stylin={SuperStylin}                        
+                        targetField='damcat'     
+                        stylin={superStylin}                                    
                         />                    
                     </div>
-                    <div className="input-group mb-3">
+                    <div>
                         <SurveyDropDown 
                         ddName="Occupancy Class"
                         vals={occs[damCat]}
                         event={doModifyGenericDropDown}
                         target={occupancyType}
                         targetField='occupancyType'
-                        stylin={SuperStylin}
+                        stylin={superStylin}
                         />                    
                     </div>                      
                 </fieldset>
                 <fieldset style={{margin:'8px', border: '1px solid silver', padding:'4px', borderradius: '4px'}}>
                     <legend style={{margin:'0px', fontSize:'15px', border: 'none'}}>Foundation Information</legend>
-                    <div className="input-group mb-3">
+                    <div>
                         <SurveyDropDown 
                         ddName="Foundation Type"
                         vals={foundTypes}
                         event={doModifyGenericDropDown}
                         target={foundType}
                         targetField='found_type'
-                        stylin={SuperStylin}
+                        stylin={superStylin}
                         />                    
                     </div>   
                     <div>
@@ -126,119 +136,123 @@ class SurveyTray extends React.Component {
                         targetField='found_ht'
                         isInValid = {foundHt_isInvalid}
                         validator={(val) =>{return !isNaN(val)}}
-                        stylin={SuperStylin} 
+                        stylin={superStylin} 
                         />
                     </div>                    
                 </fieldset>
-
-                <div className="input-group mb-3">
-                    <SurveyDropDown 
-                    ddName="RS Means Type"
-                    vals={rsMeansTypes[damCat]}
-                    event={doModifyGenericDropDown}
-                    target={rsmeansType}
-                    targetField='rsmeans_type'
-                    stylin={SuperStylin}
-                    />                    
-                </div>
-                <div className="input-group mb-3">
-                    <SurveyDropDown 
-                    ddName="Quality"
-                    vals={Qualities}
-                    event={doModifyGenericDropDown}
-                    target={quality}
-                    targetField='quality'
-                    stylin={SuperStylin}
-                    />                    
-                </div>
-                <div className="input-group mb-3">
-                    <SurveyDropDown 
-                    ddName="Exterior Construction Type"
-                    vals={ConstTypes}
-                    event={doModifyGenericDropDown}
-                    target={constType}
-                    targetField='const_type'
-                    stylin={SuperStylin}
-                    />                    
-                </div>
-                <div className="input-group mb-3">
-                    <SurveyDropDown 
-                    ddName="Garage Type"
-                    vals={GarageTypes}
-                    event={doModifyGenericDropDown}
-                    target={garage}
-                    targetField='garage'
-                    stylin={SuperStylin}
-                    />                    
-                </div>
-                <div className="input-group mb-3">
-                    <SurveyDropDown 
-                    ddName="Roof Style"
-                    vals={RoofStyles}
-                    event={doModifyGenericDropDown}
-                    target={roofStyle}
-                    targetField='roof_style'
-                    stylin={SuperStylin}
-                    />                    
-                </div>                     
-                <div className="input-group mb-3">
-                        <div >
-                            <SurveyTxtBox 
-                                fieldName="X"
-                                event={doModifyGenericVal}
-                                targetField='x'
-                                target={xval}
-                                isInValid = {x_isInvalid}
-                                validator={(val) =>{return !isNaN(val)}}
-                                stylin={SuperStylin} 
-                            />
-                        </div>
-                        <div>
-                        <SurveyTxtBox 
-                                fieldName="Y"
-                                event={doModifyGenericVal}
-                                targetField='y'
-                                target={yval}
-                                isInValid = {y_isInvalid}
-                                validator={(val) =>{return !isNaN(val)}}
-                                stylin={SuperStylin} 
-                            />
-                        </div>
+                <fieldset style={{marginLeft: '13px'}}>
+                    <div>
+                        <SurveyDropDown 
+                        ddName="RS Means Type"
+                        vals={rsMeansTypes[damCat]}
+                        event={doModifyGenericDropDown}
+                        target={rsmeansType}
+                        targetField='rsmeans_type'
+                        stylin={superStylin}
+                        />                    
                     </div>
                     <div>
-                        <button className="btn btn-outline-secondary" type="button" aria-haspopup="true" aria-expanded="false" onClick={() => doModifyXY()}>Update Location</button>
-                        <button className="btn btn-outline-secondary" type="button" aria-haspopup="true" aria-expanded="false" onClick={() => doZoomToCoords([xval,yval])}>Zoom To Location</button>
-                        <button className="btn btn-outline-secondary" type="button" aria-haspopup="true" aria-expanded="false" onClick={() => doStreetViewByCoords([xval,yval])}>Street View</button>
+                        <SurveyDropDown 
+                        ddName="Quality"
+                        vals={Qualities}
+                        event={doModifyGenericDropDown}
+                        target={quality}
+                        targetField='quality'
+                        stylin={superStylin}
+                        />                    
+                    </div>
+                    <div >
+                        <SurveyDropDown 
+                        ddName="Exterior Construction Type"
+                        vals={ConstTypes}
+                        event={doModifyGenericDropDown}
+                        target={constType}
+                        targetField='const_type'
+                        stylin={superStylin}
+                        />                    
+                    </div>
+                    <div >
+                        <SurveyDropDown 
+                        ddName="Garage Type"
+                        vals={GarageTypes}
+                        event={doModifyGenericDropDown}
+                        target={garage}
+                        targetField='garage'
+                        stylin={superStylin}
+                        />                    
+                    </div>
+                    <div >
+                        <SurveyDropDown 
+                        ddName="Roof Style"
+                        vals={RoofStyles}
+                        event={doModifyGenericDropDown}
+                        target={roofStyle}
+                        targetField='roof_style'
+                        stylin={superStylin}
+                        />                    
+                    </div>          
+                    <div>
+                        <SurveyTxtBox 
+                        fieldName="Number of Stories"
+                        event={doModifyGenericVal}
+                        targetField='stories'
+                        target={numStory}
+                        isInValid = {numStory_isInvalid}
+                        validator={(val) =>{return !isNaN(val)}}
+                        stylin={superStylin} 
+                        />
+                    </div>
+                    <div>
+                        <SurveyTxtBox 
+                        fieldName="Occupied Square Feet"
+                        event={doModifyGenericVal}
+                        targetField='sq_ft'
+                        target={sqFt}
+                        isInValid = {sqFt_isInvalid}
+                        validator={(val) =>{return !isNaN(val)}}
+                        stylin={superStylin} 
+                        />
+                    </div>       
+                </fieldset>  
+                <fieldset style={{margin:'8px', border: '1px solid silver', padding:'4px', borderradius: '4px'}}>
+                    <legend style={{margin:'0px', fontSize:'15px', border: 'none'}}>Location Information</legend>                
+                    <div >
+                        <SurveyTxtBox 
+                            fieldName="X"
+                            event={doModifyGenericVal}
+                            targetField='x'
+                            target={xval}
+                            isInValid = {x_isInvalid}
+                            validator={(val) =>{return !isNaN(val)}}
+                            stylin={superStylin} 
+                        />
+                    </div>
+                    <div>
+                    <SurveyTxtBox 
+                            fieldName="Y"
+                            event={doModifyGenericVal}
+                            targetField='y'
+                            target={yval}
+                            isInValid = {y_isInvalid}
+                            validator={(val) =>{return !isNaN(val)}}
+                            stylin={superStylin} 
+                        />
+                    </div>               
+                    <div>
+                        <button type="button" aria-haspopup="true" aria-expanded="false" style={btnStylin} onClick={() => doModifyXY()}>Update Location</button>
+                        <button type="button" aria-haspopup="true" aria-expanded="false" style={btnStylin} onClick={() => doZoomToCoords([xval,yval])}>Zoom To Location</button>
+                        <button type="button" aria-haspopup="true" aria-expanded="false" style={btnStylin} onClick={() => doStreetViewByCoords([xval,yval])}>Street View</button>
                     </div> 
-                </div>
-    
+                </fieldset>    
+                <fieldset style={{marginLeft: '13px'}}>
                 <div>
-                    <SurveyTxtBox 
-                    fieldName="Number of Stories"
-                    event={doModifyGenericVal}
-                    targetField='stories'
-                    target={numStory}
-                    isInValid = {numStory_isInvalid}
-                    validator={(val) =>{return !isNaN(val)}}
-                    stylin={SuperStylin} 
-                    />
+                    <button type="button" style={btnStylin} onClick={() => doModifyStructure(true)}>Next Structure</button>
+                    <button type="button" style={btnStylin} onClick={() => doModifyStructure(false)}>Skip Structure</button>
                 </div>
-                <div>
-                    <SurveyTxtBox 
-                    fieldName="Occupied Square Feet"
-                    event={doModifyGenericVal}
-                    targetField='sq_ft'
-                    target={sqFt}
-                    isInValid = {sqFt_isInvalid}
-                    validator={(val) =>{return !isNaN(val)}}
-                    stylin={SuperStylin} 
-                    />
-                </div>
-                <div className="input-group mb-3">
-                    <button type="button" onClick={() => doModifyStructure(true)}>Next Structure</button>
-                    <button type="button" onClick={() => doModifyStructure(false)}>Skip Structure</button>
-                </div>
+                </fieldset>
+            </div>
         </nav>
+        
     )
   }
 }
