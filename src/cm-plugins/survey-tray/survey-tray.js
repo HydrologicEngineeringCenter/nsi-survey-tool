@@ -21,21 +21,23 @@ class SurveyTray extends React.Component {
         "PUBLIC": ['GOV1','GOV2','REL1','EDU1','EDU2']      
     }
     const damcats = [
-        'RESIDENTIAL',
-        'INDUSTRIAL',
-        'COMMERICAL',
-        'PUBLIC',
+        'Residential',
+        'Industrial',
+        'Commercial',
+        'Public',
         'Unknown'      
     ]
     const foundTypes = [
-        'BASEMENT',
-        'CRAWL',
-        'SOLID WALL',
-        'PIER',
-        'PILE',
-        'FILL',
-        'SLAB',
-        'UNKNOWN'      
+        'Basement',
+        'Solid Wall',
+        'Crawlspace',
+        'Slab',
+        'Pile',
+        'Pier',
+        'Enclosed Pier',
+        'Mat',
+        'Continuous Footing',
+        'Unknown'      
     ]
     const rsMeansTypes = {
         "Unknown": ['Apartment','Nursing Home','Hangar, Aircraft','Bus Terminal','School - Elementary','School - High','School - Vocational','Community Center','Post Office','Church','Fire Station','Police Station','Warehouse','Factory','Store, Retail','Garage, Repair','Restaurant','Post Frame Barn','Bowling Alley','Car Wash','Office','Convenience Store','Country Club','Funeral Home','Day Care Center','Fast Food Restaurant','Bank','Supermarket','Gymnasium','Hospital','Hotel','Motel','Medical Office','Garage, Service Station','Garage, Parking','Rink Hockey, Indoor Soccer','Auditorium','Garage, Auto Sales','Veterinary Hospital','Other'],
@@ -45,41 +47,52 @@ class SurveyTray extends React.Component {
         "PUBLIC": ['Hangar, Aircraft','Bus Terminal','School - Elementary','School - High','School - Vocational','Community Center','Post Office','Church','Fire Station','Police Station','Other']
     }
     const Qualities = [
-        'LUXURY',
-        'CUSTOM',
-        'AVERAGE',
-        'ECONOMY'      
+        'Average',
+        'Economy',
+        'Luxury',
+        'Custom'      
     ]
     const ConstTypes = [
-        'MASONRY',
-        'WOOD',
-        'CONCRETE',
-        'STEEL',
-        'MANUFACTURED',
-        'UNKNOWN'      
+        'Brick/Masonry',
+        'Wood',
+        'Concrete',
+        'Manufactured',
+        'Steel',        
+        'Unknown'      
     ]
     const GarageTypes = [
-        'ONE CAR ATTACHED',
-        'ONE CAR DETACHED',
-        'TWO CAR ATTACHED',
-        'TWO CAR DETACHED'     
+        'None',
+        'One Car Attached',
+        'Two Car Attached',
+        'Three Car Attached',
+        'One Car Detached',
+        'Two Car Detached',
+        'Three Car Detached',
+        'One Car Built In',
+        'Two Car Built In',
+        'Three Car Built In'            
     ]
     const RoofStyles = [
-        'HIP',
-        'FLAT',
-        'GABLE'      
+        'Simple Gable',
+        'Gable and Valley',
+        'Simple Hip',
+        'Hip and Valley',
+        'Mono-Pitched',
+        'Offset Mono-Pitched',
+        'Flat',
+        'Gambrel Style',
+        'Other'      
     ]       
     const superStylin = {
-        borderColor: '#898989',
-       
+        borderColor: '#898989',       
         maxHeight: '24px',
         fontSize: '12px',
         padding: '5px',
         width: '195px',
         marginRight: '10px',  
-        marginBottom: '5px',
-        backgroundColor: '#ffffff',
-        textAlign: 'left'
+        marginBottom: '5px',        
+        textAlign: 'left',
+        backgroundColor: '#ffffff'
     }
     const btnStylin = {
         marginRight: '5px',
