@@ -30,7 +30,8 @@ class MapPage extends React.Component {
     return (
         <div className="container-fluid" style={{ padding: "0"}}>
             <Map
-              theme="grey"
+              height={window.innerHeight-515}
+              theme="dark"
               plugins={[
                 addData,
                 basemapSwitcher,

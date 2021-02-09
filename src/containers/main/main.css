@@ -1,0 +1,60 @@
+.nv-bg{
+    background-color: #4d5661;
+}
+
+.st-main{
+    padding:5px;
+}
+
+.st-btn-tb{
+    border-radius: 1px !important;
+    height: 25px !important;
+    padding: 2px !important;
+    margin: 0px !important;
+    font-size: medium !important;
+    color:#fff !important;
+    background-color:#4d5661 !important;
+    border-color: #7f8084 !important;
+    border-style: solid !important;
+    border-width: 1px !important;
+    border-collapse: collapse !important;
+}
+
+.st-btn-tb1{
+    border-radius: 5px !important;
+    padding: 2px !important;
+    margin: 0px !important;
+    font-size: medium !important;
+    color:#fff !important;
+    background-color:#4d5661 !important;
+    border-color: #7f8084 !important;
+    border-style: solid !important;
+    border-width: 1px !important;
+    border-collapse: collapse !important;
+    width:50% !important;
+}
+
+.st-card{
+    background-color: #fff !important;
+}
+
+.st-card-header{
+    padding: .25rem 1.25rem !important;
+}
+
+.st-card-body{
+    padding: .25rem 1.25rem !important;
+}
+
+.st-input{
+    font-size: 12px !important;
+}
+
+.corpsmap .sidebar-panel {
+    overflow: auto;
+}
+
+.st-nosurvey{
+    padding:10px;
+    font-size:11px;
+}

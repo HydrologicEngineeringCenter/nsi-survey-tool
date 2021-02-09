@@ -1,3 +1,5 @@
+import {doRoutesUpdateUrl} from './routes-bundle';
+
 const UPDATE_AUTH_TOKEN = 'UPDATE_AUTH_TOKEN';
 const authNSIHost=process.env.REACT_APP_NSI_AUTH_HOST
 const appNSIId=process.env.REACT_APP_NSI_APPID
@@ -32,6 +34,7 @@ export default {
         }).then(function(data) {
             if(parseJwt(data)){
                 dispatch({type:UPDATE_AUTH_TOKEN,payload:{nsiToken:data}});
+                store.doUpdateUrl('/main')
             }
         });      
     },
