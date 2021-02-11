@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { version } from 'react';
 import { connect } from 'redux-bundler-react';
 import surveyTrayBundle from './survey-tray-bundle';
 
@@ -10,38 +10,42 @@ const occs = {
     "PUBLIC": ['GOV1','GOV2','REL1','EDU1','EDU2']      
 }
 const damcats = [
-    'Residential',
-    'Industrial',
-    'Commercial',
-    'Public',
-    'Unknown'      
+    {val:'RES',display:'Residential'},
+    {val:"IND",display:'Industrial'},
+    {val:"COM",display:'Commercial'},
+    {val:"PUB",display:'Public'},
+    {val:"UNK",display:'Unknown'}      
 ]
+
 const foundTypes = [
-    'Basement',
-    'Solid Wall',
-    'Crawlspace',
-    'Slab',
-    'Pile',
-    'Pier',
-    'Enclosed Pier',
-    'Mat',
-    'Continuous Footing',
-    'Unknown'      
+    {val:"Base",display:'Basement'},
+    {val:"Soli",display:'Solid Wall'},
+    {val:"Craw",display:'Crawlspace'},
+    {val:"Slab",display:'Slab'},
+    {val:"Pile",display:'Pile'},
+    {val:"Pier",display:'Pier'},
+    {val:"Epir",display:'Enclosed Pier'},
+    {val:"Mat",display:'Mat'},
+    {val:"Cont",display:'Continuous Footing'},
+    {val:"Unkn",display:'Unknown'}      
 ]
+
 const rsMeansTypes = {
-    "Unknown": ['Apartment','Nursing Home','Hangar, Aircraft','Bus Terminal','School - Elementary','School - High','School - Vocational','Community Center','Post Office','Church','Fire Station','Police Station','Warehouse','Factory','Store, Retail','Garage, Repair','Restaurant','Post Frame Barn','Bowling Alley','Car Wash','Office','Convenience Store','Country Club','Funeral Home','Day Care Center','Fast Food Restaurant','Bank','Supermarket','Gymnasium','Hospital','Hotel','Motel','Medical Office','Garage, Service Station','Garage, Parking','Rink Hockey, Indoor Soccer','Auditorium','Garage, Auto Sales','Veterinary Hospital','Other'],
+    "Unknown": ['','Apartment','Nursing Home','Hangar, Aircraft','Bus Terminal','School - Elementary','School - High','School - Vocational','Community Center','Post Office','Church','Fire Station','Police Station','Warehouse','Factory','Store, Retail','Garage, Repair','Restaurant','Post Frame Barn','Bowling Alley','Car Wash','Office','Convenience Store','Country Club','Funeral Home','Day Care Center','Fast Food Restaurant','Bank','Supermarket','Gymnasium','Hospital','Hotel','Motel','Medical Office','Garage, Service Station','Garage, Parking','Rink Hockey, Indoor Soccer','Auditorium','Garage, Auto Sales','Veterinary Hospital','Other'],
     "RESIDENTIAL": ['Apartment', 'Nursing Home','Other'],
     "INDUSTRIAL": ['Warehouse', 'Factory','Other'],
     "COMMERICAL": ['Store, Retail','Garage, Repair','Restaurant','Post Frame Barn','Bowling Alley','Car Wash','Office','Convenience Store','Country Club','Funeral Home','Day Care Center','Fast Food Restaurant','Bank','Supermarket','Gymnasium','Hospital','Hotel','Motel','Medical Office','Garage, Service Station','Garage, Parking','Rink Hockey, Indoor Soccer','Auditorium','Garage, Auto Sales','Veterinary Hospital','Other'],
     "PUBLIC": ['Hangar, Aircraft','Bus Terminal','School - Elementary','School - High','School - Vocational','Community Center','Post Office','Church','Fire Station','Police Station','Other']
 }
 const qualities = [
+    '',
     'Average',
     'Economy',
     'Luxury',
     'Custom'      
 ]
 const constTypes = [
+    '',
     'Brick/Masonry',
     'Wood',
     'Concrete',
@@ -50,6 +54,7 @@ const constTypes = [
     'Unknown'      
 ]
 const garageTypes = [
+    '',
     'None',
     'One Car Attached',
     'Two Car Attached',
@@ -62,6 +67,7 @@ const garageTypes = [
     'Three Car Built In'            
 ]
 const roofStyles = [
+    '',
     'Simple Gable',
     'Gable and Valley',
     'Simple Hip',
@@ -75,144 +81,194 @@ const roofStyles = [
 
 function SurveyTray(props){
 
-    const {surveyData:survey,doSurveyUpdateData,doSurveyModifyXY,doSurveyZoom,doSurveyStreetView} = props;
+    const {surveyData:survey,
+           doSurveyUpdateData,
+           doSurveyModifyXY,
+           doSurveyZoom,
+           doSurveyStreetView,
+           doSurveyFetch,
+           doSurveySave,
+           surveyLoading,
+           surveySaved,
+        } = props;
+
+    const enableGet = surveySaved;    
     const validSurvey = survey.fdId!==-1;
 
-    const handleChange=(field)=>(e)=>{
-        const val= e.target.value
+    const handleChange=(field,valtype)=>(e)=>{
+        let val= e.target.value
+        switch(valtype){
+            case "int":
+                val=isNaN(Number.parseInt(val,10))?0:Number.parseInt(val,10);
+                break;
+            case "dbl":
+                val=isNaN(Number.parseFloat(val))?0.0:Number.parseFloat(val);
+                break;
+        }
         const s={...survey,[field]:val}
+        doSurveyUpdateData(s);
+    }
+
+    const handleValidityChange=(e)=>{
+        const s={...survey,invalidStructure:e.target.checked}
         doSurveyUpdateData(s);
     }
 
     function renderNoSurvey(){
         return(
-            <React.Fragment>
+            <>
                 <div className="st-nosurvey">
                     Click the "Get Survey button to request a survey to validate"
                 </div>
-            </React.Fragment>
+            </>
+        )
+    }
+
+    function renderSurveyLoading(){
+        return(
+            <div className="st-survey-loading-container">
+                <div className='st-survey-loading-text'>
+                    Loading Survey
+                </div>
+                <div class="spinner">
+                    <div class="bounce1"></div>
+                    <div class="bounce2"></div>
+                    <div class="bounce3"></div>
+                    <div class="bounce4"></div>
+                </div>
+            </div>
         )
     }
 
     function renderSurvey(){
         return(
-            <React.Fragment>
-                <div style={{"width":"100%","text-align":"center"}}>
-                    Editing Survey 1234
+            <>
+                <div style={{"width":"100%","text-align":"center","font-size":"14px","font-weight":"bold","margin-top":"5px"}}>
+                    NSI Structure: {survey.fdId}
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="validStructure" onChange={handleValidityChange}/>
+                    <label className="form-check-label" for="validStructure">This is NOT a valid structure</label>
                 </div>
                 
-                <div class="card border-secondary mb-3 st-card" >
-                    <div class="card-header st-card-header">Categories</div>
-                    <div class="card-body st-card-body">
-                        <div class="form-group">
-                            <label for="damcat">Damage Category</label>
-                            <select class="form-control st-input" id="damcat" onChange={handleChange("damcat")}>
-                                {damcats.map(cat=>(cat===survey.damcat)?(<option selected>{cat}</option>):(<option>{cat}</option>))}
+                <div className="card border-secondary mb-3 st-card" >
+                    <div className="card-header st-card-header">Categories</div>
+                    <div className="card-body st-card-body">
+                        <div className="form-group">
+                            <label for="damcat">Damage Category:</label>
+                            <select className="form-control st-input" id="damcat" onChange={handleChange("damcat")}>
+                                {damcats.map(cat=>(cat.val===survey.damcat)?(<option value={cat.val} selected>{cat.display}</option>):(<option value={cat.val}>{cat.display}</option>))}
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label for="occclass">Occupancy Class</label>
-                            <select class="form-control st-input" id="occclass" onChange={handleChange("occupancyType")}>
+                        <div className="form-group">
+                            <label for="occclass">Occupancy Class:</label>
+                            <select className="form-control st-input" id="occclass" onChange={handleChange("occupancyType")}>
                                 {occs.Unknown.map(cat=>(cat===survey.occupancyType)?(<option selected>{cat}</option>):(<option>{cat}</option>))}
                             </select>
                         </div>
                     </div>
                 </div>
 
-                <div class="card border-secondary mb-3 st-card" >
-                    <div class="card-header st-card-header">Foundation</div>
-                    <div class="card-body st-card-body">
-                        <div class="form-group">
-                            <label for="foundtype">Foundation Type</label>
-                            <select class="form-control st-input" id="foundtypes" onChange={handleChange("foundType")}>
-                                {foundTypes.map(cat=>(cat===survey.foundType)?(<option selected>{cat}</option>):(<option>{cat}</option>))}
+                <div className="card border-secondary mb-3 st-card" >
+                    <div className="card-header st-card-header">Foundation:</div>
+                    <div className="card-body st-card-body">
+                        <div className="form-group">
+                            <label for="foundtype">Foundation Type:</label>
+                            <select className="form-control st-input" id="foundtypes" onChange={handleChange("found_type")}>
+                                {foundTypes.map(cat=>(cat.val===survey.found_type)?(<option value={cat.val} selected>{cat.display}</option>):(<option value={cat.val}>{cat.display}</option>))}
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label for="foundheight">Foundation Height (ft)</label>
-                            <input type="text" class="form-control st-input" id="foundheight" placeholder="" onChange={handleChange("foundHt")}/>
+                        <div className="form-group">
+                            <label for="foundheight">Foundation Height (ft):</label>
+                            <input type="text" value={survey.found_ht} class="form-control st-input" id="foundheight" placeholder="" onChange={handleChange("found_ht")}/>
                         </div>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="occclass">RS Means Type</label>
-                    <select class="form-control st-input" id="occclass" onChange={handleChange("rsMeansType")}>
-                        {rsMeansTypes.Unknown.map(cat=>(cat===survey.rsmeansType)?(<option selected>{cat}</option>):(<option>{cat}</option>))}
+                <div className="form-group">
+                    <label for="occclass">RS Means Type:</label>
+                    <select className="form-control st-input" id="occclass" onChange={handleChange("rsmeans_type")}>
+                        {rsMeansTypes.Unknown.map(cat=>(cat===survey.rsmeans_type)?(<option selected>{cat}</option>):(<option>{cat}</option>))}
                     </select>
 
-                    <label for="occclass">Quality</label>
-                    <select class="form-control st-input" id="occclass" onChange={handleChange("quality")}>
+                    <label for="occclass">Quality:</label>
+                    <select className="form-control st-input" id="occclass" onChange={handleChange("quality")}>
                         {qualities.map(cat=>(cat===survey.quality)?(<option selected>{cat}</option>):(<option>{cat}</option>))}
                     </select>
 
-                    <label for="occclass">Exterior Construction Type</label>
-                    <select class="form-control st-input" id="occclass" onChange={handleChange("constType")}>
-                        {constTypes.map(cat=>(cat===survey.constType)?(<option selected>{cat}</option>):(<option>{cat}</option>))}
+                    <label for="occclass">Exterior Construction Type:</label>
+                    <select className="form-control st-input" id="occclass" onChange={handleChange("const_type")}>
+                        {constTypes.map(cat=>(cat===survey.const_type)?(<option selected>{cat}</option>):(<option>{cat}</option>))}
                     </select>
 
-                    <label for="occclass">Garage Type</label>
-                    <select class="form-control st-input" id="occclass" onChange={handleChange("garageType")}>
-                        {garageTypes.map(cat=>(cat===survey.garageType)?(<option selected>{cat}</option>):(<option>{cat}</option>))}
+                    <label for="occclass">Garage Type:</label>
+                    <select className="form-control st-input" id="occclass" onChange={handleChange("garage")}>
+                        {garageTypes.map(cat=>(cat===survey.garage)?(<option selected>{cat}</option>):(<option>{cat}</option>))}
                     </select>
 
-                    <label for="occclass">Roof Style</label>
-                    <select class="form-control st-input" id="occclass" onChange={handleChange("rootStyle")}>
-                        {roofStyles.map(cat=>(cat===survey.rootStyle)?(<option selected>{cat}</option>):(<option>{cat}</option>))}
+                    <label for="occclass">Roof Style:</label>
+                    <select className="form-control st-input" id="occclass" onChange={handleChange("roof_style")}>
+                        {roofStyles.map(cat=>(cat===survey.roof_style)?(<option selected>{cat}</option>):(<option>{cat}</option>))}
                     </select>
 
-                    <label for="occclass">Number of Stories</label>
-                    <input type="text" value={survey.stories} class="form-control st-input" id="foundheight" placeholder="" onChange={handleChange("stories")}/>
+                    <label for="occclass">Number of Stories:</label>
+                    <input type="text" value={survey.stories} className="form-control st-input" placeholder="" onChange={handleChange("stories","int")}/>
 
-                    <label for="occclass">Occupied SQ Feet</label>
-                    <input type="text" value={survey.sqFt} class="form-control st-input" id="foundheight" placeholder="" onChange={handleChange("sqFt")}/>
+                    <label for="occclass">Occupied SQ Feet:</label>
+                    <input type="text" value={survey.sq_ft} className="form-control st-input" placeholder="" onChange={handleChange("sq_ft","int")}/>
                 </div>
 
-                <div class="card border-secondary mb-3 st-card" >
-                    <div class="card-header">Location Information</div>
+                <div className="card border-secondary mb-3 st-card" >
+                    <div className="card-header">Location Information</div>
                     
-                    <div class="card-body">
-                        <div style={{display:"flex"}}>
+                    <div className="card-body">
+                        <div style={{display:"flex","font-size":"12px","line-height":"31px"}}>
                             <div style={{display:"flex"}}>
-                            X:
-                            <input type="text" value={survey.x} class="form-control st-input" id="xcoord" placeholder="" onChange={handleChange("x")}/>
+                             <div style={{"padding-right":"5px"}}>
+                                X:
+                            </div>   
+                            <input type="text" value={survey.x} className="form-control st-input" id="xcoord" placeholder="" onChange={handleChange("x","dbl")}/>
                             </div>
                             <div style={{display:"flex"}}>
-                            Y:
-                            <input type="text" value={survey.y} class="form-control st-input" id="ycoord" placeholder="" onChange={handleChange("y")}/>
+                            <div style={{"padding-right":"5px"}}>
+                                Y:
+                            </div>
+                            <input type="text" value={survey.y} className="form-control st-input" id="ycoord" placeholder="" onChange={handleChange("y","dbl")}/>
                             </div>
                         </div>
                     </div>
-                    <div class="btn-group" role="group" aria-label="Basic example">
-                        <button className="btn btn-secondary basic-toolbar-btn st-btn-tb">
+                    <div className="btn-group" role="group" aria-label="Basic example">
+                        <button title="Get Location from the Map" className="btn btn-secondary basic-toolbar-btn st-btn-tb">
                             <i className="mdi mdi-map-marker-plus" onClick={doSurveyModifyXY}/>
                         </button>
-                        <button className="btn btn-secondary basic-toolbar-btn st-btn-tb" onClick={doSurveyZoom}>
+                        <button title="Zoom to the Survey coordinates" className="btn btn-secondary basic-toolbar-btn st-btn-tb" onClick={doSurveyZoom}>
                             <i className="mdi mdi-magnify-plus" />
                         </button>
-                        <button className="btn btn-secondary basic-toolbar-btn st-btn-tb" onClick={doSurveyStreetView}>
+                        <button title="Open in Google Maps/Street View" className="btn btn-secondary basic-toolbar-btn st-btn-tb" onClick={doSurveyStreetView}>
                             <i className="mdi mdi-google-street-view" />
                         </button>
                     </div>     
                 </div>
-            </React.Fragment>
+            </>
         )
     }
 
     return(
         <div className="st-main">
             <div style={{"display":"flex"}}>
-                <button className="btn btn-secondary basic-toolbar-btn st-btn-tb1" disabled={validSurvey}>
+                <button className="btn btn-secondary basic-toolbar-btn st-btn-tb1" disabled={!enableGet} onClick={doSurveyFetch}>
                     <i className="mdi mdi-file-download" />
                     Get Survey
                 </button>
                 <div style={{"width":"10px"}} />
-                <button className="btn btn-secondary basic-toolbar-btn st-btn-tb1" disabled={!validSurvey}>
+                <button className="btn btn-secondary basic-toolbar-btn st-btn-tb1" disabled={!validSurvey} onClick={doSurveySave}>
                     <i className="mdi mdi-file-upload" />
                     Save Survey
                 </button> 
             </div>
-            {(validSurvey)? renderSurvey(): renderNoSurvey()}
+            {surveyLoading?renderSurveyLoading():
+                validSurvey?renderSurvey():renderNoSurvey()
+            }
         </div>
     )
 }
@@ -222,6 +278,36 @@ export default connect (
     'doSurveyModifyXY',
     'doSurveyZoom',
     'doSurveyStreetView',
+    'doSurveyFetch',
+    'doSurveySave',
+    'selectSurveyLoading',
     'selectSurveyData',
+    'selectSurveySaved',
     SurveyTray
 );
+
+
+/*
+ -> add the new fields to the api
+ -x added Valid Structure field and check if it is invalid
+ -x update if survey was already saved
+ -x enable/disable buttons
+ -x show disclaimer first and login after user clicks ok
+ - show notifications on save/errors/etc
+ -x only show original values for damcat and occlass
+ -x move marker on 'get location from map'
+ -x drop download nsi tool
+ - imagery for default background
+ -x split occtype in nsi....RES1-YYYY
+ - hexbins and layer zoom management
+
+
+ - feedback
+   - react components should be Upper and then Camel cased:
+     - navbar => NavBar  in file NavBar.js
+     - components should be functions unless class state is necessary
+      - state should be
+        - component module level if a singleton and only used by the component (my opinion)
+        - hooks if used only to provide some value for the instance of a component
+        - redux/bunder if necessary to support application functionality 
+*/

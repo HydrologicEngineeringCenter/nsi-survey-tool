@@ -3,6 +3,7 @@ import {doRoutesUpdateUrl} from './routes-bundle';
 const UPDATE_AUTH_TOKEN = 'UPDATE_AUTH_TOKEN';
 const authNSIHost=process.env.REACT_APP_NSI_AUTH_HOST
 const appNSIId=process.env.REACT_APP_NSI_APPID
+
 const parseJwt = (token) => {
   try {
     return JSON.parse(atob(token.split('.')[1]));
@@ -10,12 +11,14 @@ const parseJwt = (token) => {
     return null;
   }
 };
+
 export default {
   name: 'auth',
   getReducer: () => {
     const initialState = {
       loading: false,
-      nsiToken:null
+      nsiToken:null,
+      userName:null,
     }
     return (state = initialState, { type, payload }) => {
       switch(type){
@@ -32,11 +35,13 @@ export default {
         }).then(function(response) {
             return response.text();
         }).then(function(data) {
-            if(parseJwt(data)){
-                dispatch({type:UPDATE_AUTH_TOKEN,payload:{nsiToken:data}});
+            let claims = parseJwt(data);
+            if(claims){
+                dispatch({type:UPDATE_AUTH_TOKEN,payload:{nsiToken:data,userName:claims.name}});
                 store.doUpdateUrl('/main')
             }
         });      
     },
-    selectAuthNSIToken:state=>state.auth.nsiToken
+    selectAuthNSIToken:state=>state.auth.nsiToken,
+    selectAuthUserName:state=>state.auth.userName,
   }

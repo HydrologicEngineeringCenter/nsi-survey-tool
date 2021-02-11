@@ -11,7 +11,7 @@
     "redux-bundler-react": "^1.2.0"
   },
   "scripts": {
-    "start": "react-scripts start"
+    "start": "HTTPS=true react-scripts start"
   },
   "browserslist": {
     "production": [

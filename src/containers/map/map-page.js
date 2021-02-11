@@ -24,39 +24,49 @@ import  nsiDL from '../../cm-plugins/nsi/index'
 import st from '../../cm-plugins/survey-tray/index'
 
  /*import nsiHexBin from '../../cm-plugins/hexbins/index' */
- 
-class MapPage extends React.Component {
-  render(){
-    return (
-        <div className="container-fluid" style={{ padding: "0"}}>
-            <Map
-              height={window.innerHeight-515}
-              theme="dark"
-              plugins={[
-                addData,
-                basemapSwitcher,
-                bookmarks,
-                coordDisplay,
-                draw,
-                treeView(),
-                geocoder,
-                identify,
-                measureTools,
-                rotateNorth,
-                zoomInOut,
-                zoomHome,
-                zoomToBox,
-                printMap,
-                themeSwitcher,
-                nsiVTL,
-                nsiDL,
-                st
-              ]}
-            />        
-        </div>
-    )
-  }
+
+let mapHook = null 
+
+if (mapHook) {
+  mapHook(props)
 }
-export default connect(
-  MapPage
+function MapPage(props) {
+  return (
+      <div className="container-fluid" style={{ padding: "0"}}>
+          <Map
+            height={window.innerHeight-60}
+            theme="dark"
+            plugins={[
+              addData,
+              basemapSwitcher,
+              bookmarks,
+              coordDisplay,
+              draw,
+              treeView(),
+              geocoder,
+              identify,
+              measureTools,
+              rotateNorth,
+              zoomInOut,
+              zoomHome,
+              zoomToBox,
+              printMap,
+              themeSwitcher,
+              nsiVTL,
+              //nsiDL,
+              st({
+                appProps:props,
+                registerHook:function(mapstore){
+                  mapHook=mapstore.doHookProps
+                }
+              })
+            ]}
+          />        
+      </div>
   );
+}
+
+export default connect(
+  "selectAuthNSIToken",
+  MapPage
+);

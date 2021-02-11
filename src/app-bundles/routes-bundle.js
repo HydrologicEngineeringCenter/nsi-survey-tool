@@ -1,13 +1,13 @@
 import { createRouteBundle } from 'redux-bundler';
-import Login from '../containers/login/login'
-import Main from '../containers/main/main';
+import LoginPage from '../containers/login/LoginPage'
+import MainPage from '../containers/main/MainPage';
 import FourOhFour from '../containers/404';
 
 
 
 const routes = createRouteBundle({
-  '/': Login,
-  '/main': Main,
+  '/': LoginPage,
+  '/main': MainPage,
   '*': FourOhFour
 })
 
