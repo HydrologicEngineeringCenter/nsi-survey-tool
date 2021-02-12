@@ -2,12 +2,14 @@ import React, { version } from 'react';
 import { connect } from 'redux-bundler-react';
 import surveyTrayBundle from './survey-tray-bundle';
 
+const fwLinkHost = "https://www.hec.usace.army.mil/fwlink/?linkid=";
+
 const occs = {
     "Unknown": ['RES1','RES2','RES3','RES4','RES5','RES6','IND1','IND2','IND3','IND4','IND5','IND6','COM1','COM2','COM3','COM4','COM5','COM6','COM7','COM8','COM9','AGR1','GOV1','GOV2','REL1','EDU1','EDU2'],
-    "RESIDENTIAL": ['RES1','RES2','RES3','RES4','RES5','RES6'],
-    "INDUSTRIAL": ['IND1','IND2','IND3','IND4','IND5','IND6'],
-    "COMMERICAL": ['COM1','COM2','COM3','COM4','COM5','COM6','COM7','COM8','COM9','AGR1'],
-    "PUBLIC": ['GOV1','GOV2','REL1','EDU1','EDU2']      
+    //"RESIDENTIAL": ['RES1','RES2','RES3','RES4','RES5','RES6'],
+    //"INDUSTRIAL": ['IND1','IND2','IND3','IND4','IND5','IND6'],
+    //"COMMERICAL": ['COM1','COM2','COM3','COM4','COM5','COM6','COM7','COM8','COM9','AGR1'],
+    //"PUBLIC": ['GOV1','GOV2','REL1','EDU1','EDU2']      
 }
 const damcats = [
     {val:'RES',display:'Residential'},
@@ -32,10 +34,10 @@ const foundTypes = [
 
 const rsMeansTypes = {
     "Unknown": ['','Apartment','Nursing Home','Hangar, Aircraft','Bus Terminal','School - Elementary','School - High','School - Vocational','Community Center','Post Office','Church','Fire Station','Police Station','Warehouse','Factory','Store, Retail','Garage, Repair','Restaurant','Post Frame Barn','Bowling Alley','Car Wash','Office','Convenience Store','Country Club','Funeral Home','Day Care Center','Fast Food Restaurant','Bank','Supermarket','Gymnasium','Hospital','Hotel','Motel','Medical Office','Garage, Service Station','Garage, Parking','Rink Hockey, Indoor Soccer','Auditorium','Garage, Auto Sales','Veterinary Hospital','Other'],
-    "RESIDENTIAL": ['Apartment', 'Nursing Home','Other'],
-    "INDUSTRIAL": ['Warehouse', 'Factory','Other'],
-    "COMMERICAL": ['Store, Retail','Garage, Repair','Restaurant','Post Frame Barn','Bowling Alley','Car Wash','Office','Convenience Store','Country Club','Funeral Home','Day Care Center','Fast Food Restaurant','Bank','Supermarket','Gymnasium','Hospital','Hotel','Motel','Medical Office','Garage, Service Station','Garage, Parking','Rink Hockey, Indoor Soccer','Auditorium','Garage, Auto Sales','Veterinary Hospital','Other'],
-    "PUBLIC": ['Hangar, Aircraft','Bus Terminal','School - Elementary','School - High','School - Vocational','Community Center','Post Office','Church','Fire Station','Police Station','Other']
+    //"RESIDENTIAL": ['Apartment', 'Nursing Home','Other'],
+    //"INDUSTRIAL": ['Warehouse', 'Factory','Other'],
+    //"COMMERICAL": ['Store, Retail','Garage, Repair','Restaurant','Post Frame Barn','Bowling Alley','Car Wash','Office','Convenience Store','Country Club','Funeral Home','Day Care Center','Fast Food Restaurant','Bank','Supermarket','Gymnasium','Hospital','Hotel','Motel','Medical Office','Garage, Service Station','Garage, Parking','Rink Hockey, Indoor Soccer','Auditorium','Garage, Auto Sales','Veterinary Hospital','Other'],
+    //"PUBLIC": ['Hangar, Aircraft','Bus Terminal','School - Elementary','School - High','School - Vocational','Community Center','Post Office','Church','Fire Station','Police Station','Other']
 }
 const qualities = [
     '',
@@ -95,7 +97,7 @@ function SurveyTray(props){
     const enableGet = surveySaved;    
     const validSurvey = survey.fdId!==-1;
 
-    const handleChange=(field,valtype)=>(e)=>{
+    const numberValidation=(field,valtype)=>(e)=>{
         let val= e.target.value
         switch(valtype){
             case "int":
@@ -105,6 +107,12 @@ function SurveyTray(props){
                 val=isNaN(Number.parseFloat(val))?0.0:Number.parseFloat(val);
                 break;
         }
+        const s={...survey,[field]:val}
+        doSurveyUpdateData(s);
+    }
+
+    const handleChange=(field)=>(e)=>{
+        let val= e.target.value 
         const s={...survey,[field]:val}
         doSurveyUpdateData(s);
     }
@@ -155,13 +163,23 @@ function SurveyTray(props){
                     <div className="card-header st-card-header">Categories</div>
                     <div className="card-body st-card-body">
                         <div className="form-group">
-                            <label for="damcat">Damage Category:</label>
+                            <div style={{"display":"flex"}}>
+                                <label style={{"flexGrow":1}}>Damage Category</label>
+                                <a target="_blank" title="Help for Damage Category" href={`${fwLinkHost}nsi-survey-tool-damage-categories`}>
+                                    <i className="mdi mdi-help-circle-outline" />
+                                </a>
+                            </div>
                             <select className="form-control st-input" id="damcat" onChange={handleChange("damcat")}>
                                 {damcats.map(cat=>(cat.val===survey.damcat)?(<option value={cat.val} selected>{cat.display}</option>):(<option value={cat.val}>{cat.display}</option>))}
                             </select>
                         </div>
                         <div className="form-group">
-                            <label for="occclass">Occupancy Class:</label>
+                            <div style={{"display":"flex"}}>
+                                <label style={{"flexGrow":1}}>Occupancy Class</label>
+                                <a target="_blank" title="Help for Occupancy Class" href={`${fwLinkHost}nsi-survey-tool-occupancy-types`}>
+                                    <i className="mdi mdi-help-circle-outline" />
+                                </a>
+                            </div>
                             <select className="form-control st-input" id="occclass" onChange={handleChange("occupancyType")}>
                                 {occs.Unknown.map(cat=>(cat===survey.occupancyType)?(<option selected>{cat}</option>):(<option>{cat}</option>))}
                             </select>
@@ -170,70 +188,119 @@ function SurveyTray(props){
                 </div>
 
                 <div className="card border-secondary mb-3 st-card" >
-                    <div className="card-header st-card-header">Foundation:</div>
+                    <div className="card-header st-card-header">Foundation</div>
                     <div className="card-body st-card-body">
                         <div className="form-group">
-                            <label for="foundtype">Foundation Type:</label>
+                            <div style={{"display":"flex"}}>
+                                <label style={{"flexGrow":1}}>Foundation Type</label>
+                                <a target="_blank" title="Help for Foundation Type" href={`${fwLinkHost}nsi-survey-tool-foundation-type`}>
+                                    <i className="mdi mdi-help-circle-outline" />
+                                </a>
+                            </div>
                             <select className="form-control st-input" id="foundtypes" onChange={handleChange("found_type")}>
                                 {foundTypes.map(cat=>(cat.val===survey.found_type)?(<option value={cat.val} selected>{cat.display}</option>):(<option value={cat.val}>{cat.display}</option>))}
                             </select>
                         </div>
                         <div className="form-group">
-                            <label for="foundheight">Foundation Height (ft):</label>
-                            <input type="text" value={survey.found_ht} class="form-control st-input" id="foundheight" placeholder="" onChange={handleChange("found_ht")}/>
+                            <div style={{"display":"flex"}}>
+                                <label style={{"flexGrow":1}}>Foundation Height(ft)</label>
+                                <a target="_blank" title="Help for Foundation Height" href={`${fwLinkHost}nsi-survey-tool-foundation-height`}>
+                                    <i className="mdi mdi-help-circle-outline" />
+                                </a>
+                            </div>
+                            <input type="text" value={survey.found_ht} class="form-control st-input" id="foundheight" placeholder="" onChange={handleChange("found_ht")} onBlur={numberValidation("found_ht","dbl")}/>
                         </div>
                     </div>
                 </div>
 
-                <div className="form-group">
-                    <label for="occclass">RS Means Type:</label>
-                    <select className="form-control st-input" id="occclass" onChange={handleChange("rsmeans_type")}>
-                        {rsMeansTypes.Unknown.map(cat=>(cat===survey.rsmeans_type)?(<option selected>{cat}</option>):(<option>{cat}</option>))}
-                    </select>
+                
+                <div className="card border-secondary mb-3 st-card" >
+                    <div className="card-header st-card-header">Attributes</div>
+                    <div className="card-body st-card-body">
+                        <div style={{"display":"flex"}}>
+                            <label style={{"flexGrow":1}}>RS Means Type</label>
+                            <a target="_blank" title="Help for RS Means Type" href={`${fwLinkHost}nsi-survey-tool-rsmeans-type`}>
+                                <i className="mdi mdi-help-circle-outline" />
+                            </a>
+                        </div>
+                        <select className="form-control st-input" id="occclass" onChange={handleChange("rsmeans_type")}>
+                            {rsMeansTypes.Unknown.map(cat=>(cat===survey.rsmeans_type)?(<option selected>{cat}</option>):(<option>{cat}</option>))}
+                        </select>
 
-                    <label for="occclass">Quality:</label>
-                    <select className="form-control st-input" id="occclass" onChange={handleChange("quality")}>
-                        {qualities.map(cat=>(cat===survey.quality)?(<option selected>{cat}</option>):(<option>{cat}</option>))}
-                    </select>
+                        <div style={{"display":"flex"}}>
+                            <label style={{"flexGrow":1}}>Quality</label>
+                            <a target="_blank" title="Help for Quality" href={`${fwLinkHost}nsi-survey-tool-rsmeans-quality`}>
+                                <i className="mdi mdi-help-circle-outline" />
+                            </a>
+                        </div>
+                        <select className="form-control st-input" id="occclass" onChange={handleChange("quality")}>
+                            {qualities.map(cat=>(cat===survey.quality)?(<option selected>{cat}</option>):(<option>{cat}</option>))}
+                        </select>
 
-                    <label for="occclass">Exterior Construction Type:</label>
-                    <select className="form-control st-input" id="occclass" onChange={handleChange("const_type")}>
-                        {constTypes.map(cat=>(cat===survey.const_type)?(<option selected>{cat}</option>):(<option>{cat}</option>))}
-                    </select>
+                        <div style={{"display":"flex"}}>
+                            <label style={{"flexGrow":1}}>Exterior Construction Type</label>
+                            <a target="_blank" title="Help for Exterior Construction Types" href={`${fwLinkHost}nsi-survey-tool-exterior-construction`}>
+                                <i className="mdi mdi-help-circle-outline" />
+                            </a>
+                        </div>
+                        <select className="form-control st-input" id="occclass" onChange={handleChange("const_type")}>
+                            {constTypes.map(cat=>(cat===survey.const_type)?(<option selected>{cat}</option>):(<option>{cat}</option>))}
+                        </select>
 
-                    <label for="occclass">Garage Type:</label>
-                    <select className="form-control st-input" id="occclass" onChange={handleChange("garage")}>
-                        {garageTypes.map(cat=>(cat===survey.garage)?(<option selected>{cat}</option>):(<option>{cat}</option>))}
-                    </select>
+                        <div style={{"display":"flex"}}>
+                            <label style={{"flexGrow":1}}>Garage Type</label>
+                            <a target="_blank" title="Help for Garage Types" href={`${fwLinkHost}nsi-survey-tool-garage`}>
+                                <i className="mdi mdi-help-circle-outline" />
+                            </a>
+                        </div>
+                        <select className="form-control st-input" id="occclass" onChange={handleChange("garage")}>
+                            {garageTypes.map(cat=>(cat===survey.garage)?(<option selected>{cat}</option>):(<option>{cat}</option>))}
+                        </select>
 
-                    <label for="occclass">Roof Style:</label>
-                    <select className="form-control st-input" id="occclass" onChange={handleChange("roof_style")}>
-                        {roofStyles.map(cat=>(cat===survey.roof_style)?(<option selected>{cat}</option>):(<option>{cat}</option>))}
-                    </select>
+                        <div style={{"display":"flex"}}>
+                            <label style={{"flexGrow":1}}>Roof Style</label>
+                            <a target="_blank" title="Help for Roof Styles" href={`${fwLinkHost}nsi-survey-tool-roof-style`}>
+                                <i className="mdi mdi-help-circle-outline" />
+                            </a>
+                        </div>
+                        <select className="form-control st-input" id="occclass" onChange={handleChange("roof_style")}>
+                            {roofStyles.map(cat=>(cat===survey.roof_style)?(<option selected>{cat}</option>):(<option>{cat}</option>))}
+                        </select>
 
-                    <label for="occclass">Number of Stories:</label>
-                    <input type="text" value={survey.stories} className="form-control st-input" placeholder="" onChange={handleChange("stories","int")}/>
+                        <div style={{"display":"flex"}}>
+                            <label style={{"flexGrow":1}}>Number of Stories</label>
+                            <a target="_blank" title="Help for Number of Stories" href={`${fwLinkHost}nsi-survey-tool-stories`}>
+                                <i className="mdi mdi-help-circle-outline" />
+                            </a>
+                        </div>
+                        <input type="text" value={survey.stories} className="form-control st-input" placeholder="" onChange={handleChange("stories")} onBlur={numberValidation("stories","int")}/>
 
-                    <label for="occclass">Occupied SQ Feet:</label>
-                    <input type="text" value={survey.sq_ft} className="form-control st-input" placeholder="" onChange={handleChange("sq_ft","int")}/>
+                        <div style={{"display":"flex"}}>
+                            <label style={{"flexGrow":1}}>Occupied SQ Feet</label>
+                            <a target="_blank" title="Help for Occupied SQ Feet" href={`${fwLinkHost}nsi-survey-tool-square-footage`}>
+                                <i className="mdi mdi-help-circle-outline" />
+                            </a>
+                        </div>
+                        <input type="text" value={survey.sq_ft} className="form-control st-input" placeholder="" onChange={handleChange("sq_ft")} onBlur={numberValidation("sq_ft","dbl")}/>
+                    </div>
                 </div>
 
                 <div className="card border-secondary mb-3 st-card" >
-                    <div className="card-header">Location Information</div>
+                    <div className="card-header st-card-header">Location Information</div>
                     
                     <div className="card-body">
-                        <div style={{display:"flex","font-size":"12px","line-height":"31px"}}>
+                        <div style={{"font-size":"12px","line-height":"31px"}}>
                             <div style={{display:"flex"}}>
                              <div style={{"padding-right":"5px"}}>
                                 X:
                             </div>   
-                            <input type="text" value={survey.x} className="form-control st-input" id="xcoord" placeholder="" onChange={handleChange("x","dbl")}/>
+                            <input type="text" value={survey.x} className="form-control st-input" id="xcoord" placeholder="" onChange={handleChange("x")}/>
                             </div>
                             <div style={{display:"flex"}}>
                             <div style={{"padding-right":"5px"}}>
                                 Y:
                             </div>
-                            <input type="text" value={survey.y} className="form-control st-input" id="ycoord" placeholder="" onChange={handleChange("y","dbl")}/>
+                            <input type="text" value={survey.y} className="form-control st-input" id="ycoord" placeholder="" onChange={handleChange("y")}/>
                             </div>
                         </div>
                     </div>

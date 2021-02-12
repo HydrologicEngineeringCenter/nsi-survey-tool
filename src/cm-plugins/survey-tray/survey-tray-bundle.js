@@ -46,7 +46,7 @@ const defaultSurvey={
   foundHtInvalid: false,
   stories: 0,
   storiesInvalid: false,
-  sqFt: 0.0,
+  sq_ft: 0.0,
   sqFtInvalid: false,
   found_type: "",
   rsmeans_type:"",
@@ -132,7 +132,17 @@ const stBundle=function(config){
           .then(resp=>resp.json())
           .then(data=>{
             dispatch({type:SURVEY_LOADING,payload:{"surveyLoading":false}});
-            store.doSurveyUpdateData(data);
+            let newsurvey={
+              ...defaultSurvey,
+              'damcat':data.damcat,
+              'occupancyType':data.occupancyType,
+              'x':data.x,
+              'y':data.y,
+              'fdId':data.fdId,
+              'saId':data.saId,
+              'cbfips':data.cbfips
+            }
+            store.doSurveyUpdateData(newsurvey);
             store.doSurveyUpdateSurveySaved(false);
             store.doSurveyDisplayMarker();
             store.doSurveyZoom();
@@ -165,7 +175,7 @@ const stBundle=function(config){
               store.doNotificationsFire({
                 title: "Error",
                 message: "Unable to save survey",
-                level: "error",
+                level: "warning",
               });
             }
             return resp.json();
@@ -175,7 +185,7 @@ const stBundle=function(config){
               store.doNotificationsFire({
                 title: "Success",
                 message: "Survey Saved",
-                level: "info",
+                level: "success",
               });
             }
             store.doSurveyUpdateSurveySaved(true)
@@ -185,7 +195,7 @@ const stBundle=function(config){
             store.doNotificationsFire({
               title: "Error",
               message: "Unable to save survey",
-              level: "error",
+              level: "warning",
             });
           });
         } else {
@@ -269,14 +279,8 @@ const stBundle=function(config){
       selectSurveyLoading:state=>state.st.surveyLoading,
       selectSurveyAuthToken:state=>state.st.appProps?.authNSIToken,
       selectSurveySaved:state=>state.st.surveySaved,
-      /*
-      selectSurveyAuthToken:(state)=>{
-        console.log(state.st);
-        if(state.st){
-          return state.st.appProps.authNSIToken;
-        }
-      }
-      */
+      
+      selectMapLoading:state=>false,
   });
 } 
 
