@@ -2,7 +2,7 @@ import React, { version } from 'react';
 import { connect } from 'redux-bundler-react';
 import surveyTrayBundle from './survey-tray-bundle';
 
-const fwLinkHost = "https://www.hec.usace.army.mil/fwlink/?linkid=";
+const fwLinkHost=process.env.REACT_APP_LINKHOST;
 
 const occs = {
     "Unknown": ['RES1','RES2','RES3','RES4','RES5','RES6','IND1','IND2','IND3','IND4','IND5','IND6','COM1','COM2','COM3','COM4','COM5','COM6','COM7','COM8','COM9','AGR1','GOV1','GOV2','REL1','EDU1','EDU2'],
@@ -92,6 +92,7 @@ function SurveyTray(props){
            doSurveySave,
            surveyLoading,
            surveySaved,
+           allSurveysCompleted,
         } = props;
 
     const enableGet = surveySaved;    
@@ -127,6 +128,16 @@ function SurveyTray(props){
             <>
                 <div className="st-nosurvey">
                     Click the "Get Survey button to request a survey to validate"
+                </div>
+            </>
+        )
+    }
+
+    function renderAllSurveysCompleted(){
+        return(
+            <>
+                <div className="st-surveys-complete">
+                    All surveys are complete.
                 </div>
             </>
         )
@@ -333,8 +344,9 @@ function SurveyTray(props){
                     Save Survey
                 </button> 
             </div>
-            {surveyLoading?renderSurveyLoading():
-                validSurvey?renderSurvey():renderNoSurvey()
+            {allSurveysCompleted?renderAllSurveysCompleted():
+                surveyLoading?renderSurveyLoading():
+                    validSurvey?renderSurvey():renderNoSurvey()
             }
         </div>
     )
@@ -350,6 +362,7 @@ export default connect (
     'selectSurveyLoading',
     'selectSurveyData',
     'selectSurveySaved',
+    'selectAllSurveysCompleted',
     SurveyTray
 );
 

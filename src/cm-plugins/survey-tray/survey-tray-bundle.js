@@ -67,6 +67,7 @@ const stBundle=function(config){
           survey:defaultSurvey,
           surveyLoading:false,
           surveySaved:true,
+          surveysCompleted:false,
           appProps:{},
         };
         return (state = initialData, { type, payload }) => {
@@ -132,20 +133,24 @@ const stBundle=function(config){
           .then(resp=>resp.json())
           .then(data=>{
             dispatch({type:SURVEY_LOADING,payload:{"surveyLoading":false}});
-            let newsurvey={
-              ...defaultSurvey,
-              'damcat':data.damcat,
-              'occupancyType':data.occupancyType,
-              'x':data.x,
-              'y':data.y,
-              'fdId':data.fdId,
-              'saId':data.saId,
-              'cbfips':data.cbfips
+            if(data.result && data.result==="completed"){
+              dispatch({type:SURVEY_DATA_UPDATE,payload:{"surveysCompleted":true}});
+            } else {
+              let newsurvey={
+                ...defaultSurvey,
+                'damcat':data.damcat,
+                'occupancyType':data.occupancyType,
+                'x':data.x,
+                'y':data.y,
+                'fdId':data.fdId,
+                'saId':data.saId,
+                'cbfips':data.cbfips
+              }
+              store.doSurveyUpdateData(newsurvey);
+              store.doSurveyUpdateSurveySaved(false);
+              store.doSurveyDisplayMarker();
+              store.doSurveyZoom();
             }
-            store.doSurveyUpdateData(newsurvey);
-            store.doSurveyUpdateSurveySaved(false);
-            store.doSurveyDisplayMarker();
-            store.doSurveyZoom();
           })
           .catch(error=>{
             console.log(error);
@@ -279,7 +284,7 @@ const stBundle=function(config){
       selectSurveyLoading:state=>state.st.surveyLoading,
       selectSurveyAuthToken:state=>state.st.appProps?.authNSIToken,
       selectSurveySaved:state=>state.st.surveySaved,
-      
+      selectAllSurveysCompleted:state=>state.st.surveysCompleted,
       selectMapLoading:state=>false,
   });
 } 

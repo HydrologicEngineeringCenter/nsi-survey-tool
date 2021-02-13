@@ -7,7 +7,7 @@ function MainPage(props){
     const {doUpdateUrl,authNSIToken} = props;
 
     if(!authNSIToken){
-      doUpdateUrl("/");
+      doUpdateUrl("/nsi-survey/");
     }
 
     return (

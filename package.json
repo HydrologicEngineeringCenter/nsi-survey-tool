@@ -2,6 +2,7 @@
   "name": "web-map",
   "version": "0.1.0",
   "private": true,
+  "homepage":"nsi-survey",
   "dependencies": {
     "@corpsmap/corpsmap": "^0.9.3",
     "react": "^16.14.0",
@@ -11,7 +12,8 @@
     "redux-bundler-react": "^1.2.0"
   },
   "scripts": {
-    "start": "HTTPS=true react-scripts start"
+    "start": "HTTPS=true react-scripts start",
+    "build": "react-scripts build"
   },
   "browserslist": {
     "production": [

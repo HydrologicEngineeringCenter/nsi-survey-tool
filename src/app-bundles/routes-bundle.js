@@ -6,8 +6,9 @@ import FourOhFour from '../containers/404';
 
 
 const routes = createRouteBundle({
-  '/': LoginPage,
-  '/main': MainPage,
+  '/nsi-survey': LoginPage,
+  '/nsi-survey/': LoginPage,
+  '/nsi-survey/main': MainPage,
   '*': FourOhFour
 })
 

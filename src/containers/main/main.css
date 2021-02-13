@@ -65,6 +65,12 @@
     font-size:11px;
 }
 
+.st-surveys-complete{
+  padding:10px;
+  font-size:14px;
+  font-weight: bold;
+}
+
 .st-survey-loading-container{
     display: flex;
     padding:5px;
