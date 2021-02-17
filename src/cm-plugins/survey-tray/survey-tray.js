@@ -1,25 +1,21 @@
-import React, { version } from 'react';
+import React from 'react';
 import { connect } from 'redux-bundler-react';
-import surveyTrayBundle from './survey-tray-bundle';
 
 const fwLinkHost=process.env.REACT_APP_LINKHOST;
 
 const occs = {
-    "Unknown": ['RES1','RES2','RES3','RES4','RES5','RES6','IND1','IND2','IND3','IND4','IND5','IND6','COM1','COM2','COM3','COM4','COM5','COM6','COM7','COM8','COM9','AGR1','GOV1','GOV2','REL1','EDU1','EDU2'],
-    //"RESIDENTIAL": ['RES1','RES2','RES3','RES4','RES5','RES6'],
-    //"INDUSTRIAL": ['IND1','IND2','IND3','IND4','IND5','IND6'],
-    //"COMMERICAL": ['COM1','COM2','COM3','COM4','COM5','COM6','COM7','COM8','COM9','AGR1'],
-    //"PUBLIC": ['GOV1','GOV2','REL1','EDU1','EDU2']      
+    "Unknown": ['RES1','RES2','RES3','RES3-AB','RES3-CD','RES3-EF','RES4','RES5','RES6','IND1','IND2','IND3','IND4','IND5','IND6','COM1','COM2','COM3','COM4','COM5','COM6','COM7','COM8','COM9','COM10','AGR1','GOV1','GOV2','REL1','EDU1','EDU2','UNKN'],
 }
 const damcats = [
     {val:'RES',display:'Residential'},
     {val:"IND",display:'Industrial'},
     {val:"COM",display:'Commercial'},
     {val:"PUB",display:'Public'},
-    {val:"UNK",display:'Unknown'}      
+    {val:"UNK",display:'Unknown'}
 ]
 
 const foundTypes = [
+    {val:"Empty", display:''},
     {val:"Base",display:'Basement'},
     {val:"Soli",display:'Solid Wall'},
     {val:"Craw",display:'Crawlspace'},
@@ -29,31 +25,32 @@ const foundTypes = [
     {val:"Epir",display:'Enclosed Pier'},
     {val:"Mat",display:'Mat'},
     {val:"Cont",display:'Continuous Footing'},
-    {val:"Unkn",display:'Unknown'}      
+    {val:"SLWB",display:'Split Level Basement'},
+    {val:"SLNB",display:'Split Level No Basement'},
+    {val:"SLUN",display:'Split Level Unk Basement'},
+    {val:"Unkn",display:'Unknown'}
 ]
 
 const rsMeansTypes = {
-    "Unknown": ['','Apartment','Nursing Home','Hangar, Aircraft','Bus Terminal','School - Elementary','School - High','School - Vocational','Community Center','Post Office','Church','Fire Station','Police Station','Warehouse','Factory','Store, Retail','Garage, Repair','Restaurant','Post Frame Barn','Bowling Alley','Car Wash','Office','Convenience Store','Country Club','Funeral Home','Day Care Center','Fast Food Restaurant','Bank','Supermarket','Gymnasium','Hospital','Hotel','Motel','Medical Office','Garage, Service Station','Garage, Parking','Rink Hockey, Indoor Soccer','Auditorium','Garage, Auto Sales','Veterinary Hospital','Other'],
-    //"RESIDENTIAL": ['Apartment', 'Nursing Home','Other'],
-    //"INDUSTRIAL": ['Warehouse', 'Factory','Other'],
-    //"COMMERICAL": ['Store, Retail','Garage, Repair','Restaurant','Post Frame Barn','Bowling Alley','Car Wash','Office','Convenience Store','Country Club','Funeral Home','Day Care Center','Fast Food Restaurant','Bank','Supermarket','Gymnasium','Hospital','Hotel','Motel','Medical Office','Garage, Service Station','Garage, Parking','Rink Hockey, Indoor Soccer','Auditorium','Garage, Auto Sales','Veterinary Hospital','Other'],
-    //"PUBLIC": ['Hangar, Aircraft','Bus Terminal','School - Elementary','School - High','School - Vocational','Community Center','Post Office','Church','Fire Station','Police Station','Other']
+    "Unknown": ['','SFR-Economy','SFR-Average','SFR-Custom','SFR-Luxury','Apartment','Manufactured','Aircraft Hangar','Auditorium','Bank','Bowling Alley','Bus Terminal','Car Wash','Church','Community Center','Country Club','Day Care Center','Factory','Fire Station','Funeral Home','Garage - Auto Sales','Garage - Repair','Garage - Service Station','Gymnasium','Hospital','Hotel','Medical Office', 'Motel','Nursing Home','Office','Parking Garage','Post Office','Police Station','Post Frame Barn','Restaurant - Dining','Restaurant - Fast Food','Rink - Hockey or Soccer','School - Elementary','School - High','School - Vocational','Store - Convenience','Store - Retail','Store - Supermarket','Veterinary Hospital','Warehouse','Other','Unknown']
 }
 const qualities = [
     '',
+    'Dilapidated',
     'Average',
-    'Economy',
-    'Luxury',
-    'Custom'      
+    'Like New', 
+    'Unknown' 
 ]
 const constTypes = [
     '',
-    'Brick/Masonry',
     'Wood',
-    'Concrete',
+    'Brick',
+    'Stucco',
     'Manufactured',
-    'Steel',        
-    'Unknown'      
+    'Masonry or Concrete',
+    'Steel', 
+    'Other',       
+    'Unknown'    
 ]
 const garageTypes = [
     '',
@@ -66,7 +63,8 @@ const garageTypes = [
     'Three Car Detached',
     'One Car Built In',
     'Two Car Built In',
-    'Three Car Built In'            
+    'Three Car Built In',
+    'Unknown'            
 ]
 const roofStyles = [
     '',
@@ -78,7 +76,8 @@ const roofStyles = [
     'Offset Mono-Pitched',
     'Flat',
     'Gambrel Style',
-    'Other'      
+    'Other',
+    'Unknown'      
 ] 
 
 function SurveyTray(props){
@@ -123,6 +122,11 @@ function SurveyTray(props){
         doSurveyUpdateData(s);
     }
 
+    const handleNoStreetViewChange=(e)=>{
+        const s={...survey,noStreetView:e.target.checked}
+        doSurveyUpdateData(s);
+    }
+
     function renderNoSurvey(){
         return(
             <>
@@ -161,13 +165,50 @@ function SurveyTray(props){
 
     function renderSurvey(){
         return(
-            <>
+            <div className="st-survey-form">
                 <div style={{"width":"100%","text-align":"center","font-size":"14px","font-weight":"bold","margin-top":"5px"}}>
                     NSI Structure: {survey.fdId}
                 </div>
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="validStructure" onChange={handleValidityChange}/>
+                <div className="form-check">
+                    <input type="checkbox" className="form-check-input" id="validStructure" onChange={handleValidityChange}/>
                     <label className="form-check-label" for="validStructure">This is NOT a valid structure</label>
+                </div>
+
+                <div className="form-check">
+                    <input type="checkbox" className="form-check-input" id="noStreetView" onChange={handleNoStreetViewChange}/>
+                    <label className="form-check-label" for="noStreetView">There is no Street View</label>
+                </div>
+
+                <div className="card border-secondary mb-3 st-card" >
+                    <div className="card-header st-card-header">Location Information</div>
+                    
+                    <div className="card-body">
+                        <div style={{"font-size":"12px","line-height":"31px"}}>
+                            <div style={{display:"flex"}}>
+                             <div style={{"padding-right":"5px"}}>
+                                X:
+                            </div>   
+                            <input type="text" value={survey.x} className="form-control st-input" id="xcoord" placeholder="" onChange={handleChange("x")}/>
+                            </div>
+                            <div style={{display:"flex"}}>
+                            <div style={{"padding-right":"5px"}}>
+                                Y:
+                            </div>
+                            <input type="text" value={survey.y} className="form-control st-input" id="ycoord" placeholder="" onChange={handleChange("y")}/>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="btn-group" role="group" aria-label="Basic example">
+                        <button title="Get Location from the Map" className="btn btn-secondary basic-toolbar-btn st-btn-tb" onClick={doSurveyModifyXY}>
+                            <i className="mdi mdi-map-marker-plus"  />
+                        </button>
+                        <button title="Zoom to the Survey coordinates" className="btn btn-secondary basic-toolbar-btn st-btn-tb" onClick={doSurveyZoom}>
+                            <i className="mdi mdi-magnify-plus" />
+                        </button>
+                        <button title="Open in Google Maps/Street View" className="btn btn-secondary basic-toolbar-btn st-btn-tb" onClick={doSurveyStreetView}>
+                            <i className="mdi mdi-google-street-view" />
+                        </button>
+                    </div>     
                 </div>
                 
                 <div className="card border-secondary mb-3 st-card" >
@@ -186,8 +227,8 @@ function SurveyTray(props){
                         </div>
                         <div className="form-group">
                             <div style={{"display":"flex"}}>
-                                <label style={{"flexGrow":1}}>Occupancy Class</label>
-                                <a target="_blank" title="Help for Occupancy Class" href={`${fwLinkHost}nsi-survey-tool-occupancy-types`}>
+                                <label style={{"flexGrow":1}}>Occupancy Type</label>
+                                <a target="_blank" title="Help for Occupancy Type" href={`${fwLinkHost}nsi-survey-tool-occupancy-types`}>
                                     <i className="mdi mdi-help-circle-outline" />
                                 </a>
                             </div>
@@ -296,38 +337,8 @@ function SurveyTray(props){
                     </div>
                 </div>
 
-                <div className="card border-secondary mb-3 st-card" >
-                    <div className="card-header st-card-header">Location Information</div>
-                    
-                    <div className="card-body">
-                        <div style={{"font-size":"12px","line-height":"31px"}}>
-                            <div style={{display:"flex"}}>
-                             <div style={{"padding-right":"5px"}}>
-                                X:
-                            </div>   
-                            <input type="text" value={survey.x} className="form-control st-input" id="xcoord" placeholder="" onChange={handleChange("x")}/>
-                            </div>
-                            <div style={{display:"flex"}}>
-                            <div style={{"padding-right":"5px"}}>
-                                Y:
-                            </div>
-                            <input type="text" value={survey.y} className="form-control st-input" id="ycoord" placeholder="" onChange={handleChange("y")}/>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="btn-group" role="group" aria-label="Basic example">
-                        <button title="Get Location from the Map" className="btn btn-secondary basic-toolbar-btn st-btn-tb">
-                            <i className="mdi mdi-map-marker-plus" onClick={doSurveyModifyXY}/>
-                        </button>
-                        <button title="Zoom to the Survey coordinates" className="btn btn-secondary basic-toolbar-btn st-btn-tb" onClick={doSurveyZoom}>
-                            <i className="mdi mdi-magnify-plus" />
-                        </button>
-                        <button title="Open in Google Maps/Street View" className="btn btn-secondary basic-toolbar-btn st-btn-tb" onClick={doSurveyStreetView}>
-                            <i className="mdi mdi-google-street-view" />
-                        </button>
-                    </div>     
-                </div>
-            </>
+                
+            </div>
         )
     }
 
@@ -368,6 +379,13 @@ export default connect (
 
 
 /*
+occtypes
+- verify COM10
+- verify split code
+
+
+
+
  -> add the new fields to the api
  -x added Valid Structure field and check if it is invalid
  -x update if survey was already saved

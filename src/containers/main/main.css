@@ -58,7 +58,14 @@
 
 .corpsmap .sidebar-panel {
     overflow: auto;
+    padding-right: 5px;
 }
+
+/*
+.st-survey-form{
+  overflow:hidden;
+}
+*/
 
 .st-nosurvey{
     padding:10px;

@@ -34,6 +34,7 @@ let clearMapfunction = function(map,evt,fun){
 const defaultSurvey={
   fdId:-1,
   invalidStructure:false,
+  noStreetView:false,
   shouldInitialize: false,
   occupancyType: "RES1",
   damcat:"Unknown",
@@ -245,6 +246,10 @@ const stBundle=function(config){
   
       doSurveyModifyXY:()=>({dispatch,store})=>{
         const map = store.selectMap()
+        if (locationFunction){
+          clearMapfunction(map,'singleclick',locationFunction); //locationFunction should be cleaned up automatically, but rarely it is not...
+          locationFunction=null;
+        }
         map.getTarget().style.cursor = 'cell';
         locationFunction = function(evt){
           let coord = transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
@@ -255,7 +260,8 @@ const stBundle=function(config){
               y: coord[1],
             }
           })
-          clearMapfunction(map,'singleclick',locationFunction)
+          clearMapfunction(map,'singleclick',locationFunction);
+          locationFunction=null;
           store.doSurveyDisplayMarker();
         }
         map.on('singleclick', locationFunction)
