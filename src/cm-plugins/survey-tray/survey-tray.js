@@ -170,12 +170,12 @@ function SurveyTray(props){
                     NSI Structure: {survey.fdId}
                 </div>
                 <div className="form-check">
-                    <input type="checkbox" className="form-check-input" id="validStructure" onChange={handleValidityChange}/>
+                    <input type="checkbox" className="form-check-input" id="validStructure" onChange={handleValidityChange} checked={survey.invalidStructure}/>
                     <label className="form-check-label" for="validStructure">This is NOT a valid structure</label>
                 </div>
 
                 <div className="form-check">
-                    <input type="checkbox" className="form-check-input" id="noStreetView" onChange={handleNoStreetViewChange}/>
+                    <input type="checkbox" className="form-check-input" id="noStreetView" onChange={handleNoStreetViewChange} checked={survey.noStreetView}/>
                     <label className="form-check-label" for="noStreetView">There is no Street View</label>
                 </div>
 
@@ -325,7 +325,7 @@ function SurveyTray(props){
                                 <i className="mdi mdi-help-circle-outline" />
                             </a>
                         </div>
-                        <input type="text" value={survey.stories} className="form-control st-input" placeholder="" onChange={handleChange("stories")} onBlur={numberValidation("stories","int")}/>
+                        <input type="text" value={survey.stories} className="form-control st-input" placeholder="" onChange={handleChange("stories")} onBlur={numberValidation("stories","dbl")}/>
 
                         <div style={{"display":"flex"}}>
                             <label style={{"flexGrow":1}}>Occupied SQ Feet</label>

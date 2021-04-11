@@ -14,6 +14,8 @@ const SURVEY_LOADING='SURVEY_LOADING';
 const UPDATE_SURVEY_SAVED='UPDATE_SURVEY_SAVED';
 
 const apiHost=process.env.REACT_APP_APIHOST_NSI
+const publicFolder = process.env.PUBLIC_URL
+
 let markerLayer = null;
 
 
@@ -137,6 +139,20 @@ const stBundle=function(config){
             if(data.result && data.result==="completed"){
               dispatch({type:SURVEY_DATA_UPDATE,payload:{"surveysCompleted":true}});
             } else {
+              switch(data.occupancyType){
+                case "RES3A":
+                case "RES3B":
+                  data.occupancyType="RES3-AB"
+                  break;
+                case "RES3C":
+                case "RES3D":
+                  data.occupancyType="RES3-CD"
+                  break;
+                case "RES3E":
+                case "RES3F":
+                  data.occupancyType="RES3-EF"
+                  break;
+              }
               let newsurvey={
                 ...defaultSurvey,
                 'damcat':data.damcat,
@@ -229,7 +245,7 @@ const stBundle=function(config){
             scale:0.2,
             anchorXUnits: 'fraction',
             anchorYUnits: 'fraction',
-            src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Map_marker_font_awesome.svg/200px-Map_marker_font_awesome.svg.png',
+            src: `${publicFolder}/survey-marker.png`,
           })
         }));
 
