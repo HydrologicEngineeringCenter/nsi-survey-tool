@@ -1,10 +1,15 @@
 import { createRouteBundle } from 'redux-bundler';
-import Login from '../containers/login/login'
-import Main from '../containers/main/main';
+import LoginPage from '../containers/login/LoginPage'
+import MainPage from '../containers/main/MainPage';
 import FourOhFour from '../containers/404';
 
-export default createRouteBundle({
-  '/': Login,
-  '/main': Main,
+
+
+const routes = createRouteBundle({
+  '/nsi-survey': LoginPage,
+  '/nsi-survey/': LoginPage,
+  '/nsi-survey/main': MainPage,
   '*': FourOhFour
 })
+
+export {routes as default}

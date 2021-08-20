@@ -1,5 +1,5 @@
 import Style from 'ol/style/Style';
-import Fill from 'ol/style/Fill';
+import {Fill,Stroke} from 'ol/style';
 import Circle from 'ol/style/Circle'
 import MVT from 'ol/format/MVT';
 import VectorTileLayer from 'ol/layer/VectorTile';
@@ -50,46 +50,51 @@ export default{
 
 const initMap=function(store){
   const map = store.selectMap();
-  let fRes = new Fill({
-        color: 'pink'
-      })
+
+  let stroke=new Stroke({
+    color:"#000",
+    width:1,
+  });
+
   let styleRes = new Style({
-      image: new Circle({
-        radius:2,
-        fill: fRes,
-      }),
-      fill:fRes,
-    })
-    let fCom = new Fill({
-      color: 'blue'
-    })
-let stylecom = new Style({
     image: new Circle({
-      radius:2,
-      fill: fCom,
+      radius:4,
+      fill: new Fill({
+        color:"#AAA"
+      }),
+      stroke:stroke,
     }),
-    fill:fCom,
   })
-  let fInd = new Fill({
-    color: 'yellow'
+
+  let stylecom = new Style({
+    image: new Circle({
+      radius:4,
+      fill: new Fill({
+        color:"#2d96ff"
+      }),
+      stroke:stroke,
+    }),
   })
-let styleInd = new Style({
-  image: new Circle({
-    radius:2,
-    fill: fInd,
-  }),
-  fill:fInd,
-})
-let fPub = new Fill({
-  color: 'green'
-})
-let stylePub = new Style({
-image: new Circle({
-  radius:2,
-  fill: fPub,
-}),
-fill:fPub,
-})
+  
+  let styleInd = new Style({
+    image: new Circle({
+      radius:4,
+      fill: new Fill({
+        color:"#dddddd"
+      }),
+      stroke:stroke
+    }),
+  });
+
+  let stylePub = new Style({
+    image: new Circle({
+      radius:4,
+      fill: new Fill({
+        color:"#09e40f"
+      }),
+      stroke:stroke
+    })
+  })
 
 
   let layer=new VectorTileLayer({
@@ -105,8 +110,11 @@ fill:fPub,
        return stylecom
      }
     },
+    minZoom:16,
+    maxZoom:23,
     source: new VectorTileSource({
       attributions: 'USACE',
+      maxZoom:15,
       format: new MVT(),
       url:nsiLayers.NSIP1,
     })
