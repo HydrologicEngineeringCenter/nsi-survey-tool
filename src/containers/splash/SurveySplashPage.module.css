@@ -1,0 +1,48 @@
+.splash-page-2 {
+  align-items: flex-start;
+  display: flex;
+  /* height: 1080px; */
+  overflow: hidden;
+  /* width: 1920px; */
+}
+
+.overlap-group {
+  align-items: center;
+  background-image: url(../../resources/survey-splash/home-bg-1-1@1x.png);
+  background-position: 50% 50%;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  /* margin-left: 34px; */
+  /* margin-top: 27px; */
+  min-height: 1080px;
+  padding: 27px 34.5px;
+  position: relative;
+  width: 1920px;
+}
+
+.container-center-horizontal {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  pointer-events: none;
+  width: 100%;
+}
+
+.splash-page-2 {
+  align-items: flex-start;
+  background-color: #ffffff;
+  display: flex;
+  /* height: 1080px; */
+  overflow: hidden;
+  /* width: 1920px; */
+}
+
+.buttons {
+  align-items: flex-start;
+  display: flex;
+  height: 376px;
+  /* min-width: 1331px; */
+  position: relative;
+  top: 100px;
+}

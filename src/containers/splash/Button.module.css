@@ -1,0 +1,53 @@
+.button {
+  height: 376px;
+  pointer-events: auto;
+  transition: all .2s ease;
+  width: 373px;
+}
+
+.button:hover {
+    transform: scale(1.1);
+}
+
+.overlap-group {
+  position: relative;
+  width: 373px;
+  height: 376px;
+}
+
+.background {
+  background-color: #7A6559;
+  border-radius: 10px;
+  filter: blur(4px);
+  height: 376px;
+  left: 17px;
+  position: absolute;
+  top: 0;
+  width: 332px;
+}
+
+.vector {
+  height: 150px;
+  left: 109px;
+  position: absolute;
+  top: 54px;
+  width: 150px;
+}
+
+.text-1 {
+  height: 86px;
+  left: 0;
+  letter-spacing: 0;
+  position: absolute;
+  text-align: center;
+  top: 257px;
+  width: 373px;
+}
+
+.smart-layers-pointers, .smart-layers-pointers * {
+  pointer-events: auto;
+  visibility: visible;
+}
+
+
+/* @import url("https//fonts.googleapi.com/css?family=Lato:700"); */

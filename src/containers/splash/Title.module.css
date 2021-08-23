@@ -1,0 +1,76 @@
+.title {
+  align-items: flex-start;
+  display: flex;
+  min-width: 791px;
+}
+
+.overlap-group {
+  height: 261px;
+  position: relative;
+  width: 793px;
+}
+
+.background {
+  background-color: #D3D9DF;
+  filter: blur(4px);
+  height: 200px;
+  left: 325px;
+  position: absolute;
+  top: 56px;
+  width: 444px;
+  /* bottom: 23.38%; */
+}
+
+.background-1 {
+  background-color: #D3D9DF;
+  filter: blur(4px);
+  height: 200px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 444px;
+}
+
+.intersect-rec {
+  background-color: #7a65591a;
+  height: 142px;
+  left: 325px;
+  position: absolute;
+  top: 56px;
+  width: 119px;
+}
+
+.valign-text-middle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.title-1 {
+  height: 200px;
+  left: 335px;
+  letter-spacing: -4.00px;
+  position: absolute;
+  text-align: center;
+  top: 61px;
+  width: 458px;
+}
+
+.title-0 {
+  height: 200px;
+  left: 0;
+  letter-spacing: -4.00px;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  width: 446px;
+}
+
+
+.lato-bold-coffee-80px {
+  color: #7A6559;
+  font-size: 80px;
+  font-weight: bold;
+}
+
+@import url("https://fonts.googleapis.com/css?family=Lato:700");
