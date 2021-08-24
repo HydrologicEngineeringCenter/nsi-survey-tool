@@ -15,7 +15,7 @@ import ManageAllText from "../../resources/survey-splash/update-existing-survey@
 import Button from "./Button";
 import Title from "./Title";
 
-function MainPage(props) {
+function SurveySplashPage(props) {
   const { doUpdateUrl, authNSIToken } = props;
 
   if (!authNSIToken) {
@@ -23,22 +23,18 @@ function MainPage(props) {
   }
 
   return (
-    <Fragment>
+    <div className={classes["container-center-vertical"]}>
       <NavBar />
-      <div className={classes["container-center-horizontal"]}>
-        <div className={classes["splash-page-2"]}>
-          <div className={classes["overlap-group"]}>
-            <Title />
-            <div className={classes["buttons"]}>
-              <Button vector={CreateNewSvg} text="Create New" />
-              <Button vector={ModifyExistingSvg} text="Modify Existing" />
-              <Button vector={ManageAllSvg} text="Manage All" />
-            </div>
-          </div>
+      <div className={classes["overlap-group"]}>
+        <Title />
+        <div className={classes["buttons"]}>
+          <Button vector={CreateNewSvg} text="Create New" />
+          <Button vector={ModifyExistingSvg} text="Modify Existing" />
+          <Button vector={ManageAllSvg} text="Manage All" />
         </div>
       </div>
-    </Fragment>
+    </div>
   );
 }
 
-export default connect("doUpdateUrl", "selectAuthNSIToken", MainPage);
+export default connect("doUpdateUrl", "selectAuthNSIToken", SurveySplashPage);
