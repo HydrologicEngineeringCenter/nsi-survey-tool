@@ -2,7 +2,12 @@
   height: 376px;
   pointer-events: auto;
   transition: all .2s ease;
-  width: 373px;
+  width: 400px;
+  /* padding-left: 10vh; */
+  /* padding-right: 10vh; */
+  /* display: flex; */
+  /* flex-direction: column; */
+  /* flex-wrap: wrap; */
 }
 
 .button:hover {
@@ -16,32 +21,40 @@
 }
 
 .background {
-  background-color: #7A6559;
+  background-color: white;
   border-radius: 10px;
-  filter: blur(4px);
-  height: 376px;
+  /* filter: blur(4px); */
+  height: 375px;
   left: 17px;
   position: absolute;
   top: 0;
-  width: 332px;
+  width: 330px;
 }
 
 .vector {
   height: 150px;
-  left: 109px;
+  width: 150px;
+
+  left: 90px;
   position: absolute;
   top: 54px;
-  width: 150px;
+  /* display: flex; */
+  /* align-items: center; */
+  /* margin-left: auto; */
+  /* margin-right: auto; */
+
 }
 
 .text-1 {
-  height: 86px;
+  /* height: 86px; */
   left: 0;
-  letter-spacing: 0;
+  /* letter-spacing: 0; */
   position: absolute;
   text-align: center;
   top: 257px;
-  width: 373px;
+  width: 100%;
+  color: black;
+  display: inline-flex;
 }
 
 .smart-layers-pointers, .smart-layers-pointers * {

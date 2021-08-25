@@ -5,14 +5,15 @@ html, body, .div #root {
 
 .overlap-group {
   align-items: center;
-  background-image:  url(../../resources/survey-splash/home-bg-1-1@1x.png);
-  background-size: cover;
-  background-position: 50% 50%;
+  /* background-image:  url(../../resources/survey-splash/home-bg-1-1@1x.png); */
+  /* background-size: cover; */
+  /* background-position: 50% 50%; */
 
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
+  /* -webkit-background-size: cover; */
+  /* -moz-background-size: cover; */
+  /* -o-background-size: cover; */
 
+  background-color: black;
 
 
   display: flex;
@@ -63,5 +64,5 @@ html, body, .div #root {
   height: 376px;
   /* min-width: 1331px; */
   position: relative;
-  top: 100px;
+  top: 25vh;
 }
