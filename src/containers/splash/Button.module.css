@@ -3,11 +3,6 @@
   pointer-events: auto;
   transition: all .2s ease;
   width: 400px;
-  /* padding-left: 10vh; */
-  /* padding-right: 10vh; */
-  /* display: flex; */
-  /* flex-direction: column; */
-  /* flex-wrap: wrap; */
 }
 
 .button:hover {
@@ -21,9 +16,8 @@
 }
 
 .background {
-  background-color: white;
+  background-color: #adb5bd  ;
   border-radius: 10px;
-  /* filter: blur(4px); */
   height: 375px;
   left: 17px;
   position: absolute;
@@ -34,21 +28,14 @@
 .vector {
   height: 150px;
   width: 150px;
-
   left: 90px;
   position: absolute;
   top: 54px;
-  /* display: flex; */
-  /* align-items: center; */
-  /* margin-left: auto; */
-  /* margin-right: auto; */
 
 }
 
 .text-1 {
-  /* height: 86px; */
   left: 0;
-  /* letter-spacing: 0; */
   position: absolute;
   text-align: center;
   top: 257px;
@@ -61,6 +48,3 @@
   pointer-events: auto;
   visibility: visible;
 }
-
-
-/* @import url("https//fonts.googleapi.com/css?family=Lato:700"); */

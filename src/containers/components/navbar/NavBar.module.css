@@ -1,0 +1,17 @@
+.navbar-brand {
+  color: #fff !important;
+  font-weight: bolder;
+  padding-left: 15px;
+  padding-top: 10px;
+  font-size: 1.5rem !important;
+}
+
+
+.float-left {
+  display: flex;
+  align-items: center;
+}
+
+.navbar {
+  pointer-events: none;
+}
