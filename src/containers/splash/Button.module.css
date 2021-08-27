@@ -1,0 +1,50 @@
+.button {
+  height: 376px;
+  pointer-events: auto;
+  transition: all .2s ease;
+  width: 400px;
+}
+
+.button:hover {
+    transform: scale(1.1);
+}
+
+.overlap-group {
+  position: relative;
+  width: 373px;
+  height: 376px;
+}
+
+.background {
+  background-color: #adb5bd  ;
+  border-radius: 10px;
+  height: 375px;
+  left: 17px;
+  position: absolute;
+  top: 0;
+  width: 330px;
+}
+
+.vector {
+  height: 150px;
+  width: 150px;
+  left: 90px;
+  position: absolute;
+  top: 54px;
+
+}
+
+.text-1 {
+  left: 0;
+  position: absolute;
+  text-align: center;
+  top: 257px;
+  width: 100%;
+  color: black;
+  display: inline-flex;
+}
+
+.smart-layers-pointers, .smart-layers-pointers * {
+  pointer-events: auto;
+  visibility: visible;
+}

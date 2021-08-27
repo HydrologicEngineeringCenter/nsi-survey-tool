@@ -1,5 +1,6 @@
 .nv-bg{
-    background-color: #000000;
+    background-color: #222;
+    pointer-events: none;
 }
 
 .st-main{
