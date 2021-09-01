@@ -1,0 +1,32 @@
+.input-label {
+  color: #000000;
+  font-size: 16px;
+  left: 0;
+  letter-spacing: .16px;
+  line-height: 24px;
+  position: absolute;
+  white-space: nowrap;
+  width: 272px;
+}
+
+.text-block {
+  background-color: #f8fafc;
+  border: 0;
+  border-radius: 4px;
+  height: 48px;
+  left: 0;
+  mix-blend-mode: normal;
+  padding: 0;
+  position: absolute;
+  top: 26px;
+  width: 270px;
+}
+
+.name-container {
+  height: 74px;
+  overflow: hidden;
+  position: relative;
+  width: 270px;
+
+
+}

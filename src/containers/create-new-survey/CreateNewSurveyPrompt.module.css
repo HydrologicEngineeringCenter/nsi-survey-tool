@@ -1,0 +1,18 @@
+.create-new-survey-modal {
+  align-items: flex-start;
+  /* background-color: #adb5bd !important; */
+  display: flex;
+  flex-direction: column;
+  height: 610px;
+  padding: 5px 20px;
+  position: relative;
+  /* width: 355px; */
+  justify-content: space-around;
+}
+
+.surveyors-container{
+  background-color: #bcb8b0;
+  display: flex;
+  border-radius: 10px;
+  flex-direction: column;
+}
