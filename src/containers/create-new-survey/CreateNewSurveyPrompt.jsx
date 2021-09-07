@@ -6,6 +6,7 @@ import ButtonHelp from "./form-components/ButtonHelp";
 import SurveyorsList from "../create-new-survey/form-components/SurveyorsList";
 import ActionButtons from "./form-components/ActionButtons";
 import FunctionTitle from "./form-components/FunctionTitle";
+import { connect } from 'redux-bundler-react';
 
 import classes from "./CreateNewSurveyPrompt.module.css";
 // import Card from "../components/UI/Card";
