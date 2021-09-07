@@ -11,10 +11,19 @@
 
 .modal {
   position: fixed;
-  top: 20vh;
-  left: 5%;
-  width: 25rem;
-  background-color: #adb5bd;
+  top: 15vh;
+
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  /* overflow: scroll; */
+
+  
+  /* left should be 50% - 1/2 width */
+  left: calc(50% - 17.5rem);
+  width: 35rem;
+
+  background-color: white;
   padding: 2rem;
   border-radius: 14px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
@@ -22,12 +31,12 @@
   animation: slide-down 300ms ease-out forwards;
 }
 
-@media (min-width: 768px) {
+/* @media (min-width: 768px) {
   .modal {
     width: 25rem;
     left: calc(50% - 12.5rem);
   }
-}
+} */
 
 @keyframes slide-down {
   from {

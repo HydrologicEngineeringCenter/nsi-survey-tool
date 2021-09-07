@@ -8,6 +8,6 @@
   align-items: center;
   height: 32px;
   width: 100%;
-  position: relative;
+  /* position: relative; */
   justify-content: space-between;
 }

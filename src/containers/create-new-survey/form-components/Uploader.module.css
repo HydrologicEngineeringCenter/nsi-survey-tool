@@ -1,0 +1,4 @@
+.uploader {
+  display: flex;
+  flex-direction: row;
+}

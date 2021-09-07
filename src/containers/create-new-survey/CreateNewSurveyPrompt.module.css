@@ -3,7 +3,7 @@
   /* background-color: #adb5bd !important; */
   display: flex;
   flex-direction: column;
-  height: 610px;
+  /* height: 610px; */
   padding: 5px 20px;
   position: relative;
   /* width: 355px; */
@@ -15,4 +15,12 @@
   display: flex;
   border-radius: 10px;
   flex-direction: column;
+}
+
+/* .button {
+  color: #444;
+} */
+
+.card {
+  padding: 20px 20px 20px !important;
 }
