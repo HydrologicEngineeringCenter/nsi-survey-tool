@@ -3,13 +3,17 @@ import { connect } from 'redux-bundler-react';
 
 function USGDisclaimer(props){
     
-    const {doAuthFetchTokens} = props;
+    const {doAuthFetchTokens, doKeycloakAuthenticate} = props;
     const [showLogin,setShowLogin] = useState(false);
 
     const handleLoginClick=function(){
         doAuthFetchTokens();
         setShowLogin(true);
     }
+
+    const handleLoginClickKC = () => {
+      doKeycloakAuthenticate();
+    };
 
     const renderDisclaimer=function(){
         return(
@@ -39,7 +43,7 @@ function USGDisclaimer(props){
             </div>
 
             <div className="modal-footer">
-                <button type="button" className="btn btn-secondary lg-btn-secondary" onClick={handleLoginClick}>I Agree</button>
+                <button type="button" className="btn btn-secondary lg-btn-secondary" onClick={handleLoginClickKC}>I Agree</button>
             </div>
             </React.Fragment>
         )
@@ -70,5 +74,6 @@ function USGDisclaimer(props){
 
 export default connect(
     'doAuthFetchTokens',
+    'doKeycloakAuthenticate',
     USGDisclaimer
 );

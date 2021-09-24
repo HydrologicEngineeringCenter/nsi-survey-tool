@@ -33,12 +33,18 @@ export default {
         fetch(`${authNSIHost}/${appNSIId}`, {
             method: 'get'
         }).then(function(response) {
+            console.log(response)
             return response.text();
         }).then(function(data) {
             let claims = parseJwt(data);
             if(claims){
+              console.log("****************")
+              console.log(data)
+              console.log(JSON.parse(atob(data.split('.')[0])))
+              console.log(JSON.parse(atob(data.split('.')[1])))
+              console.log("****************")
                 dispatch({type:UPDATE_AUTH_TOKEN,payload:{nsiToken:data,userName:claims.name}});
-                store.doUpdateUrl('/nsi-survey/main')
+                store.doUpdateUrl('/nsi-survey/splash')
             }
         });      
     },

@@ -3,7 +3,7 @@ import { connect } from 'redux-bundler-react';
 import mapper from '../../../resources/GeoFDA_Icon.ico';
 import '../../main/main.css';
 import classes from './NavBar.module.css';
-import cwbiLogo from "../../../resources/CWBI_Logo_45x45.png";
+import cwbiLogo from "../../../resources/CWBI_Logo_45x45_compressed.png";
 
 function NavBar(props) {
 

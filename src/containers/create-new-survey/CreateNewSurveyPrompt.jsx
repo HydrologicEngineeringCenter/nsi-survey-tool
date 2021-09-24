@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useRef } from "react";
 import Modal from "../components/UI/Modal";
 import NameInput from "./form-components/NameInput";
 import ActiveSurvey from "./form-components/ActiveSurvey";
@@ -21,6 +21,7 @@ import {
 } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Uploader from "./form-components/Uploader";
+import { Store } from "@material-ui/icons";
 
 const NAME_INPUT = "NAME_INPUT";
 
@@ -30,13 +31,16 @@ const getSteps = () => {
 };
 
 const getStepContent = (step) => {
+
+  const nameInputRef = useRef();
+
   // component contents
   switch (step) {
     
     case 0:
       return (
         <Card className={classes.card}>
-          <NameInput />
+          <NameInput ref={nameInputRef} />
           <p />
           <p />
           <ActiveSurvey />
@@ -75,7 +79,17 @@ const getStepContent = (step) => {
 };
 
 const NewSurveyPrompt = (props) => {
-  const { flagCreateSurveyValidName } = props;
+  // const { doCreateNewSurvey, flagCreateSurveyValidName } = props;
+  const { doCreateNewSurvey } = props;
+
+  //////////////////////
+  //
+  //////////////////////
+
+  const handleCreateSurvey = () => {
+
+  
+  };
 
   //////////////////////
   //  Handling stepper
@@ -95,11 +109,14 @@ const NewSurveyPrompt = (props) => {
     setActiveStep(0);
   };
 
+  const handleTest = () => {
+    store.doCreateNewSurvey();
+  };
+  
+
   //////////////////////
   //
   //////////////////////
-
-  const handleCreateSurvey = () => {};
 
   return (
     <Modal onClose={props.onClose}>
@@ -130,7 +147,7 @@ const NewSurveyPrompt = (props) => {
                     <Button
                       variant="contained"
                       // color="primary"
-                      onClick={handleNext}
+                      onClick={handleTest}
                       className={classes.button}
                     >
                       {activeStep === steps.length - 1 ? "Finish" : "Next"}
@@ -149,4 +166,7 @@ const NewSurveyPrompt = (props) => {
   );
 };
 
-export default connect("selectCreateSurveyInvalidName", NewSurveyPrompt);
+export default connect(
+  // "selectCreateSurveyInvalidName", 
+  "doCreateNewSurvey",
+  NewSurveyPrompt);

@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { createContext, Fragment, useState } from "react";
 import { connect } from "redux-bundler-react";
 import NavBar from "../components/navbar/NavBar";
 import classes from "./SurveySplashPage.module.css";
@@ -12,10 +12,20 @@ import Button from "./Button";
 import CreateNewSurveyPrompt from "../create-new-survey/CreateNewSurveyPrompt";
 
 function SurveySplashPage(props) {
-  const { doUpdateUrl, authNSIToken } = props;
+  const { doUpdateUrl, doAuthFetchTokens, authNSIToken } = props;
 
   if (!authNSIToken) {
-    doUpdateUrl("/nsi-survey/splash"); // TODO - reroute to main login on final
+
+    console.log("Before auth");
+    console.log("************");
+    console.log(authNSIToken);
+    doAuthFetchTokens();
+
+    console.log("After auth");
+    console.log("************");
+    console.log(authNSIToken)
+
+    doUpdateUrl("/nsi-survey/"); // TODO - reroute to main login on final
   }
 
   const [flagShowCreateSurvey, setFlagShowCreateSurvey] = useState(false);
@@ -30,11 +40,17 @@ function SurveySplashPage(props) {
 
   return (
     <div className={classes["container-center-vertical"]}>
-      {flagShowCreateSurvey && <CreateNewSurveyPrompt onClose={hideCreateSurvey} />}
+      {flagShowCreateSurvey && (
+        <CreateNewSurveyPrompt onClose={hideCreateSurvey} />
+      )}
       <NavBar />
       <div className={classes["overlap-group"]}>
         <div className={classes["buttons"]}>
-          <Button vector={CreateNewSvg} text="Create New Survey" onClick={showCreateSurvey}/>
+          <Button
+            vector={CreateNewSvg}
+            text="Create New Survey"
+            onClick={showCreateSurvey}
+          />
           <Button vector={ModifyExistingSvg} text="Modify Existing Survey" />
           <Button vector={ManageAllSvg} text="Manage All Surveys" />
         </div>
@@ -43,4 +59,9 @@ function SurveySplashPage(props) {
   );
 }
 
-export default connect("doUpdateUrl", "selectAuthNSIToken", SurveySplashPage);
+export default connect(
+  "doUpdateUrl",
+  "doAuthFetchTokens",
+  "selectAuthNSIToken",
+  SurveySplashPage
+);
