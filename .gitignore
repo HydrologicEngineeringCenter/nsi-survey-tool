@@ -30,3 +30,5 @@ yarn-error.log*
 
 /tests/http
 .devcontainer/
+
+*.env

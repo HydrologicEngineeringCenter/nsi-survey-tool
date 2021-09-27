@@ -1,104 +1,146 @@
-// background on OAuth 2.0
-// https://datatracker.ietf.org/doc/html/rfc6749
-
 const urlencodeFormData = fd => new URLSearchParams([...fd])
 
 class Keycloak{
     constructor(config){
-        this.keycloakResp=null;
+        this.accessToken=null;
+        this.identityToken=null;
         this.config=config;
+        this.authCallback=config.onAuthenticate;
+        this.errCallback=config.onError;
+        this.sessionEndWarning=config.sessionEndWarning || 60;
+        this.sessionEndingCallback = config.onSessionEnding;
+        this.keycloakUrl=`${config.keycloakUrl}/realms/${config.realm}/protocol/openid-connect`
     }
 
-    authenticate(){ // redirect to auth endpoint
-        const url = `${this.config.keycloakUrl}/realms/${this.config.realm}/protocol/openid-connect/auth?response_type=code&client_id=${this.config.client}&scope=openid&redirect_uri=${this.config.redirectUrl}`;
+    refreshInterval(expiresIn){
+        if(this.config.refreshInterval){
+            return this.config.refreshInterval*1000;
+        } else {
+            const interval=(expiresIn-60)*1000;
+            if(interval<=0){
+                console.log(`Warning: Invalid Refresh Interval of ${interval} computed for token that expires in ${expiresIn}`);
+                return 900*1000; //use default of 15 minutes
+            }
+            return interval;
+        }
+    }
+
+    authenticate(){
+        let url = `${this.config.keycloakUrl}/realms/${this.config.realm}/protocol/openid-connect/auth?response_type=code&client_id=${this.config.client}&scope=openid&nocache=${(new Date()).getTime()}&redirect_uri=${this.config.redirectUri}`
         window.location.href=url;
     }
 
-    // response_type = code
-    checkForResponse(authCallback){
+    checkForSession(){
         const urlParams = new URLSearchParams(window.location.search);
         this.code=urlParams.get('code');
         this.session_state=urlParams.get('session_state');
         if(this.code && this.session_state){
-            this.getKeycloakAuth(authCallback);
+            this.codeFlowAuth();
             window.history.pushState(null,null, document.location.pathname);
         }
     }
 
-    // authorization code grant
-    getKeycloakAuth(authCallback){
+    fetchToken(formData){
+        var xhr = new XMLHttpRequest();
+
+        xhr.open('POST',`${this.keycloakUrl}/token`, true);
+        xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded')
+        let self=this;
+        let resp=null;
+        xhr.onload = function () {
+            switch(xhr.status){
+                case(400):
+                    self.accessToken=null;
+                    self.refreshToken=null;
+                    resp = JSON.parse(xhr.responseText);
+                    self.errCallback(resp);
+                    break;
+                case(xhr.status!==200):
+                    resp = JSON.parse(xhr.responseText);
+                    self.errCallback(resp);
+                    break;
+                default:
+                    let keycloakResp={
+                        access_token:null,
+                        identify_token:null,
+                        refresh_expires_in:0,
+                    }
+                    try{
+                         keycloakResp=JSON.parse(xhr.responseText);
+                    }
+                    catch(err){
+                        console.log(`Error parsing authentication token: ${err}`)
+                    }
+                    self.accessToken=keycloakResp.access_token;
+                    self.identityToken=keycloakResp.identity_token;
+                    const remainingTime = keycloakResp.refresh_expires_in;
+                    if(remainingTime<=self.sessionEndWarning){
+                        if(self.sessionEndingCallback)
+                            self.sessionEndingCallback(remainingTime);
+                    }
+                    setTimeout(function(){
+                        self.refresh(keycloakResp.refresh_token);
+                    },self.refreshInterval(keycloakResp.expires_in));
+                    self.authCallback(keycloakResp.access_token);
+            }
+        };
+        xhr.onerror=function(){
+            if(xhr.responseText){
+                self.errCallback(JSON.parse(xhr.responseText));    
+            } else {
+                self.errCallback({"error":"Unable to fetch the token due to a Network Error"});
+            }
+        }
+        xhr.send(urlencodeFormData(formData).toString().replaceAll("%0D", "")); // URL encoding do not remove %0D escape characters
+    }
+
+    codeFlowAuth(){
         console.log("fetching token");
-        let tokenUrl=`${this.config.keycloakUrl}/realms/${this.config.realm}/protocol/openid-connect/token`
         var data = new FormData();
         data.append('code', this.code);
         data.append('grant_type', 'authorization_code');
         data.append('client_id', this.config.client);
-        data.append('redirect_uri', this.config.redirectUrl);
-
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST',tokenUrl, true);
-        xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded')
-        let self=this;
-        xhr.onload = function () {
-            if(xhr.status!==200){
-                console.log(xhr.responseText);
-                
-            } else {
-                self.keycloakResp=JSON.parse(xhr.responseText);
-                self.code=null;
-                authCallback()
-            }
-        };
-        xhr.onerror=function(){
-            console.log(xhr.responseText)
-        }
-        xhr.send(urlencodeFormData(data));
+        data.append('client_secret', this.config.clientSecret);
+        data.append('redirect_uri', this.config.redirectUri);
+        this.fetchToken(data);        
     }
 
-    getAccessToken(){
-        return this.keycloakResp.access_token;
+    refresh(refreshToken){
+        console.log("refreshing token");
+        var data = new FormData();
+        data.append('refresh_token',refreshToken);
+        data.append('grant_type', 'refresh_token');
+        data.append('client_id', this.config.client);
+        this.fetchToken(data);
     }
 
-    getIdentityToken(){
-        return this.keycloakResp.identity_token;
-    }
-
-    getRefreshToken(){
-        return this.keycloakResp.refresh_token;
-    }
-
-    // resource owner password credentials grant
-    directGrantAuthenticate(user,pass,authCallback){
-        let url = `${this.config.keycloakUrl}/realms/${this.config.realm}/protocol/openid-connect/token`
+    directGrantAuthenticate(user,pass){
         var data = new FormData();
         data.append('grant_type', 'password');
         data.append('client_id', this.config.client);
         data.append('scope', 'openid profile');
         data.append('username',user);
         data.append('password',pass);
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST',url, true);
-        xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded')
-        let self=this;
-        xhr.onload = function () {
-            if(xhr.status!==200){
-                console.log(xhr.responseText);
-                
-            } else {
-                self.keycloakResp=JSON.parse(xhr.responseText);
-                authCallback();
-            }
-        };
-        xhr.onerror=function(){
-            console.log(xhr.responseText)
-        }
-        xhr.send(urlencodeFormData(data));
+        this.fetchToken(data);
     }
 
-    directGrantX509Authenticate(authCallback){
-        this.directGrantAuthenticate("", "", authCallback)
+    directGrantX509Authenticate(){
+        var data = new FormData();
+        data.append('grant_type', 'password');
+        data.append('client_id', this.config.client);
+        data.append('scope', 'openid profile');
+        data.append('username','');
+        data.append('password','');
+        this.fetchToken(data);
     }
 
+    getAccessToken(){
+        return this.accessToken;
+    }
+
+    getIdentityToken(){
+        return this.identityToken;
+    }
 }
 
 const tokenToObject=function(token){

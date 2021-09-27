@@ -5,7 +5,7 @@ import {
 } from 'redux-bundler';
 
 import cache from '@corpsmap/corpsmap/src/utils/cache'
-import authBundle from './auth-bundle';
+// import authBundle from './auth-bundle';
 
 import authKeycloakBundle from './auth-keycloak';
 import routesBundle from './routes-bundle';
@@ -13,7 +13,7 @@ import createNewSurveyBundle from '../containers/create-new-survey/create-new-su
 
 export default composeBundles(
   routesBundle,
-  authBundle,
+  // authBundle,
   authKeycloakBundle,
   createNewSurveyBundle,
   createUrlBundle(),

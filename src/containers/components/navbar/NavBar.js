@@ -7,7 +7,7 @@ import cwbiLogo from "../../../resources/CWBI_Logo_45x45_compressed.png";
 
 function NavBar(props) {
 
-  const { authUserName: userName } = props;
+  const { authData: userName } = props;
 
   return (
     <nav className={`navbar navbar=expand-lg navbar-dark nv-bg`}>
@@ -28,6 +28,6 @@ function NavBar(props) {
   )
 }
 export default connect(
-  'selectAuthUserName',
+  'selectAuthData',
   NavBar
 );
