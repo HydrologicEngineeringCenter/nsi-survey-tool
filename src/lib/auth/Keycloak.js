@@ -45,20 +45,23 @@ class Keycloak{
 
         xhr.open('POST',`${this.keycloakUrl}/token`, true);
         xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded')
-        let self=this;
+        let self=this; 
         let resp=null;
+
         xhr.onload = function () {
             switch(xhr.status){
-                case(400):
+                case(400): // 400 - bad request
                     self.accessToken=null;
                     self.refreshToken=null;
                     resp = JSON.parse(xhr.responseText);
                     self.errCallback(resp);
                     break;
-                case(xhr.status!==200):
+
+                case(xhr.status!==200): // 200 - ok
                     resp = JSON.parse(xhr.responseText);
-                    self.errCallback(resp);
+                    // self.errCallback(resp);
                     break;
+
                 default:
                     let keycloakResp={
                         access_token:null,
@@ -84,6 +87,7 @@ class Keycloak{
                     self.authCallback(keycloakResp.access_token);
             }
         };
+
         xhr.onerror=function(){
             if(xhr.responseText){
                 self.errCallback(JSON.parse(xhr.responseText));    
@@ -111,6 +115,7 @@ class Keycloak{
         data.append('refresh_token',refreshToken);
         data.append('grant_type', 'refresh_token');
         data.append('client_id', this.config.client);
+        data.append('client_secret', this.config.clientSecret); // keycloak configured to authenticate client with only id and secret
         this.fetchToken(data);
     }
 

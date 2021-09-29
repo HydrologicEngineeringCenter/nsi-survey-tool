@@ -34,7 +34,9 @@ const auth = {
   },
   
   init:store=>{
+
     keycloak = new Keycloak({
+      
       keycloakUrl:keycloakHost,
       realm:keycloakRealm,
       client:keycloakClient,
@@ -42,13 +44,17 @@ const auth = {
       refreshInterval:30,
       sessionEndWarning:600,
       clientSecret:keycloakClientSecret,
+
       onAuthenticate:(token)=>{
+        console.log("on authenticate") // debugging
         store.doAuthUpdate(token);
       },
+
       onError:(err)=>{
         console.log(err);
         store.doAuthUpdate(null);
       },
+
       onSessionEnding:(remainingTime)=>{
         console.log(remainingTime);
         store.doTriggerNotification("warning",`Your session is expiring in ${Math.round(remainingTime/60)} minutes.`)
@@ -63,7 +69,11 @@ const auth = {
   },
 
   doAuthUpdate:(token) =>({dispatch,store}) =>{
+    console.log('doAuthUpdate') // debugging
+    // console.log(token)
+
     let authInfo;
+
     if(token===null){
       authInfo={
         roles:[],
@@ -73,6 +83,7 @@ const auth = {
     } else{
       authInfo = JSON.parse(atob(token.split(".")[1]));
     }
+
     dispatch({
       type: "AUTH_LOADED",
       payload: {
@@ -89,10 +100,13 @@ const auth = {
         requestErr: null,
       },
     });
-    const uc = store.selectUserCheck();
-    if(authInfo.roles && !uc.uexist){
-      store.doLoadUserCheck();
-    }
+
+    // const uc = store.selectUserCheck();
+
+    // if(authInfo.roles && !uc.uexist){
+      // store.doLoadUserCheck();
+    // }
+
   },
   
   doGetToken: () => ({ dispatch }) => {
@@ -124,5 +138,7 @@ const auth = {
   selectAuthData: (state) => {
     return state.auth.data;
   },
+  selectAuthAccessToken:state=>state.auth.accessToken,
+  selectAuthFullname:state=>state.auth.data.fullName,
 };
 export default auth;
