@@ -40,7 +40,7 @@ const auth = {
       keycloakUrl:keycloakHost,
       realm:keycloakRealm,
       client:keycloakClient,
-      redirectUri:keycloakRedirect,
+      redirectUrl:keycloakRedirect,
       refreshInterval:30,
       sessionEndWarning:600,
       clientSecret:keycloakClientSecret,
@@ -64,14 +64,14 @@ const auth = {
     keycloak.checkForSession();
   },
 
+  /*
+  * Begins the authorization flow - can be use as an onClick handler
+   */
   doKeycloakAuthenticate:()=>({dispatch,store})=>{  
-    keycloak.authenticate();
+    keycloak.authenticate(); // sends a user authorization request to keycloak /auth endpoint
   },
 
   doAuthUpdate:(token) =>({dispatch,store}) =>{
-    console.log('doAuthUpdate') // debugging
-    // console.log(token)
-
     let authInfo;
 
     if(token===null){
@@ -84,6 +84,7 @@ const auth = {
       authInfo = JSON.parse(atob(token.split(".")[1]));
     }
 
+    console.log(authInfo)
     dispatch({
       type: "AUTH_LOADED",
       payload: {
@@ -91,7 +92,7 @@ const auth = {
         data: {
           jwt: token,
           roles: authInfo.roles,
-          fullName: authInfo.name,
+          fullName: authInfo.preferred_username,
           userId: Number(authInfo.sub),
           name: authInfo.name ? authInfo.name.split(".")[0] : "",
           exp: authInfo.exp
@@ -138,7 +139,7 @@ const auth = {
   selectAuthData: (state) => {
     return state.auth.data;
   },
-  selectAuthAccessToken:state=>state.auth.accessToken,
+  selectAuthAccessToken:state=>state.auth.data.jwt,
   selectAuthFullname:state=>state.auth.data.fullName,
 };
 export default auth;

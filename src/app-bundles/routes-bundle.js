@@ -8,7 +8,9 @@ const routes = createRouteBundle({
   '/nsi-survey': LoginPage,
   '/nsi-survey/': LoginPage,
   '/nsi-survey/main': MainPage,
+  '/nsi-survey/main/': MainPage,
   '/nsi-survey/splash': SurveySplashPage,
+  '/nsi-survey/splash/': SurveySplashPage,
   '*': FourOhFour
 })
 

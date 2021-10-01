@@ -1,19 +1,33 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'redux-bundler-react';
 import NavBar from '../components/navbar/NavBar';
 import NsiDisclaimer from './NsiDisclaimer';
 
-function LoginPage() {
-    return (
-      <div className="lg-bg">
-        <NavBar/>
+function LoginPage(props) {
+
+  const { doUpdateUrl, authAccessToken } = props;
+
+  // maintain client-side routing for organization instead of relying on the authorization server 
+  if (authAccessToken) {
+    doUpdateUrl("/nsi-survey/splash");
+  }
+
+  return (
+    <Fragment>
+      {/* {!authLoading && */}
+        < div className="lg-bg">
+          <NavBar />
           <div className="container-fluid">
-            <NsiDisclaimer/>
+            <NsiDisclaimer />
           </div>
         </div>
-    )
+      {/* } */}
+    </Fragment >
+  )
 }
 
 export default connect(
+  "doUpdateUrl",
+  "selectAuthAccessToken",
   LoginPage
 );

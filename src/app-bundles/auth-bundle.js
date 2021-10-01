@@ -1,3 +1,4 @@
+// replaced by auth-keycloak-bundle
 import {doRoutesUpdateUrl} from './routes-bundle';
 
 const UPDATE_AUTH_TOKEN = 'UPDATE_AUTH_TOKEN';

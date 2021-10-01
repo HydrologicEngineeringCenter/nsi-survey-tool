@@ -12,22 +12,11 @@ import Button from "./Button";
 import CreateNewSurveyPrompt from "../create-new-survey/CreateNewSurveyPrompt";
 
 function SurveySplashPage(props) {
-  const { doUpdateUrl, doAuthFetchTokens } = props;
-  // const { doUpdateUrl, doAuthFetchTokens, authNSIToken } = props;
+  const { doUpdateUrl, authAccessToken } = props;
 
-  // if (!authNSIToken) {
-
-  //   console.log("Before auth");
-  //   console.log("************");
-  //   console.log(authNSIToken);
-  //   doAuthFetchTokens();
-
-  //   console.log("After auth");
-  //   console.log("************");
-  //   console.log(authNSIToken)
-
-  //   doUpdateUrl("/nsi-survey/"); // TODO - reroute to main login on final
-  // }
+  if (!authAccessToken) {
+    doUpdateUrl("/nsi-survey/");
+  }
 
   const [flagShowCreateSurvey, setFlagShowCreateSurvey] = useState(false);
 
@@ -62,7 +51,6 @@ function SurveySplashPage(props) {
 
 export default connect(
   "doUpdateUrl",
-  "doAuthFetchTokens",
-  // "selectAuthNSIToken",
+  "selectAuthAccessToken",
   SurveySplashPage
 );

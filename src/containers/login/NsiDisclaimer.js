@@ -13,6 +13,7 @@ function USGDisclaimer(props) {
 
   const handleLoginClickKC = () => {
     doKeycloakAuthenticate();
+    setShowLogin(true);
   };
 
   const renderDisclaimer = function () {

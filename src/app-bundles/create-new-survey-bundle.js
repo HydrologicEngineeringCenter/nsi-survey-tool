@@ -18,7 +18,6 @@ export default {
     return (state = initialData, { type, payload }) => {
       switch (type) {
         case CREATE_NEW_SURVEY:
-
         case ADD_SURVEY_POINTS:
         case ADD_SURVEYORS:
         default:
@@ -29,9 +28,9 @@ export default {
 
   doCreateNewSurvey: (surveyName) => ({ dispatch, store }) => {
     
-    console.log(store)
-    const token = store.selectAuthNSIToken();
-    const surveyName = store.selectSurveyName();
+    const token = store.selectAuthAccessToken();
+    console.log(token)
+    // const surveyName = store.selectSurveyName();
     const flagSurveyActive = store.selectFlagSurveyActive();
 
     if (token) {
@@ -40,7 +39,6 @@ export default {
       console.log("Error: not logged in or missing token. Cannot create new survey");
     }
 
-    
     dispatch({
       type: CREATE_NEW_SURVEY,
       payload: {
