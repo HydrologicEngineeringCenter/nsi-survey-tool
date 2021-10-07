@@ -8,7 +8,7 @@ const NameInput = (props) => {
         label="Survey Name"
         defaultValue=""
         variant="outlined"
-        inputRef={props.ref}
+        inputRef={props.inputRef}
       />
   );
 };

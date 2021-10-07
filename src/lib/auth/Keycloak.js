@@ -6,6 +6,7 @@ class Keycloak {
     this.identityToken = null;
     this.config = config;
     this.authCallback = config.onAuthenticate;
+    this.tokenCallback = config.onGetToken;
     this.errCallback = config.onError;
     this.sessionEndWarning = config.sessionEndWarning || 60;
     this.sessionEndingCallback = config.onSessionEnding;
@@ -25,6 +26,9 @@ class Keycloak {
     }
   }
 
+  /**
+   *  Send request to /auth endpoint
+   */
   authenticate() {
     let url = `${this.config.keycloakUrl}/realms/${this.config.realm}/protocol/openid-connect/auth?response_type=code&client_id=${this.config.client}&scope=openid&nocache=${(new Date()).getTime()}&redirect_uri=${this.config.redirectUrl}`
     // let url = `${this.config.keycloakUrl}/realms/${this.config.realm}/protocol/openid-connect/auth?response_type=code&client_id=${this.config.client}&scope=openid&nocache=${(new Date()).getTime()}`

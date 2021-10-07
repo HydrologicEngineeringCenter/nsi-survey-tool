@@ -84,7 +84,6 @@ const auth = {
       authInfo = JSON.parse(atob(token.split(".")[1]));
     }
 
-    console.log(authInfo)
     dispatch({
       type: "AUTH_LOADED",
       payload: {

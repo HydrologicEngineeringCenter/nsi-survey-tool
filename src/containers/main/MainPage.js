@@ -6,9 +6,9 @@ import NavBar from '../components/navbar/NavBar';
 function MainPage(props){
     const {doUpdateUrl,authNSIToken} = props;
 
-    if(!authNSIToken){
-      doUpdateUrl("/nsi-survey/");
-    }
+    // if(!authNSIToken){
+    //   doUpdateUrl("/nsi-survey/");
+    // }
 
     return (
       <div >

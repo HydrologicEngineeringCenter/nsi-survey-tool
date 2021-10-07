@@ -2,10 +2,7 @@ import { SurveyApi } from "../lib/rest/api";
 
 const baseApiUrl = process.env.REACT_APP_SURVEY_API;
 
-const endPoints = {
-  version: "/version",
-  surveys: "/surveys",
-}
+
 
 const apiConnection = options => {
 

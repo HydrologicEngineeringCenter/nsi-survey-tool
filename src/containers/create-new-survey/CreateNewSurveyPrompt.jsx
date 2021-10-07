@@ -1,17 +1,8 @@
 import React, { useState, Fragment, useRef } from "react";
 import Modal from "../components/UI/Modal";
-import NameInput from "./form-components/NameInput";
-import ActiveSurvey from "./form-components/ActiveSurvey";
-import ButtonHelp from "./form-components/ButtonHelp";
-import SurveyorsList from "../create-new-survey/form-components/SurveyorsList";
-import ActionButtons from "./form-components/ActionButtons";
-import FunctionTitle from "./form-components/FunctionTitle";
 import { connect } from 'redux-bundler-react';
-
+import FunctionTitle from "./form-components/FunctionTitle";
 import classes from "./CreateNewSurveyPrompt.module.css";
-// import Card from "../components/UI/Card";
-import Card from "@material-ui/core/Card";
-
 import {
   Stepper,
   Step,
@@ -20,99 +11,82 @@ import {
   Typography,
 } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import Uploader from "./form-components/Uploader";
-import { Store } from "@material-ui/icons";
+import StepContents from "./form-components/StepContents";
 
-const NAME_INPUT = "NAME_INPUT";
+import CREATE_SURVEY_STEP from "../../stores/newSurveyStep";
 
-const getSteps = () => {
+/**
+ * 
+ * @returns array containing header for each step
+ */
+const stepHeaders = () => {
   // stepper header
   return ["Input basic survey info", "Add survey points", "Add surveyors"];
 };
 
-const getStepContent = (step) => {
+const NewSurveyPrompt = (props) => {
+
+  const { createSurveyStep, doStoreCreateSurveyStep } = props;
+
+  //////////////////////
+  // Input refs
+  //////////////////////
 
   const nameInputRef = useRef();
-
-  // component contents
-  switch (step) {
-    
-    case 0:
-      return (
-        <Card className={classes.card}>
-          <NameInput ref={nameInputRef} />
-          <p />
-          <p />
-          <ActiveSurvey />
-        </Card>
-      );
-
-    case 1:
-      return (
-        <Fragment>
-          {/* <ButtonHelp>Add Survey Points</ButtonHelp> */}
-          <p />
-          <p />
-          <Uploader />
-          <p />
-          <p />
-          <p />
-          <p />
-        </Fragment>
-      );
-
-    case 2:
-      return (
-        <Fragment>
-          <ButtonHelp>Add Surveyors</ButtonHelp>
-          <p />
-          <p />
-          <Card className={classes["surveyors-container"]}>
-            <SurveyorsList />
-          </Card>
-        </Fragment>
-      );
-
-    default:
-      return;
-  }
-};
-
-const NewSurveyPrompt = (props) => {
-  // const { doCreateNewSurvey, flagCreateSurveyValidName } = props;
-  const { doCreateNewSurvey } = props;
-
-  //////////////////////
-  //
-  //////////////////////
-
-  const handleCreateSurvey = () => {
-
-  
-  };
 
   //////////////////////
   //  Handling stepper
   //////////////////////
-  const [activeStep, setActiveStep] = useState(0);
-  const steps = getSteps();
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
+    doStoreCreateSurveyStep(createSurveyStep + 1);
+  }
 
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
+  const handleBack = () => doStoreCreateSurveyStep(createSurveyStep - 1);
 
   const handleReset = () => {
-    setActiveStep(0);
   };
 
-  const handleTest = () => {
-    store.doCreateNewSurvey();
+  //////////////////////
+  // Confirm button handlers
+  //////////////////////
+
+  const handleBasicInfo = () => {
+
+    console.log('handleBasicInfo')
+    const enteredSurveyName = nameInputRef.current.value;
+    console.log(enteredSurveyName);
+
+    // post(REQUEST_PARAMS.CREATE_NEW_SURVEY)
+
+    handleNext();
   };
-  
+
+  const handleLoadPoints = () => {
+  };
+
+  const handleAddSurveyors = () => {
+  };
+
+  /**
+   * Selector for handler specific to each step
+   * @returns 
+   */
+  const handleConfirm = () => {
+      switch (createSurveyStep) {
+        case CREATE_SURVEY_STEP.BASIC_INFO:
+        console.log('case CREATE_SURVEY_STEP.BASIC_INFO')
+        handleBasicInfo()
+          // return handleBasicInfo;
+        case CREATE_SURVEY_STEP.POINTS:
+          return handleLoadPoints;
+        case CREATE_SURVEY_STEP.SURVEYORS:
+          return handleAddSurveyors;
+        default:
+          throw Error("Unable to determine CREATE_SURVEY_STEP")
+    }
+  }
+
 
   //////////////////////
   //
@@ -125,32 +99,38 @@ const NewSurveyPrompt = (props) => {
       </div>
 
       <div className="modal-body">
-        {/* <form className={classes["create-new-survey-modal"]}> */}
-        <Stepper activeStep={activeStep} orientation="vertical">
-          {steps.map((label, index) => (
+        <Stepper activeStep={createSurveyStep} orientation="vertical">
+
+          {stepHeaders().map((label, index) => (
             <Step key={label}>
               <StepLabel>{label}</StepLabel>
               <StepContent>
-                {getStepContent(index)}
+                <StepContents nameInputRef={nameInputRef} />
+                {/* {stepContents(index)} */}
                 <p />
                 <p />
                 <p />
                 <div className={classes.actionsContainer}>
                   <div>
-                    <Button
-                      disabled={activeStep === 0}
+
+                    <Button // back button
+                      disabled={createSurveyStep === 0}
                       onClick={handleBack}
                       className={classes.button}
                     >
                       Back
                     </Button>
-                    <Button
+
+                    <Button // next button
                       variant="contained"
                       // color="primary"
-                      onClick={handleTest}
+                      onClick={ // interact with backend onclick
+                        handleConfirm
+                        // handleNext
+                      }
                       className={classes.button}
                     >
-                      {activeStep === steps.length - 1 ? "Finish" : "Next"}
+                      {createSurveyStep === stepHeaders().length - 1 ? "Finish" : "Next"}
                     </Button>
                   </div>
                 </div>
@@ -158,15 +138,13 @@ const NewSurveyPrompt = (props) => {
             </Step>
           ))}
 
-          {/* <ActionButtons /> */}
         </Stepper>
-        {/* </form> */}
       </div>
     </Modal>
   );
 };
 
 export default connect(
-  // "selectCreateSurveyInvalidName", 
-  "doCreateNewSurvey",
+  'selectCreateSurveyStep',
+  'doStoreCreateSurveyStep',
   NewSurveyPrompt);

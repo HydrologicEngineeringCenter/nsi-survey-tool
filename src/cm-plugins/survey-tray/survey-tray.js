@@ -153,11 +153,11 @@ function SurveyTray(props){
                 <div className='st-survey-loading-text'>
                     Loading Survey
                 </div>
-                <div class="spinner">
-                    <div class="bounce1"></div>
-                    <div class="bounce2"></div>
-                    <div class="bounce3"></div>
-                    <div class="bounce4"></div>
+                <div className="spinner">
+                    <div className="bounce1"></div>
+                    <div className="bounce2"></div>
+                    <div className="bounce3"></div>
+                    <div className="bounce4"></div>
                 </div>
             </div>
         )
@@ -260,7 +260,7 @@ function SurveyTray(props){
                                     <i className="mdi mdi-help-circle-outline" />
                                 </a>
                             </div>
-                            <input type="text" value={survey.found_ht} class="form-control st-input" id="foundheight" placeholder="" onChange={handleChange("found_ht")} onBlur={numberValidation("found_ht","dbl")}/>
+                            <input type="text" value={survey.found_ht} className="form-control st-input" id="foundheight" placeholder="" onChange={handleChange("found_ht")} onBlur={numberValidation("found_ht","dbl")}/>
                         </div>
                     </div>
                 </div>
