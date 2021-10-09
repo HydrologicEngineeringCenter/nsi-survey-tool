@@ -150,12 +150,6 @@ const auth = {
   //   });
   // },
 
-  doLoadAuth: (callback) => ({ dispatch, store, apiGetAuth }) => {
-    if (callback) {
-      callback();
-    }
-  },
-
   // doAuthRemove: () => ({ dispatch }) => {
   //   dispatch({
   //     type: "AUTH_REMOVED",
@@ -165,10 +159,7 @@ const auth = {
   //   });
   // },
 
-  // selectAuthFlagLoading: state => state.auth.loading,
   selectAuthAccessToken: state => state.auth.data ? state.auth.data.jwt : null,
-  // selectAuthAccessToken: state => state.auth.data.jwt,
-  // selectAuthFullname: state => state.auth.data.fullName,
   selectAuthFullname: state => state.auth.data ? state.auth.data.fullName : null,
 };
 

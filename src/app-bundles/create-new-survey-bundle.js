@@ -1,5 +1,4 @@
 
-const apiHost=process.env.REACT_APP_SURVEY_API;
 const CREATE_NEW_SURVEY = "CREATE_NEW_SURVEY";
 const ADD_SURVEY_POINTS = "ADD_SURVEY_POINTS";
 const ADD_SURVEYORS = "ADD_SURVEYORS";
@@ -7,6 +6,8 @@ const ADD_SURVEYORS = "ADD_SURVEYORS";
 const CREATE_NEW_SURVEY_ACTION = {
   STORE_SURVEY_NAME: "CREATE_NEW_SURVEY_ACTION.STORE_SURVEY_NAME",
   STORE_STEP: "CREATE_NEW_SURVEY_ACTION.STORE_STEP",
+  STORE_NAME: "CREATE_NEW_SURVEY_ACTION.STORE_NAME",
+  STORE_REQUEST_BODY_PARAM: "CREATE_NEW_SURVEY_ACTION.STORE_REQUEST_BODY_PARAM",
 }
 
 export default {
@@ -19,31 +20,48 @@ export default {
       surveyName: "",
       flagSurveyActive: true,
       surveyStep: 0,
+      surveyName: null,
+      // enteredSurveyDescription: null,
+      // enteredActiveSwitch: null,
     };
     return (state = initialData, { type, payload }) => {
       switch (type) {
-          
+
         case CREATE_NEW_SURVEY:
         case ADD_SURVEY_POINTS:
         case ADD_SURVEYORS:
-        case CREATE_NEW_SURVEY_ACTION.STORE_SURVEY_NAME:
         case CREATE_NEW_SURVEY_ACTION.STORE_STEP:
+        case CREATE_NEW_SURVEY_ACTION.STORE_NAME:
         default:
           return payload ? { ...state, ...payload } : { ...state }
       }
     }
   },
 
-  doStoreCreateSurveyStep: surveyStep => ({dispatch, store}) => {
+  /**
+   * 
+   * @param {object} payload 
+   */
+  doStoreCreateSurveyName: surveyName => ({ dispatch, store }) => {
     dispatch({
-      type: CREATE_NEW_SURVEY_ACTION.STORE_STEP,
+      type: CREATE_NEW_SURVEY_ACTION.STORE_NAME,
       payload: {
-        surveyStep: surveyStep
+        surveyName: surveyName
       }
     })
   },
 
-  doStoreSurveyName: surveyName => ({dispatch, store}) => {
+  doStoreCreateSurveyStep: surveyStep => ({ dispatch, store }) => {
+    dispatch({
+      type: CREATE_NEW_SURVEY_ACTION.STORE_STEP,
+      payload: {
+        surveyStep: surveyStep,
+      }
+    })
+  },
+
+
+  doStoreSurveyName: surveyName => ({ dispatch, store }) => {
     dispatch({
       type: CREATE_NEW_SURVEY_ACTION.STORE_SURVEY_NAME,
       payload: {
@@ -53,7 +71,7 @@ export default {
   },
 
   // doCreateNewSurvey: (surveyName) => ({ dispatch, store }) => {
-    
+
   //   const token = store.selectAuthAccessToken();
   //   console.log(token)
   //   // const surveyName = store.selectSurveyName();

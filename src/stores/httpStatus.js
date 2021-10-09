@@ -1,4 +1,5 @@
 export default {
+
   StatusContinue           : 100, // RFC 7231, 6.2.1
 	StatusSwitchingProtocols : 101, // RFC 7231, 6.2.2
 	StatusProcessing         : 102, // RFC 2518, 10.1
@@ -66,4 +67,5 @@ export default {
 	StatusLoopDetected                  : 508, // RFC 5842, 7.2
 	StatusNotExtended                   : 510, // RFC 2774, 7
 	StatusNetworkAuthenticationRequired : 511, // RFC 6585, 6
+  
 }

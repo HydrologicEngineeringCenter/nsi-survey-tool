@@ -11,7 +11,7 @@ import classes from "../CreateNewSurveyPrompt.module.css";
 import { Fragment } from "react";
 import { connect } from 'redux-bundler-react';
 import CREATE_SURVEY_STEP from "../../../stores/newSurveyStep";
-
+import DescriptionInput from "./DescriptionInput";
 
 /**
  * 
@@ -19,20 +19,28 @@ import CREATE_SURVEY_STEP from "../../../stores/newSurveyStep";
  */
 const StepContents = (props) => {
 
-  const { createSurveyStep : step, nameInputRef } = props;
+  const { 
+    createSurveyStep: step, 
+    nameInputRef, 
+    descriptionInputRef, 
+    activeSwitchRef 
+  } = props;
 
   // component contents
   switch (step) {
 
     case CREATE_SURVEY_STEP.BASIC_INFO:
-        return (
-          <Card className={classes.card}>
-            <NameInput inputRef={nameInputRef} />
-            <p />
-            <p />
-            <ActiveSurvey />
-          </Card>
-        )
+      return (
+        <Card className={classes.card}>
+          <NameInput inputRef={nameInputRef} />
+          <p />
+          <p />
+          <DescriptionInput inputRef={descriptionInputRef} />
+          <p />
+          <p />
+          <ActiveSurvey inputRef={activeSwitchRef}/>
+        </Card>
+      )
 
     case CREATE_SURVEY_STEP.POINTS:
       return (

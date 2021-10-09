@@ -1,20 +1,15 @@
 import { connect } from "redux-bundler-react"
 import httpStatus from "../../stores/httpStatus";
+import { UnexpectedResponseError } from "../errors/exceptions";
 
+const apiHost = process.env.REACT_APP_SURVEY_API;
 
 const handleUnexpectedResponse = (response, expectedHttpStatus) => {
   if (expectedHttpStatus !== response.status) {
-    throw Error
-
+    throw new UnexpectedResponseError(response)
   } else {
     return response;
   }
-}
-
-
-
-const retrieveData = props => {
-
 }
 
 /*
@@ -22,49 +17,36 @@ const retrieveData = props => {
 */
 class SurveyApi {
 
-  constructor(apiHost) {
+  constructor() {
     this.apiHost = apiHost
   }
 
   /**
-   * Send an authenticated post request
+   * Send an authenticated request
    * @param {string} token bearer token from auth server
-   * @param {string} endpoint http endpoint to send 
-   * @param {object} json object to pass as request body  
-   * @param {*} expectedHttpStatus expected response status for success operation
-   * @param {function} errorHandlerCallback 
+   * @param {object} params object from the requestParams store
    */
-  post(token, endpoint, body, expectedHttpStatus, errorHandlerCallback) {
+  send(token, requestParams) {
 
-    fetch(`${this.apiHost}${endpoint}`, {
-      method: 'POST',
+    fetch(`${this.apiHost}${requestParams.endpoint}`, {
+      method: requestParams.method,
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       },
-      body: body,
+      body: requestParams.body ? JSON.stringify(requestParams.body) : "",
     })
-      .then(handleUnexpectedResponse(expectedHttpStatus))
+      .then(handleUnexpectedResponse(requestParams.expectedResponseStatus))
       .then(response => {
         return {
           status: response.status,
           body: response.json()
         }
       })
-      .catch(error => (error);
-      })
-
-
-
-    return { status, body }
-
+      .catch(error => console.log(error.toString()));
   }
-
-  updateToken(token) {
-    this.token = token;
-  }
-
 }
+
 
 export default SurveyApi;
