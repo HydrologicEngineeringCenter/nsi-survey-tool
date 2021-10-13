@@ -4,7 +4,7 @@ const keycloakHost = process.env.REACT_APP_KEYCLOAK_HOST
 const keycloakRealm = process.env.REACT_APP_KEYCLOAK_REALM
 const keycloakClient = process.env.REACT_APP_KEYCLOAK_CLIENT
 const keycloakRedirect = process.env.REACT_APP_REDIRECT_URI
-const keycloakClientSecret = process.env.REACT_APP_CLIENT_SECRET
+const keycloakClientSecret = process.env.REACT_APP_CLIENT_SECRET // TODO - change to a more secured client authentication process
 
 let keycloak = null; // elevate scope to file
 
@@ -15,7 +15,8 @@ const AUTH_ACTION = {
   GET_TOKEN: "AUTH_ACTION.GET_TOKEN",
   UPDATE_KEYCLOAK: "AUTH_ACTION.UPDATE_KEYCLOAK",
   STORE_USER_INFO: "AUTH_ACTION.STORE_USER_INFO",
-  STOP_LOADING: "STOP_LOADING",
+  STOP_LOADING: "AUTH_ACTION.STOP_LOADING",
+  START_LOADING: "AUTH_ACTION.START_LOADING",
 }
 
 const initialData = {
@@ -46,7 +47,6 @@ const auth = {
     return (state = initialState, { type, payload }) => {
       switch (type) {
         case AUTH_ACTION.AUTHENTICATE:
-          console.log("in case") // debugging
           keycloak.authenticate(); // sends a user authorization request to keycloak /auth endpoint
         case AUTH_ACTION.UPDATE_KEYCLOAK: // store auth access object
         case AUTH_ACTION.STORE_USER_INFO: // store auth user info
@@ -74,13 +74,11 @@ const auth = {
       clientSecret: keycloakClientSecret,
 
       onAuthenticate: (token) => {
-        console.log("onAuthenticate")
         store.doAuthUpdate(token);
         // store.doAuthStopLoading();
       },
 
       onError: (err) => {
-        console.log(err);
         store.doAuthUpdate(null);
       },
 
@@ -90,7 +88,6 @@ const auth = {
       }
     });
     keycloak.checkForSession();
-    // store.doAuthKeycloakAuthenticate()
   },
 
   /**
@@ -139,25 +136,6 @@ const auth = {
       },
     });
   },
-
-  // doGetToken: () => ({ dispatch }) => {
-  //   dispatch({
-  //     type: AUTH_ACTION.LOADING,
-  //     payload: {
-  //       loading: true,
-  //       shouldQuery: true,
-  //     },
-  //   });
-  // },
-
-  // doAuthRemove: () => ({ dispatch }) => {
-  //   dispatch({
-  //     type: "AUTH_REMOVED",
-  //     payload: {
-  //       data: initialData,
-  //     },
-  //   });
-  // },
 
   selectAuthAccessToken: state => state.auth.data ? state.auth.data.jwt : null,
   selectAuthFullname: state => state.auth.data ? state.auth.data.fullName : null,

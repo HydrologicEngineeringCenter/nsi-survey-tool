@@ -40,7 +40,8 @@ const NewSurveyPrompt = (props) => {
    * Handling stepper
    *******************/
   const handleNext = () => {
-    doStoreCreateSurveyStep(createSurveyStep + 1);
+    // reset if already on last step
+    doStoreCreateSurveyStep(createSurveyStep === stepHeaders.length - 1 ? 0 : createSurveyStep + 1);
   }
 
   const handleBack = () => doStoreCreateSurveyStep(createSurveyStep - 1);
@@ -91,6 +92,7 @@ const NewSurveyPrompt = (props) => {
         handleBasicInfo()
       // return handleBasicInfo;
       case CREATE_SURVEY_STEP.POINTS:
+        // TODO - implement reset button - send a request to delete created survey
         return handleLoadPoints;
       case CREATE_SURVEY_STEP.SURVEYORS:
         return handleAddSurveyors;
@@ -121,6 +123,7 @@ const NewSurveyPrompt = (props) => {
                   nameInputRef={nameInputRef}
                   descriptionInputRef={descriptionInputRef}
                   activeSwitchRef={activeSurveySwitchRef}
+                  fileUploaderRef={fileUploadRef}
                 />
                 {/* {stepContents(index)} */}
                 <p />

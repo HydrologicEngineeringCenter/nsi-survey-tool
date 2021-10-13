@@ -8,10 +8,11 @@ import Uploader from "./Uploader";
 import { Store } from "@material-ui/icons";
 import { useRef } from "react";
 import classes from "../CreateNewSurveyPrompt.module.css";
-import { Fragment } from "react";
+import { Fragment, useCallback } from "react";
 import { connect } from 'redux-bundler-react';
 import CREATE_SURVEY_STEP from "../../../stores/newSurveyStep";
 import DescriptionInput from "./DescriptionInput";
+import Dropzone from "react-dropzone";
 
 /**
  * 
@@ -25,6 +26,7 @@ const StepContents = (props) => {
     descriptionInputRef, 
     activeSwitchRef 
   } = props;
+
 
   // component contents
   switch (step) {

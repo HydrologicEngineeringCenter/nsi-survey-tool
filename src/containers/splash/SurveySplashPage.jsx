@@ -14,9 +14,13 @@ import CreateNewSurveyPrompt from "../create-new-survey/CreateNewSurveyPrompt";
 function SurveySplashPage(props) {
   const { doUpdateUrl, authAccessToken } = props;
 
-  if (!authAccessToken) {
-    doUpdateUrl("/nsi-survey/");
+  // fix to 
+  const validateUser = () => {
+    if (!authAccessToken) {
+      doUpdateUrl("/nsi-survey/");
+    }
   }
+  setTimeout(validateUser, 0)
 
   const [flagShowCreateSurvey, setFlagShowCreateSurvey] = useState(false);
 
