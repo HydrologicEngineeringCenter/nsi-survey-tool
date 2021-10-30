@@ -28,13 +28,14 @@ const NewSurveyPrompt = (props) => {
 
 
   /*******************
-   * Input refs
+   * Refs + states
    *******************/
   const nameInputRef = useRef();
   const descriptionInputRef = useRef();
   const activeSurveySwitchRef = useRef();
-  const fileUploadRef = useRef();
   const surveyorNameInputdRef = useRef();
+  const [elements, setElements] = useState() // survey elements for upload
+  const [surveyId, setSurveyId] = useState() // store guid from backend response
 
   /*******************
    * Handling stepper
@@ -47,9 +48,13 @@ const NewSurveyPrompt = (props) => {
   const handleBack = () => doStoreCreateSurveyStep(createSurveyStep - 1);
 
   /*******************
-   * Confirm button handlers
+   * Handling backend interactions
    *******************/
-  const handleBasicInfo = () => {
+
+  /**
+   * Create new survey
+   */
+  const handleBasicInfo = async _ => {
 
     const enteredSurveyName = nameInputRef.current.value;
     const enteredSurveyDescription = descriptionInputRef.current.value;
@@ -63,9 +68,23 @@ const NewSurveyPrompt = (props) => {
       }
     })
 
+    /**
+     *  Parse response data from backend server asynchronously
+     */
+    const responseHandler = async response => {
+      if (response.status === requestParams.expectedResponseStatus) {
+        const resolvedJson = await response.json()
+        setSurveyId(resolvedJson.surveyId)
+        console.log(surveyId)
+      }
+    }
+
     // Request parameter validation
     if (allValidProperties(requestParams)) {
-      backend.send(authAccessToken, requestParams)
+
+      await backend.send(authAccessToken, requestParams, responseHandler)
+      console.log("surveyId")
+      console.log(surveyId)
     } else {
       throw new InvalidRequestError("Invalid request param to backend API");
     }
@@ -73,7 +92,27 @@ const NewSurveyPrompt = (props) => {
     handleNext();
   };
 
+  /**
+   * Add survey elements
+   */
   const handleLoadPoints = () => {
+
+    const generateRequestBody = surveyId => {
+      console.log(surveyId)
+    }
+
+    const requestBody = elements.generateRequestBody(surveyId)
+    const requestParams = Object.assign(REQUEST_PARAMS.INSERT_SURVEY_ELEMENTS, {
+      body: requestBody
+    })
+
+    // Request parameter validation
+    if (allValidProperties(requestParams)) {
+      backend.send(authAccessToken, requestParams, responseHandler)
+    } else {
+      throw new InvalidRequestError("Invalid request param to backend API");
+    }
+
     handleNext();
   };
 
@@ -83,12 +122,11 @@ const NewSurveyPrompt = (props) => {
 
   /**
    * Selector for handler specific to each step
-   * @returns 
+   * @returns
    */
   const handleConfirm = () => {
     switch (createSurveyStep) {
       case CREATE_SURVEY_STEP.BASIC_INFO:
-        console.log('case CREATE_SURVEY_STEP.BASIC_INFO')
         handleBasicInfo()
       // return handleBasicInfo;
       case CREATE_SURVEY_STEP.POINTS:
@@ -123,7 +161,7 @@ const NewSurveyPrompt = (props) => {
                   nameInputRef={nameInputRef}
                   descriptionInputRef={descriptionInputRef}
                   activeSwitchRef={activeSurveySwitchRef}
-                  fileUploaderRef={fileUploadRef}
+                  setElements={setElements}
                 />
                 {/* {stepContents(index)} */}
                 <p />
