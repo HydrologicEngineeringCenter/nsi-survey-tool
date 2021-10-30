@@ -1,9 +1,9 @@
 import classes from "./Uploader.module.css";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import Button from "@material-ui/core/Button";
-import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+// import Button from "@material-ui/core/Button";
+// import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import { useDropzone } from 'react-dropzone';
-import CSVJsonArray from "../../../lib/data/CSVJsonArray";
+import CSVMetaArray from "../../../lib/data/CSVMetaArray";
 import zip from "../../../utils/zip";
 
 const baseStyle = {
@@ -27,7 +27,7 @@ const activeStyle = {
 const acceptStyle = {
   borderColor: '#00e676'
 };
-
+{ { { } } }
 const rejectStyle = {
   borderColor: '#ff1744'
 };
@@ -38,14 +38,19 @@ const requestProperties = ["fdId", "isControl"]
 // https://www.digitalocean.com/community/tutorials/react-react-dropzone
 const Uploader = (props) => {
 
-  const [files, setFiles] = useState([]);
+  const { setElements } = props
 
   const onDrop = useCallback(acceptedFiles => {
     acceptedFiles.forEach((file) => {
-      const surveyList = new CSVJsonArray(file)
-      const names = zip(surveyList.getOwnPropertyNames(), requestProperties)
+      const surveyList = new CSVMetaArray(file)
+      const names = surveyList.getOwnPropertyNames()
 
-      names.forEach(name => surveyList.changePropertyName(name[0], name[1]))
+      // process data into format required for InsertSurveyElements request
+      names.forEach((name, idx) => {
+        surveyList.changeProperty(name, requestProperties[idx])
+      })
+
+      setElements(surveyList)
     })
   }, []);
 
@@ -71,20 +76,20 @@ const Uploader = (props) => {
     isDragAccept
   ]);
 
-  const thumbs = files.map(file => (
-    <div key={file.name}>
-      {file.type}
-      <img
-        src={file.preview}
-        alt={file.name}
-      />
-    </div>
-  ));
+  // const thumbs = files.map(file => (
+  //   <div key={file.name}>
+  //     {file.type}
+  //     <img
+  //       src={file.preview}
+  //       alt={file.name}
+  //     />
+  //   </div>
+  // ));
 
-  // clean up
-  useEffect(() => () => {
-    files.forEach(file => URL.revokeObjectURL(file.preview));
-  }, [files]);
+  // // clean up
+  // useEffect(() => () => {
+  //   files.forEach(file => URL.revokeObjectURL(file.preview));
+  // }, [files]);
 
   return (
     <div className={classes.uploader}>
@@ -96,7 +101,6 @@ const Uploader = (props) => {
       </section>
 
       <aside>
-        {thumbs}
       </aside>
 
 

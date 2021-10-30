@@ -15,16 +15,17 @@ import DescriptionInput from "./DescriptionInput";
 import Dropzone from "react-dropzone";
 
 /**
- * 
+ *
  * @returns Generates JSX element containing content of step
  */
 const StepContents = (props) => {
 
-  const { 
-    createSurveyStep: step, 
-    nameInputRef, 
-    descriptionInputRef, 
-    activeSwitchRef 
+  const {
+    createSurveyStep: step,
+    nameInputRef,
+    descriptionInputRef,
+    activeSwitchRef,
+    setElements
   } = props;
 
 
@@ -50,7 +51,7 @@ const StepContents = (props) => {
           {/* <ButtonHelp>Add Survey Points</ButtonHelp> */}
           <p />
           <p />
-          <Uploader />
+          <Uploader setElements={setElements}/>
           <p />
           <p />
           <p />
