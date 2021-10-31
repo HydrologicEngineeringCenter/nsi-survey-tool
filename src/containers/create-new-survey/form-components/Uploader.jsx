@@ -1,3 +1,4 @@
+import React from 'react';
 import classes from "./Uploader.module.css";
 import { useCallback, useEffect, useMemo, useState } from "react";
 // import Button from "@material-ui/core/Button";

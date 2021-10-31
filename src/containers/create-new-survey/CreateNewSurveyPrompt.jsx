@@ -101,6 +101,10 @@ const NewSurveyPrompt = (props) => {
       console.log(surveyId)
     }
 
+    const responseHandler = _ => {
+
+    }
+
     const requestBody = elements.generateRequestBody(surveyId)
     const requestParams = Object.assign(REQUEST_PARAMS.INSERT_SURVEY_ELEMENTS, {
       body: requestBody

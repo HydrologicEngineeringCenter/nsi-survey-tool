@@ -1,3 +1,4 @@
+import React from "react"
 import { useState } from "react";
 import ToggleSwitch from "../../components/ToggleSwitch/ToggleSwitch";
 import classes from "./ActiveSurvey.module.css";

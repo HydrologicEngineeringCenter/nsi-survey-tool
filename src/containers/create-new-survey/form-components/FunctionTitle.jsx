@@ -1,3 +1,4 @@
+import React from "react"
 import classes from "./FunctionTitle.module.css";
 
 const FunctionTitle = props => {

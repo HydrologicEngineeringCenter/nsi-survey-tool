@@ -1,3 +1,4 @@
+import React from "react"
 import Card from "@material-ui/core/Card";
 import NameInput from "./NameInput";
 import ActiveSurvey from "./ActiveSurvey";
@@ -41,7 +42,7 @@ const StepContents = (props) => {
           <DescriptionInput inputRef={descriptionInputRef} />
           <p />
           <p />
-          <ActiveSurvey inputRef={activeSwitchRef}/>
+          <ActiveSurvey inputRef={activeSwitchRef} />
         </Card>
       )
 
@@ -51,7 +52,7 @@ const StepContents = (props) => {
           {/* <ButtonHelp>Add Survey Points</ButtonHelp> */}
           <p />
           <p />
-          <Uploader setElements={setElements}/>
+          <Uploader setElements={setElements} />
           <p />
           <p />
           <p />
