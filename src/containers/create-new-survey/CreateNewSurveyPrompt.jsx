@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useRef } from "react";
+import React, { useState, Fragment, useRef, useEffect } from "react";
 import Modal from "../components/UI/Modal";
 import { connect } from 'redux-bundler-react';
 import FunctionTitle from "./form-components/FunctionTitle";
@@ -23,9 +23,13 @@ const stepHeaders = ["Input basic survey info", "Add survey points", "Add survey
 
 const NewSurveyPrompt = (props) => {
 
-  const { createSurveyStep, doStoreCreateSurveyStep, authAccessToken } = props;
+  const {
+    createSurveyStep,
+    doStoreCreateSurveyStep,
+    authAccessToken,
+    doSendRequestCreateSurvey
+  } = props;
   const backend = new SurveyApi()
-
 
   /*******************
    * Refs + states
@@ -36,6 +40,8 @@ const NewSurveyPrompt = (props) => {
   const surveyorNameInputdRef = useRef();
   const [elements, setElements] = useState() // survey elements for upload
   const [surveyId, setSurveyId] = useState() // store guid from backend response
+  const [createSurveyIP, setCreateSurveyIP] = useState(false)
+  const [fetchParams, setFetchParams] = useState()
 
   /*******************
    * Handling stepper
@@ -53,13 +59,14 @@ const NewSurveyPrompt = (props) => {
 
   /**
    * Create new survey
+   *  function gets input data from the three components, validate,
+   *  construct a request and send it to the backend
    */
-  const handleBasicInfo = async _ => {
-
+  const handleBasicInfo = _ => {
+    // get values from input fields
     const enteredSurveyName = nameInputRef.current.value;
     const enteredSurveyDescription = descriptionInputRef.current.value;
     const enteredActiveSwitch = activeSurveySwitchRef.current.checked;
-
     const requestParams = Object.assign(REQUEST_PARAMS.CREATE_NEW_SURVEY, {
       body: {
         title: enteredSurveyName,
@@ -68,42 +75,21 @@ const NewSurveyPrompt = (props) => {
       }
     })
 
-    /**
-     *  Parse response data from backend server asynchronously
-     */
-    const responseHandler = async response => {
-      if (response.status === requestParams.expectedResponseStatus) {
-        const resolvedJson = await response.json()
-        setSurveyId(resolvedJson.surveyId)
-        console.log(surveyId)
-      }
-    }
-
     // Request parameter validation
     if (allValidProperties(requestParams)) {
-
-      await backend.send(authAccessToken, requestParams, responseHandler)
-      console.log("surveyId")
-      console.log(surveyId)
+      doSendRequestCreateSurvey(backend, requestParams, setSurveyId)
     } else {
       throw new InvalidRequestError("Invalid request param to backend API");
     }
 
-    handleNext();
-  };
+    handleNext()
+  }
+
 
   /**
    * Add survey elements
    */
   const handleLoadPoints = () => {
-
-    const generateRequestBody = surveyId => {
-      console.log(surveyId)
-    }
-
-    const responseHandler = _ => {
-
-    }
 
     const requestBody = elements.generateRequestBody(surveyId)
     const requestParams = Object.assign(REQUEST_PARAMS.INSERT_SURVEY_ELEMENTS, {
@@ -117,6 +103,7 @@ const NewSurveyPrompt = (props) => {
       throw new InvalidRequestError("Invalid request param to backend API");
     }
 
+    generateRequestBody(surveyId)
     handleNext();
   };
 
@@ -213,4 +200,5 @@ export default connect(
   'selectCreateSurveyStep',
   'doStoreCreateSurveyStep',
   'selectAuthAccessToken',
+  'doSendRequestCreateSurvey',
   NewSurveyPrompt);

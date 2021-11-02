@@ -17,10 +17,9 @@ export default {
   getReducer: () => {
     const initialData = {
       // _flagInvalidName: false,
-      surveyName: "",
       flagSurveyActive: true,
       surveyStep: 0,
-      surveyName: null,
+      surveyId: ""
       // enteredSurveyDescription: null,
       // enteredActiveSwitch: null,
     };
@@ -39,8 +38,8 @@ export default {
   },
 
   /**
-   * 
-   * @param {object} payload 
+   *
+   * @param {object} payload
    */
   doStoreCreateSurveyName: surveyName => ({ dispatch, store }) => {
     dispatch({
@@ -70,28 +69,34 @@ export default {
     })
   },
 
-  // doCreateNewSurvey: (surveyName) => ({ dispatch, store }) => {
+  /**
+  * @param backend a SurveyApi object providing connection to backend db
+  * @param requestParams object providing params to construct request
+  * @param setSurveyId a set state function to store surveyId
+  *   do actions can't be async
+  */
+  doSendRequestCreateSurvey: (backend, requestParams, setSurveyId) => ({ dispatch, store }) => {
+    const authAccessToken = store.selectAuthAccessToken()
+    // responseHandler operates on the raw response from the backend
+    const responseHandler = async response => {
+      if (response.status === requestParams.expectedResponseStatus) {
+        const resolvedJson = await response.json()
+        const resolvedId = resolvedJson.surveyId
+        setSurveyId(resolvedId)
+      } else {
+        throw new UnexpectedResponseError(response)
+      }
+    }
+    backend.send(authAccessToken, requestParams, responseHandler)
+  },
 
-  //   const token = store.selectAuthAccessToken();
-  //   console.log(token)
-  //   // const surveyName = store.selectSurveyName();
-  //   const flagSurveyActive = store.selectFlagSurveyActive();
+  doSendRequestInsertElements: async (backend, requestParams) => ({ dispatch, store }) => {
+    const authAccessToken = store.selectAuthAccessToken()
+    const responseHandler = async response => {
 
-  //   if (token) {
-
-  //   } else {
-  //     console.log("Error: not logged in or missing token. Cannot create new survey");
-  //   }
-
-  //   dispatch({
-  //     type: CREATE_NEW_SURVEY,
-  //     payload: {
-  //       surveyName: surveyName,
-  //       activeStatus: flagSurveyActive
-  //     }
-  //   })
-  // },
-
+    }
+    backend.send(authAccessToken, requestParams, responseHandler)
+  },
   // selectInvalidName: state => state.createNewSurvey._flagInvalidName,
   selectCreateSurveyName: state => state.createNewSurvey.surveyName,
   selectFlagSurveyActive: state => state.createNewSurvey.flagSurveyActive,

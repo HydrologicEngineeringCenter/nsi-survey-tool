@@ -4,6 +4,7 @@ import { UnexpectedResponseError } from "../errors/exceptions";
 
 const apiHost = process.env.REACT_APP_SURVEY_API;
 
+// error handling inside the connection access object
 const handleUnexpectedResponse = (response, expectedHttpStatus) => {
   if (expectedHttpStatus !== response.status) {
     throw new UnexpectedResponseError(response)
