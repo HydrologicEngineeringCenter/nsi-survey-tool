@@ -59,7 +59,7 @@ const auth = {
 
   /**
    * Initialize on store creation
-   * @param {*} store 
+   * @param {*} store
    */
   init: store => {
 
@@ -75,7 +75,6 @@ const auth = {
 
       onAuthenticate: (token) => {
         store.doAuthUpdate(token);
-        // store.doAuthStopLoading();
       },
 
       onError: (err) => {
@@ -91,7 +90,7 @@ const auth = {
   },
 
   /**
-   * Begins the authorization flow - can be use as an onClick handler 
+   * Begins the authorization flow - can be use as an onClick handler
    */
   doAuthKeycloakAuthenticate: () => ({ dispatch, store }) => {
     dispatch({ type: AUTH_ACTION.AUTHENTICATE, loading: true });
@@ -103,7 +102,7 @@ const auth = {
 
   /**
    * Update auth data in store
-   * @param {*} token 
+   * @param {*} token
    */
   doAuthUpdate: (token) => ({ dispatch, store }) => {
 
