@@ -1,5 +1,3 @@
-import { connect } from "redux-bundler-react"
-import httpStatus from "../../stores/httpStatus";
 import { UnexpectedResponseError } from "../errors/exceptions";
 
 const apiHost = process.env.REACT_APP_SURVEY_API;
@@ -50,6 +48,21 @@ class SurveyApi {
     } catch (error) {
       console.log(error.toString())
     }
+  }
+
+  /**
+  * Returns a prepopulated fetch promise
+  */
+  fetch(authAccessToken, requestParams) {
+    return fetch(`${apiHost}${requestParams.endpoint}`, {
+      method: requestParams.method,
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authAccessToken}`,
+      },
+      body: requestParams.body ? JSON.stringify(requestParams.body) : "",
+    })
   }
 }
 

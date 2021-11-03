@@ -26,7 +26,6 @@ const NewSurveyPrompt = (props) => {
   const {
     createSurveyStep,
     doStoreCreateSurveyStep,
-    authAccessToken,
     doSendRequestCreateSurvey
   } = props;
   const backend = new SurveyApi()
@@ -37,14 +36,11 @@ const NewSurveyPrompt = (props) => {
   const nameInputRef = useRef();
   const descriptionInputRef = useRef();
   const activeSurveySwitchRef = useRef();
-  const surveyorNameInputdRef = useRef();
   const [elements, setElements] = useState() // survey elements for upload
-  const [surveyId, setSurveyId] = useState() // store guid from backend response
-  const [createSurveyIP, setCreateSurveyIP] = useState(false)
-  const [fetchParams, setFetchParams] = useState()
+  let [surveyId, setSurveyId] = useState() // store guid from backend response
 
   /*******************
-   * Handling stepper
+   * Handling basic stepper
    *******************/
   const handleNext = () => {
     // reset if already on last step
@@ -75,14 +71,12 @@ const NewSurveyPrompt = (props) => {
       }
     })
 
-    // Request parameter validation
+    // validate params
     if (allValidProperties(requestParams)) {
-      doSendRequestCreateSurvey(backend, requestParams, setSurveyId)
+      doSendRequestCreateSurvey(backend, requestParams)
     } else {
       throw new InvalidRequestError("Invalid request param to backend API");
     }
-
-    handleNext()
   }
 
 
@@ -91,24 +85,26 @@ const NewSurveyPrompt = (props) => {
    */
   const handleLoadPoints = () => {
 
-    const requestBody = elements.generateRequestBody(surveyId)
-    const requestParams = Object.assign(REQUEST_PARAMS.INSERT_SURVEY_ELEMENTS, {
-      body: requestBody
-    })
-
-    // Request parameter validation
-    if (allValidProperties(requestParams)) {
-      backend.send(authAccessToken, requestParams, responseHandler)
-    } else {
-      throw new InvalidRequestError("Invalid request param to backend API");
+    const generateRequestBody = _ => {
+      setSurveyId("test setSurveyId")
+      setSurveyId("test2")
     }
+    // const requestBody = elements.generateRequestBody(surveyId)
+    // const requestParams = Object.assign(REQUEST_PARAMS.INSERT_SURVEY_ELEMENTS, {
+    //   body: requestBody
+    // })
+
+    // // Request parameter validation
+    // if (allValidProperties(requestParams)) {
+    //   backend.send(authAccessToken, requestParams, responseHandler)
+    // } else {
+    //   throw new InvalidRequestError("Invalid request param to backend API");
+    // }
 
     generateRequestBody(surveyId)
-    handleNext();
   };
 
   const handleAddSurveyors = () => {
-    handleNext();
   };
 
   /**
@@ -116,15 +112,17 @@ const NewSurveyPrompt = (props) => {
    * @returns
    */
   const handleConfirm = () => {
+    console.log(createSurveyStep)
     switch (createSurveyStep) {
       case CREATE_SURVEY_STEP.BASIC_INFO:
         handleBasicInfo()
-      // return handleBasicInfo;
+        return
       case CREATE_SURVEY_STEP.POINTS:
-        // TODO - implement reset button - send a request to delete created survey
-        return handleLoadPoints;
+        handleLoadPoints()
+        return
       case CREATE_SURVEY_STEP.SURVEYORS:
-        return handleAddSurveyors;
+        handleAddSurveyors()
+        return
       default:
         throw Error("Unable to determine CREATE_SURVEY_STEP")
     }
@@ -199,6 +197,5 @@ const NewSurveyPrompt = (props) => {
 export default connect(
   'selectCreateSurveyStep',
   'doStoreCreateSurveyStep',
-  'selectAuthAccessToken',
   'doSendRequestCreateSurvey',
   NewSurveyPrompt);
