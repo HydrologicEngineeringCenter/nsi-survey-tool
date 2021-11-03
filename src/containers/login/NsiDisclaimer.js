@@ -3,20 +3,15 @@ import { connect } from 'redux-bundler-react';
 
 function USGDisclaimer(props) {
 
-  const { doAuthFetchTokens, doAuthKeycloakAuthenticate } = props;
+  const { doAuthKeycloakAuthenticate } = props;
   const [showLogin, setShowLogin] = useState(false);
-
-  // const handleLoginClick = function () {
-  //   doAuthFetchTokens();
-  //   setShowLogin(true);
-  // }
 
   const handleLoginClickKC = () => {
     doAuthKeycloakAuthenticate();
     setShowLogin(true);
   };
 
-  const renderDisclaimer = function () {
+  const renderDisclaimer = function() {
     return (
       <React.Fragment>
         <div>
@@ -50,7 +45,7 @@ function USGDisclaimer(props) {
     )
   }
 
-  const renderLogin = function () {
+  const renderLogin = function() {
     return (
       <React.Fragment>
         <center>
@@ -74,7 +69,6 @@ function USGDisclaimer(props) {
 }
 
 export default connect(
-  'doAuthFetchTokens',
   'doAuthKeycloakAuthenticate',
   USGDisclaimer
 );
