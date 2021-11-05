@@ -14,23 +14,22 @@ class CSVMetaArrayProcessor {
    * @param {String} newName
    */
   changeProperty(oldName, newName) {
-    const nameIdx = _.findIndex(this.properties, oldName)
+    const nameIdx = _.findIndex(this.metaArray.properties, oldName)
     this.changePropertyByIndex(nameIdx, newName)
   }
 
   changePropertyByIndex(idx, newName) {
-    this.data.properties[idx] = newName
+    this.metaArray.properties[idx] = newName
   }
 
   removeNA() {
   }
 
-
   /**
    * Returns array containing all property names
    */
   getOwnPropertyNames() {
-    return this.data ? this.data.properties : null
+    return this.metaArray ? this.metaArray.properties : null
   }
 }
 

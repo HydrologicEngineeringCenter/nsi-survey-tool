@@ -1,11 +1,10 @@
-import React from 'react';
-import classes from "./Uploader.module.css";
-import { useCallback, useEffect, useMemo, useState } from "react";
-// import Button from "@material-ui/core/Button";
-// import CloudUploadIcon from "@material-ui/icons/CloudUpload";
-import { useDropzone } from 'react-dropzone';
-import CSVMetaArray from "../../../lib/data/CSVMetaArray";
-import zip from "../../../utils/zip";
+import React from 'react'
+import classes from "./Uploader.module.css"
+import { useCallback, useMemo } from "react"
+import { useDropzone } from 'react-dropzone'
+import CSVMetaArrayReader from "../../../lib/data/CSVMetaArrayReader"
+import { connect } from "redux-bundler-react"
+import CSVMetaArrayProcessor from '../../../lib/data/CSVMetaArrayProcessor'
 
 const baseStyle = {
   display: 'flex',
@@ -33,25 +32,27 @@ const rejectStyle = {
   borderColor: '#ff1744'
 };
 
-// field names required in request body to backend
-const requestProperties = ["fdId", "isControl"]
-
 // https://www.digitalocean.com/community/tutorials/react-react-dropzone
 const Uploader = (props) => {
 
-  const { setElements } = props
+  const { doStoreCreateSurveyElements } = props
 
   const onDrop = useCallback(acceptedFiles => {
     acceptedFiles.forEach((file) => {
-      const surveyList = new CSVMetaArray(file)
-      const names = surveyList.getOwnPropertyNames()
-
-      // process data into format required for InsertSurveyElements request
-      names.forEach((name, idx) => {
-        surveyList.changeProperty(name, requestProperties[idx])
-      })
-
-      setElements(surveyList)
+      // read in stream is going to be in a different priority task queue,
+      // tasks on the main thread won't be able to access data,
+      // processing logic have to be in redux
+      const surveyList = new CSVMetaArrayReader(file)
+      surveyList.readFile(doStoreCreateSurveyElements)
+      // surveyList.readFile(data => {
+      //   const processor = new CSVMetaArrayProcessor(data)
+      //   // rename fields
+      //   const newNames = ['fdId', 'isControl']
+      //   newNames.forEach((name, idx) => {
+      //     processor.changePropertyByIndex(idx, name)
+      //   })
+      //   doStoreCreateSurveyElements(processor.data)
+      // })
     })
   }, []);
 
@@ -77,21 +78,6 @@ const Uploader = (props) => {
     isDragAccept
   ]);
 
-  // const thumbs = files.map(file => (
-  //   <div key={file.name}>
-  //     {file.type}
-  //     <img
-  //       src={file.preview}
-  //       alt={file.name}
-  //     />
-  //   </div>
-  // ));
-
-  // // clean up
-  // useEffect(() => () => {
-  //   files.forEach(file => URL.revokeObjectURL(file.preview));
-  // }, [files]);
-
   return (
     <div className={classes.uploader}>
       <section>
@@ -100,25 +86,11 @@ const Uploader = (props) => {
           <div>Drag and drop your csv file here.</div>
         </div>
       </section>
-
-      <aside>
-      </aside>
-
-
-      {/* <Button variant="contained">Upload!</Button> */}
-      {/* <Button
-        variant="contained"
-        color="default"
-        // className={classes.button}
-        startIcon={<CloudUploadIcon />}
-        component="label"
-      >
-        Upload
-        <input type="file" hidden />
-      </Button> */}
-
     </div>
   );
 };
 
-export default Uploader;
+export default connect(
+  'doStoreCreateSurveyElements',
+  Uploader
+)

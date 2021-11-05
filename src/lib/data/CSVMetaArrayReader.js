@@ -15,7 +15,7 @@ class CSVMetaArrayReader {
 
   /**
    * Read in file then invert control of data to handler. Handler
-   * is intended to be a setState function or redux action
+   * is intended to be a setState function or redux action dispatcher
    */
   readFile(handler) {
     const file = this.file

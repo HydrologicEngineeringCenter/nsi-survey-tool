@@ -1,23 +1,24 @@
-import React, { useState, Fragment, useRef, useEffect } from "react";
-import Modal from "../components/UI/Modal";
-import { connect } from 'redux-bundler-react';
-import FunctionTitle from "./form-components/FunctionTitle";
-import classes from "./CreateNewSurveyPrompt.module.css";
+import React, { useState, Fragment, useRef, useEffect } from "react"
+import Modal from "../components/UI/Modal"
+import { connect } from 'redux-bundler-react'
+import FunctionTitle from "./form-components/FunctionTitle"
+import classes from "./CreateNewSurveyPrompt.module.css"
 import {
   Stepper,
   Step,
   StepLabel,
   StepContent,
   Typography,
-} from "@material-ui/core";
-import Button from "@material-ui/core/Button";
-import StepContents from "./form-components/StepContents";
+} from "@material-ui/core"
+import Button from "@material-ui/core/Button"
+import StepContents from "./form-components/StepContents"
 
-import SurveyApi from "../../lib/rest/api";
-import allValidProperties from "../../utils/obj";
-import REQUEST_PARAMS from "../../stores/requestParams";
-import CREATE_SURVEY_STEP from "../../stores/newSurveyStep";
-import { InvalidRequestError } from "../../lib/errors/exceptions";
+import SurveyApi from "../../lib/rest/api"
+import allValidProperties from "../../utils/obj"
+import REQUEST_PARAMS from "../../stores/requestParams"
+import CREATE_SURVEY_STEP from "../../stores/newSurveyStep"
+import { InvalidRequestError } from "../../lib/errors/exceptions"
+import CSVMetaArrayProcessor from "../../lib/data/CSVMetaArrayProcessor"
 
 const stepHeaders = ["Input basic survey info", "Add survey points", "Add surveyors"];
 
@@ -26,8 +27,10 @@ const NewSurveyPrompt = (props) => {
   const {
     createSurveyStep,
     doStoreCreateSurveyStep,
-    doSendRequestCreateSurvey
-  } = props;
+    doSendRequestCreateSurvey,
+    createSurveyElements,
+  } = props
+
   const backend = new SurveyApi()
 
   /*******************
@@ -79,30 +82,12 @@ const NewSurveyPrompt = (props) => {
     }
   }
 
-
   /**
    * Add survey elements
    */
   const handleLoadPoints = () => {
 
-    const generateRequestBody = _ => {
-      setSurveyId("test setSurveyId")
-      setSurveyId("test2")
-    }
-    // const requestBody = elements.generateRequestBody(surveyId)
-    // const requestParams = Object.assign(REQUEST_PARAMS.INSERT_SURVEY_ELEMENTS, {
-    //   body: requestBody
-    // })
-
-    // // Request parameter validation
-    // if (allValidProperties(requestParams)) {
-    //   backend.send(authAccessToken, requestParams, responseHandler)
-    // } else {
-    //   throw new InvalidRequestError("Invalid request param to backend API");
-    // }
-
-    generateRequestBody(surveyId)
-  };
+  }
 
   const handleAddSurveyors = () => {
   };
@@ -198,4 +183,5 @@ export default connect(
   'selectCreateSurveyStep',
   'doStoreCreateSurveyStep',
   'doSendRequestCreateSurvey',
+  'selectCreateSurveyElements',
   NewSurveyPrompt);

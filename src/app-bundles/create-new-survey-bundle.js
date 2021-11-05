@@ -1,11 +1,11 @@
-import CREATE_SURVEY_STEP from "../stores/newSurveyStep";
+import { createSelector } from "redux-bundler"
+import CSVMetaArrayProcessor from '../lib/data/CSVMetaArrayProcessor'
+import CREATE_SURVEY_STEP from "../stores/newSurveyStep"
 
 const CREATE_NEW_SURVEY_ACTION = {
-  STORE_SURVEY_NAME: "CREATE_NEW_SURVEY_ACTION.STORE_SURVEY_NAME",
   STORE_STEP: "CREATE_NEW_SURVEY_ACTION.STORE_STEP",
-  STORE_NAME: "CREATE_NEW_SURVEY_ACTION.STORE_NAME",
-  STORE_REQUEST_BODY_PARAM: "CREATE_NEW_SURVEY_ACTION.STORE_REQUEST_BODY_PARAM",
   UPDATE_SURVEY_ID: "CREATE_NEW_SURVEY_ACTION.UPDATE_SURVEY_ID",
+  STORE_ELEMENTS: "CREATE_NEW_SURVEY_ACTION.STORE_ELEMENTS",
 }
 
 export default {
@@ -15,21 +15,21 @@ export default {
   getReducer: () => {
     const initialData = {
       surveyStep: 0,
-      surveyId: ""
+      surveyId: "",
+      surveyElements: null,
     };
     return (state = initialData, { type, payload }) => {
       switch (type) {
-
         case CREATE_NEW_SURVEY_ACTION.STORE_STEP:
-        case CREATE_NEW_SURVEY_ACTION.STORE_NAME:
         case CREATE_NEW_SURVEY_ACTION.UPDATE_SURVEY_ID:
+        case CREATE_NEW_SURVEY_ACTION.STORE_ELEMENTS:
         default:
           return payload ? { ...state, ...payload } : { ...state }
       }
     }
   },
 
-  doStoreCreateSurveyStep: surveyStep => ({ dispatch, store }) => {
+  doStoreCreateSurveyStep: surveyStep => ({ dispatch }) => {
     dispatch({
       type: CREATE_NEW_SURVEY_ACTION.STORE_STEP,
       payload: {
@@ -38,12 +38,11 @@ export default {
     })
   },
 
-
-  doStoreSurveyName: surveyName => ({ dispatch, store }) => {
+  doStoreCreateSurveyElements: surveyElements => ({ dispatch }) => {
     dispatch({
-      type: CREATE_NEW_SURVEY_ACTION.STORE_SURVEY_NAME,
+      type: CREATE_NEW_SURVEY_ACTION.STORE_ELEMENTS,
       payload: {
-        surveyName: surveyName
+        surveyElements: surveyElements,
       }
     })
   },
@@ -86,14 +85,53 @@ export default {
       });
   },
 
-  doSendRequestInsertElements: async (backend, requestParams) => ({ dispatch, store }) => {
+  // react to change in survey elements data
+  reactChangeElementProperties: createSelector(
+    'selectCreateSurveyElements',
+    createSurveyElements => {
+      const newNames = ['fdId', 'isControl']
+      if (createSurveyElements) {
+        const processor = new CSVMetaArrayProcessor(createSurveyElements)
+        newNames.forEach((newName, idx) => {
+          if (newName != createSurveyElements.properties[idx]) {
+            processor.changePropertyByIndex(
+              idx,
+              newName
+            )
+          }
+        })
+      }
+    }
+  ),
+
+  doSendRequestInsertElements: (backend, requestParams) => ({
+    dispatch,
+    store,
+    handleErrors
+  }) => {
+    // authAccessToken is always refreshing, have to update from auth bundle
+    // before sending request everytime
     const authAccessToken = store.selectAuthAccessToken()
-    backend.send(authAccessToken, requestParams, responseHandler)
+
+    // send request, process response, update display step
+    backend
+      .fetch(authAccessToken, requestParams)
+      .then(handleErrors)
+      .then(response => response.json())
+      .then(_ => {
+        dispatch({
+          type: CREATE_NEW_SURVEY_ACTION.STORE_STEP,
+          payload: { 'surveyStep': CREATE_SURVEY_STEP.SURVEYORS }
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+      });
   },
 
-  selectCreateSurveyStep: state => {
-    return state.createNewSurvey.surveyStep;
-  },
+  selectCreateSurveyStep: state => state.createNewSurvey.surveyStep,
+
   selectCreateSurveyId: state => state.createNewSurvey.surveyId,
 
+  selectCreateSurveyElements: state => state.createNewSurvey.surveyElements,
 };
