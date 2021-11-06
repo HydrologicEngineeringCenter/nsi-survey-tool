@@ -18,7 +18,6 @@ import allValidProperties from "../../utils/obj"
 import REQUEST_PARAMS from "../../stores/requestParams"
 import CREATE_SURVEY_STEP from "../../stores/newSurveyStep"
 import { InvalidRequestError } from "../../lib/errors/exceptions"
-import CSVMetaArrayProcessor from "../../lib/data/CSVMetaArrayProcessor"
 
 const stepHeaders = ["Input basic survey info", "Add survey points", "Add surveyors"];
 
@@ -86,6 +85,12 @@ const NewSurveyPrompt = (props) => {
    * Add survey elements
    */
   const handleLoadPoints = () => {
+
+    const requestParams = Object.assign(REQUEST_PARAMS.INSERT_SURVEY_ELEMENTS, {
+      body: {
+
+      }
+    })
 
   }
 

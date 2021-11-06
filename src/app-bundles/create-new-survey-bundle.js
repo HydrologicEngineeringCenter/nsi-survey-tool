@@ -1,11 +1,12 @@
 import { createSelector } from "redux-bundler"
-import CSVMetaArrayProcessor from '../lib/data/CSVMetaArrayProcessor'
+import CSVMetaArrayUtils from "../lib/data/CSVMetaArrayUtils"
 import CREATE_SURVEY_STEP from "../stores/newSurveyStep"
 
 const CREATE_NEW_SURVEY_ACTION = {
   STORE_STEP: "CREATE_NEW_SURVEY_ACTION.STORE_STEP",
   UPDATE_SURVEY_ID: "CREATE_NEW_SURVEY_ACTION.UPDATE_SURVEY_ID",
   STORE_ELEMENTS: "CREATE_NEW_SURVEY_ACTION.STORE_ELEMENTS",
+  FLAG_CHANGE_PROPERTIES: "CREATE_NEW_SURVEY_ACTION.FLAG_CHANGE_PROPERTIES",
 }
 
 export default {
@@ -17,12 +18,14 @@ export default {
       surveyStep: 0,
       surveyId: "",
       surveyElements: null,
+      flagChangeSurveyElementsProperties: false,
     };
     return (state = initialData, { type, payload }) => {
       switch (type) {
         case CREATE_NEW_SURVEY_ACTION.STORE_STEP:
         case CREATE_NEW_SURVEY_ACTION.UPDATE_SURVEY_ID:
         case CREATE_NEW_SURVEY_ACTION.STORE_ELEMENTS:
+        case CREATE_NEW_SURVEY_ACTION.FLAG_CHANGE_PROPERTIES:
         default:
           return payload ? { ...state, ...payload } : { ...state }
       }
@@ -43,6 +46,12 @@ export default {
       type: CREATE_NEW_SURVEY_ACTION.STORE_ELEMENTS,
       payload: {
         surveyElements: surveyElements,
+      }
+    })
+    dispatch({
+      type: CREATE_NEW_SURVEY_ACTION.FLAG_CHANGE_PROPERTIES,
+      payload: {
+        flagChangeSurveyElementsProperties: true
       }
     })
   },
@@ -85,21 +94,23 @@ export default {
       });
   },
 
-  // react to change in survey elements data
+  // process elements on load
   reactChangeElementProperties: createSelector(
     'selectCreateSurveyElements',
-    createSurveyElements => {
+    'selectFlagChangeProperties',
+    (createSurveyElements, flagChangeProperties) => {
       const newNames = ['fdId', 'isControl']
-      if (createSurveyElements) {
-        const processor = new CSVMetaArrayProcessor(createSurveyElements)
-        newNames.forEach((newName, idx) => {
-          if (newName != createSurveyElements.properties[idx]) {
-            processor.changePropertyByIndex(
-              idx,
-              newName
-            )
+      if (flagChangeProperties) {
+        const dataPipeline = new CSVMetaArrayUtils(createSurveyElements)
+        dataPipeline
+          .changeProperty(newNames)
+        return {
+          type: CREATE_NEW_SURVEY_ACTION.STORE_ELEMENTS,
+          payload: {
+            surveyElements: dataPipeline.data(),
+            flagChangeSurveyElementsProperties: false
           }
-        })
+        }
       }
     }
   ),
@@ -128,6 +139,8 @@ export default {
         console.log(err)
       });
   },
+
+  selectFlagChangeProperties: state => state.createNewSurvey.flagChangeSurveyElementsProperties,
 
   selectCreateSurveyStep: state => state.createNewSurvey.surveyStep,
 

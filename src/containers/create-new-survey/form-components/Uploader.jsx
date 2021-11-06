@@ -4,7 +4,6 @@ import { useCallback, useMemo } from "react"
 import { useDropzone } from 'react-dropzone'
 import CSVMetaArrayReader from "../../../lib/data/CSVMetaArrayReader"
 import { connect } from "redux-bundler-react"
-import CSVMetaArrayProcessor from '../../../lib/data/CSVMetaArrayProcessor'
 
 const baseStyle = {
   display: 'flex',
