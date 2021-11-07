@@ -7,7 +7,10 @@ const END_POINT = {
   SURVEY_MEMBER: "/survey/member",
   SURVEY_ASSIGNMENT: "/survey/assignment",
   USER_SEARCH: "/users/search",
-  SURVEY_ID_ARG: null,
+}
+
+const SUFFIX = {
+  ELEMENTS: "/elements",
 }
 
 const METHOD = {
@@ -70,6 +73,8 @@ export default {
 
   INSERT_SURVEY_ELEMENTS: {
     endpoint: END_POINT.SURVEY,
+    varUrlArg: null,
+    suffix: SUFFIX.ELEMENTS,
     method: METHOD.POST,
     body: null,
     expectedResponseStatus: httpStatus.StatusCreated,

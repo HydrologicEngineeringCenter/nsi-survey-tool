@@ -27,7 +27,7 @@ const NewSurveyPrompt = (props) => {
     createSurveyStep,
     doStoreCreateSurveyStep,
     doSendRequestCreateSurvey,
-    createSurveyElements,
+    doSendRequestInsertElements,
   } = props
 
   const backend = new SurveyApi()
@@ -62,6 +62,7 @@ const NewSurveyPrompt = (props) => {
    */
   const handleBasicInfo = _ => {
     // get values from input fields
+    // a little business logic pollution in this component wouldn't hurt anyone
     const enteredSurveyName = nameInputRef.current.value;
     const enteredSurveyDescription = descriptionInputRef.current.value;
     const enteredActiveSwitch = activeSurveySwitchRef.current.checked;
@@ -86,12 +87,18 @@ const NewSurveyPrompt = (props) => {
    */
   const handleLoadPoints = () => {
 
+    // empty required args can be populated in bundle
     const requestParams = Object.assign(REQUEST_PARAMS.INSERT_SURVEY_ELEMENTS, {
-      body: {
-
-      }
+      body: "",
+      varArg: "",
     })
 
+    // validate params
+    if (allValidProperties(requestParams)) {
+      doSendRequestInsertElements(backend, requestParams)
+    } else {
+      throw new InvalidRequestError("Invalid request param to backend API");
+    }
   }
 
   const handleAddSurveyors = () => {
@@ -153,7 +160,7 @@ const NewSurveyPrompt = (props) => {
           <div className={classes.actionsContainer}>
             <div>
 
-              {/* cancel button instead of back
+              {/* replace with a cancel button instead of back button
                     implementing the back button would mean
                     rolling back entry that was already sent to the backend db */}
               <Button
@@ -188,5 +195,5 @@ export default connect(
   'selectCreateSurveyStep',
   'doStoreCreateSurveyStep',
   'doSendRequestCreateSurvey',
-  'selectCreateSurveyElements',
+  'doSendRequestInsertElements',
   NewSurveyPrompt);

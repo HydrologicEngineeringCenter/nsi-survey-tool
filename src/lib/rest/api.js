@@ -21,6 +21,7 @@ class SurveyApi {
   }
 
   /**
+   * DEPRECATED - USE fetch() INSTEAD
    * Send an authenticated request
    * @param {string} token bearer token from auth server
    * @param {object} params object from the requestParams store
@@ -54,7 +55,15 @@ class SurveyApi {
   * Returns a prepopulated fetch promise
   */
   fetch(authAccessToken, requestParams) {
-    return fetch(`${apiHost}${requestParams.endpoint}`, {
+
+    let url = ''
+    if (requestParams.varUrlArg) {
+      url = `${apiHost}${requestParams.endpoint}${requestParams.varUrlArg}${requestParams.suffix}`
+    } else {
+      url = `${apiHost}${requestParams.endpoint}`
+    }
+
+    return fetch(url, {
       method: requestParams.method,
       headers: {
         'Accept': 'application/json',

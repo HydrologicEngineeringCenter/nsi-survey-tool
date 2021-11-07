@@ -79,7 +79,7 @@ export default {
         if (data != null) {
           dispatch({
             type: CREATE_NEW_SURVEY_ACTION.UPDATE_SURVEY_ID,
-            payload: { 'surveyId': { ...data } } // store surveyId within bundler
+            payload: { 'surveyId': data.surveyId } // store surveyId within bundler
           })
         }
       })
@@ -104,6 +104,8 @@ export default {
         const dataPipeline = new CSVMetaArrayUtils(createSurveyElements)
         dataPipeline
           .changeProperty(newNames)
+          // convert cols from string to numeric and boolean
+          .mapRow(row => [Number(row[0]), row[1] === '1' ? true : false])
         return {
           type: CREATE_NEW_SURVEY_ACTION.STORE_ELEMENTS,
           payload: {
@@ -123,12 +125,21 @@ export default {
     // authAccessToken is always refreshing, have to update from auth bundle
     // before sending request everytime
     const authAccessToken = store.selectAuthAccessToken()
+    requestParams.varUrlArg = "/" + store.selectCreateSurveyId()
+
+    const dataPipeline = new CSVMetaArrayUtils(store.selectCreateSurveyElements())
+    dataPipeline
+      .addIndex(1)
+      .changePropertyByName('index', 'surveyOrder')
+      .addCol('surveyId', store.selectCreateSurveyId())
+
+    let body = dataPipeline.jsonArray()
+    requestParams.body = body
 
     // send request, process response, update display step
     backend
       .fetch(authAccessToken, requestParams)
       .then(handleErrors)
-      .then(response => response.json())
       .then(_ => {
         dispatch({
           type: CREATE_NEW_SURVEY_ACTION.STORE_STEP,

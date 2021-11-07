@@ -9,6 +9,8 @@ import _ from "lodash";
  *    const dataPipeline = metaArrayPipe(rawData)
  *    dataPipeline
  *      .changeProperty(['newProperty0', 'newProperty1'])
+ *      .addIndex('index', 0)
+ *      .addCol('allBs', 'B')
  *      .removeNA()
  *    const data = dataPipeline.data()
  *    const headers = dataPipeline.properties()
@@ -30,8 +32,10 @@ export default class {
   }
 
   changePropertyByName(oldName, newName) {
-    const nameIdx = _.findIndex(metaArray.properties, oldName)
-    this.changePropertyByIndex(nameIdx, newName)
+    const nameIdx = _.findIndex(this.metaArray.properties, name => {
+      return name === oldName
+    })
+    this.changePropertyByIndex(newName, nameIdx)
     return this
   }
 
@@ -44,6 +48,55 @@ export default class {
    * TODO - this will probably be useful at some point
    */
   removeNA() {
+  }
+
+  /**
+   * add an index column with key 'index'
+   * @param start start index
+   */
+  addIndex(start) {
+    const idxVals = _.range(start, this.dim()[0] + start)
+    this.metaArray.properties.push('index')
+    this.metaArray.values.map((row, idx) => { row.push(idxVals[idx]) })
+    return this
+  }
+
+  /**
+   * add new column to data
+   * @param key property name
+   * @param val value of new column, can be a string, number, or array
+   */
+  addCol(key, val) {
+    const type = typeof (val)
+
+    switch (type) {
+      case 'string':
+      case 'number':
+        this.metaArray.values.map(row => row.push(val))
+        break
+      case 'object':
+        if (Array.isArray(val) && val.length === this.dim()[1]) {
+          this.metaArray.values.map(
+            (row, idx) => {
+              row.push(idxVals[idx])
+            })
+          break
+        }
+      default:
+        throw new Error(
+          'Input value has to be a string, number, or array with the same number of rows as existing data'
+        )
+    }
+    this.metaArray.properties.push(key)
+    return this
+  }
+
+  /**
+   *  Map callback function to every value row
+   */
+  mapRow(callback) {
+    this.metaArray.values = this.metaArray.values.map(row => callback(row))
+    return this
   }
 
   __validPropArrayDim(arr) {
@@ -78,19 +131,17 @@ export default class {
   }
 
   // generate json array required for HTTP requests
-  // jsonArray() {
-  //   this.metaArray.values.forEach(row => {
-  //     let obj = {}
-  //     this.metaArray.properties.forEach((col, idx) => {
-  //       Object.assign(obj, {
-  //         `${col}`:
-
-  //       })
-  //     })
-
-
-  //   })
-  // }
+  jsonArray() {
+    let results = []
+    this.metaArray.values.forEach(row => {
+      let obj = {}
+      this.metaArray.properties.forEach((prop, idx) => {
+        obj[prop] = row[idx]
+      })
+      results.push(obj)
+    })
+    return results
+  }
 }
 
 
