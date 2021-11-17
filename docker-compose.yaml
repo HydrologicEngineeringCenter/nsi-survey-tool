@@ -4,7 +4,7 @@ services:
   nsi_ui:
     container_name: NSIUI_DEV
     build:
-      context: .devcontainer/
+      context: .
       dockerfile: dev.Dockerfile
     ports:
       - 3000:3000
