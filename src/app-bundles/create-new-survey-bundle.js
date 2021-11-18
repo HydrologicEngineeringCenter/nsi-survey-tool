@@ -127,6 +127,10 @@ export default {
     const authAccessToken = store.selectAuthAccessToken()
     requestParams.varUrlArg = "/" + store.selectCreateSurveyId()
 
+    if (store.selectCreateSurveyId() === undefined) {
+      throw new Error('Unable to read createSurveyId when trying to sendElements')
+    }
+
     const dataPipeline = new CSVMetaArrayUtils(store.selectCreateSurveyElements())
     dataPipeline
       .addIndex(1)

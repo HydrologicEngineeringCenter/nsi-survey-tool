@@ -4,16 +4,12 @@ import NameInput from "./NameInput";
 import ActiveSurvey from "./ActiveSurvey";
 import SurveyorsList from "./SurveyorsList";
 import ButtonHelp from "./ButtonHelp";
-import ActionButtons from "./ActionButtons";
 import Uploader from "./Uploader";
-import { Store } from "@material-ui/icons";
-import { useRef } from "react";
 import classes from "../CreateNewSurveyPrompt.module.css";
 import { Fragment, useCallback } from "react";
 import { connect } from 'redux-bundler-react';
 import CREATE_SURVEY_STEP from "../../../stores/newSurveyStep";
 import DescriptionInput from "./DescriptionInput";
-import Dropzone from "react-dropzone";
 
 /**
  *

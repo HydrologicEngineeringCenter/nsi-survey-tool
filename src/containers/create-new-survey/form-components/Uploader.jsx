@@ -26,7 +26,7 @@ const activeStyle = {
 const acceptStyle = {
   borderColor: '#00e676'
 };
-{ { { } } }
+
 const rejectStyle = {
   borderColor: '#ff1744'
 };
