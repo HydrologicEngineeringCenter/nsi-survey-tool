@@ -28,9 +28,11 @@ const NewSurveyPrompt = (props) => {
     doStoreCreateSurveyStep,
     doSendRequestCreateSurvey,
     doSendRequestInsertElements,
+    doStoreBackend,
   } = props
 
   const backend = new SurveyApi()
+  doStoreBackend(backend)
 
   /*******************
    * Refs + states
@@ -76,7 +78,7 @@ const NewSurveyPrompt = (props) => {
 
     // validate params
     if (allValidProperties(requestParams)) {
-      doSendRequestCreateSurvey(backend, requestParams)
+      doSendRequestCreateSurvey(requestParams)
     } else {
       throw new InvalidRequestError("Invalid request param to backend API");
     }
@@ -95,7 +97,7 @@ const NewSurveyPrompt = (props) => {
 
     // validate params
     if (allValidProperties(requestParams)) {
-      doSendRequestInsertElements(backend, requestParams)
+      doSendRequestInsertElements(requestParams)
     } else {
       throw new InvalidRequestError("Invalid request param to backend API");
     }
@@ -196,4 +198,5 @@ export default connect(
   'doStoreCreateSurveyStep',
   'doSendRequestCreateSurvey',
   'doSendRequestInsertElements',
+  'doStoreBackend',
   NewSurveyPrompt);

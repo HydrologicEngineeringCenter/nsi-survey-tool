@@ -7,6 +7,7 @@ const CREATE_NEW_SURVEY_ACTION = {
   UPDATE_SURVEY_ID: "CREATE_NEW_SURVEY_ACTION.UPDATE_SURVEY_ID",
   STORE_ELEMENTS: "CREATE_NEW_SURVEY_ACTION.STORE_ELEMENTS",
   FLAG_CHANGE_PROPERTIES: "CREATE_NEW_SURVEY_ACTION.FLAG_CHANGE_PROPERTIES",
+  STORE_BACKEND: "CREATE_NEW_SURVEY_ACTION.STORE_BACKEND",
 }
 
 export default {
@@ -19,6 +20,7 @@ export default {
       surveyId: "",
       surveyElements: null,
       flagChangeSurveyElementsProperties: false,
+      backend: null,
     };
     return (state = initialData, { type, payload }) => {
       switch (type) {
@@ -26,6 +28,7 @@ export default {
         case CREATE_NEW_SURVEY_ACTION.UPDATE_SURVEY_ID:
         case CREATE_NEW_SURVEY_ACTION.STORE_ELEMENTS:
         case CREATE_NEW_SURVEY_ACTION.FLAG_CHANGE_PROPERTIES:
+        case CREATE_NEW_SURVEY_ACTION.STORE_BACKEND:
         default:
           return payload ? { ...state, ...payload } : { ...state }
       }
@@ -56,11 +59,20 @@ export default {
     })
   },
 
+  doStoreBackend: backend => ({ dispatch }) => {
+    dispatch({
+      type: CREATE_NEW_SURVEY_ACTION.STORE_BACKEND,
+      payload: {
+        backend: backend
+      }
+    })
+  },
+
   /**
   * @param backend a SurveyApi object providing connection to backend db
   * @param requestParams object providing params to construct request
   */
-  doSendRequestCreateSurvey: (backend, requestParams) => ({
+  doSendRequestCreateSurvey: (requestParams) => ({
     dispatch,
     store,
     handleErrors
@@ -71,7 +83,7 @@ export default {
     const authAccessToken = store.selectAuthAccessToken()
 
     // send request, process response, update display step
-    backend
+    store.selectBackend()
       .fetch(authAccessToken, requestParams)
       .then(handleErrors)
       .then(response => response.json())
@@ -117,7 +129,7 @@ export default {
     }
   ),
 
-  doSendRequestInsertElements: (backend, requestParams) => ({
+  doSendRequestInsertElements: (requestParams) => ({
     dispatch,
     store,
     handleErrors
@@ -141,7 +153,7 @@ export default {
     requestParams.body = body
 
     // send request, process response, update display step
-    backend
+    store.selectBackend()
       .fetch(authAccessToken, requestParams)
       .then(handleErrors)
       .then(_ => {
@@ -154,6 +166,31 @@ export default {
         console.log(err)
       });
   },
+
+  doSendRequestSearchUser: (requestParams) => ({
+    dispatch,
+    store,
+    handleErrors
+  }) => {
+
+    const authAccessToken = store.selectAuthAccessToken()
+
+    store.selectBackend()
+      .fetch(authAccessToken, requestParams)
+      .then(handleErrors)
+      .then(_ => {
+        dispatch({
+          type: CREATE_NEW_SURVEY_ACTION.STORE_STEP,
+          payload: { 'surveyStep': CREATE_SURVEY_STEP.SURVEYORS }
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  },
+
+  // TODO find a better place for this backend access object
+  selectBackend: state => state.createNewSurvey.backend,
 
   selectFlagChangeProperties: state => state.createNewSurvey.flagChangeSurveyElementsProperties,
 
