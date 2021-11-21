@@ -10,6 +10,7 @@ import { Fragment, useCallback } from "react";
 import { connect } from 'redux-bundler-react';
 import CREATE_SURVEY_STEP from "../../../stores/newSurveyStep";
 import DescriptionInput from "./DescriptionInput";
+import AsyncSurveyorAutocomplete from "./AsyncSurveyorAutocomplete"
 
 /**
  *
@@ -59,6 +60,7 @@ const StepContents = (props) => {
     case CREATE_SURVEY_STEP.SURVEYORS:
       return (
         <Fragment>
+          <AsyncSurveyorAutocomplete />
           <ButtonHelp>Add Surveyors</ButtonHelp>
           <p />
           <p />

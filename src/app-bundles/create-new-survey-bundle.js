@@ -1,6 +1,7 @@
 import { createSelector } from "redux-bundler"
 import CSVMetaArrayUtils from "../lib/data/CSVMetaArrayUtils"
 import CREATE_SURVEY_STEP from "../stores/newSurveyStep"
+import REQUESTS from '../stores/requestParams'
 
 const CREATE_NEW_SURVEY_ACTION = {
   STORE_STEP: "CREATE_NEW_SURVEY_ACTION.STORE_STEP",
@@ -8,6 +9,8 @@ const CREATE_NEW_SURVEY_ACTION = {
   STORE_ELEMENTS: "CREATE_NEW_SURVEY_ACTION.STORE_ELEMENTS",
   FLAG_CHANGE_PROPERTIES: "CREATE_NEW_SURVEY_ACTION.FLAG_CHANGE_PROPERTIES",
   STORE_BACKEND: "CREATE_NEW_SURVEY_ACTION.STORE_BACKEND",
+  UPDATE_USERS_LIST: "CREATE_NEW_SURVEY_ACTION.UPDATE_USERS_LIST",
+  CLEAR_SELECTED_USER: "CREATE_NEW_SURVEY_ACTION.CLEAR_SELECTED_USER",
 }
 
 export default {
@@ -21,6 +24,14 @@ export default {
       surveyElements: null,
       flagChangeSurveyElementsProperties: false,
       backend: null,
+      usersList: [],
+      // usersList: [ // for testing
+      //   { id: 1029373, userName: 'abchjdubasidi' },
+      //   { id: 5029373, userName: 'abc8sdubasidi' },
+      //   { id: 1029073, userName: 'abcysdubasidi' },
+      //   { id: 1099773, userName: 'abcasdubas7di' },
+      // ],
+      selectedUser: "",
     };
     return (state = initialData, { type, payload }) => {
       switch (type) {
@@ -29,6 +40,8 @@ export default {
         case CREATE_NEW_SURVEY_ACTION.STORE_ELEMENTS:
         case CREATE_NEW_SURVEY_ACTION.FLAG_CHANGE_PROPERTIES:
         case CREATE_NEW_SURVEY_ACTION.STORE_BACKEND:
+        case CREATE_NEW_SURVEY_ACTION.UPDATE_USERS_LIST:
+        case CREATE_NEW_SURVEY_ACTION.CLEAR_SELECTED_USER:
         default:
           return payload ? { ...state, ...payload } : { ...state }
       }
@@ -137,7 +150,7 @@ export default {
     // authAccessToken is always refreshing, have to update from auth bundle
     // before sending request everytime
     const authAccessToken = store.selectAuthAccessToken()
-    requestParams.varUrlArg = "/" + store.selectCreateSurveyId()
+    requestParams.pathParam = "/" + store.selectCreateSurveyId()
 
     if (store.selectCreateSurveyId() === undefined) {
       throw new Error('Unable to read createSurveyId when trying to sendElements')
@@ -167,26 +180,49 @@ export default {
       });
   },
 
-  doSendRequestSearchUser: (requestParams) => ({
+  doCreateSurveyClearSelectedUser: () => ({ dispatch }) => {
+    dispatch({
+      type: CREATE_NEW_SURVEY_ACTION.CLEAR_SELECTED_USER,
+      payload: {
+        'selectedUser': {
+          userName: '',
+          id: null,
+        }
+      }
+    })
+  },
+
+  doSendRequestSearchUser: (user) => ({
     dispatch,
     store,
     handleErrors
   }) => {
 
-    const authAccessToken = store.selectAuthAccessToken()
-
-    store.selectBackend()
-      .fetch(authAccessToken, requestParams)
-      .then(handleErrors)
-      .then(_ => {
-        dispatch({
-          type: CREATE_NEW_SURVEY_ACTION.STORE_STEP,
-          payload: { 'surveyStep': CREATE_SURVEY_STEP.SURVEYORS }
+    // validation - don't request an empty query
+    if (user && user.length !== 0) {
+      const authAccessToken = store.selectAuthAccessToken()
+      let requestParams = REQUESTS.SEARCH_USERS
+      requestParams.query = {
+        q: user, // query
+        r: 5, // result limit
+        p: 0, // page offset
+      }
+      store.selectBackend()
+        .fetch(authAccessToken, requestParams)
+        .then(handleErrors)
+        .then(response => response.json())
+        .then(data => {
+          if (data != null) {
+            dispatch({
+              type: CREATE_NEW_SURVEY_ACTION.UPDATE_USERS_LIST,
+              payload: { usersList: [...data] }
+            })
+          }
         })
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
   },
 
   // TODO find a better place for this backend access object
@@ -199,4 +235,6 @@ export default {
   selectCreateSurveyId: state => state.createNewSurvey.surveyId,
 
   selectCreateSurveyElements: state => state.createNewSurvey.surveyElements,
+
+  selectCreateSurveyUsersList: state => state.createNewSurvey.usersList,
 };

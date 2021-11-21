@@ -73,7 +73,7 @@ export default {
 
   INSERT_SURVEY_ELEMENTS: {
     endpoint: END_POINT.SURVEY,
-    varUrlArg: null,
+    pathParams: null,
     suffix: SUFFIX.ELEMENTS,
     method: METHOD.POST,
     body: null,
@@ -93,7 +93,10 @@ export default {
   },
 
   SEARCH_USERS: {
-
+    endpoint: END_POINT.USER_SEARCH,
+    method: METHOD.GET,
+    body: null,
+    expectedResponseStatus: httpStatus.StatusOK,
   },
 
   GET_SURVEY_REPORT: {

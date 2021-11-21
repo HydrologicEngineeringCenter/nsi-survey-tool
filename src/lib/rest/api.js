@@ -55,23 +55,34 @@ class SurveyApi {
   * Returns a prepopulated fetch promise
   */
   fetch(authAccessToken, requestParams) {
-
     let url = ''
-    if (requestParams.varUrlArg) {
-      url = `${apiHost}${requestParams.endpoint}${requestParams.varUrlArg}${requestParams.suffix}`
+    let query = ''
+
+    // add in whole
+    if (requestParams.pathParam) {
+      url = `${apiHost}${requestParams.endpoint}${requestParams.pathParam}${requestParams.suffix}`
     } else {
       url = `${apiHost}${requestParams.endpoint}`
     }
 
-    return fetch(url, {
+    // add in query string
+    if (requestParams.query) {
+      query = new URLSearchParams(requestParams.query)
+      url += ('?' + query.toString())
+    }
+
+    let requestObj = {
       method: requestParams.method,
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${authAccessToken}`,
       },
-      body: requestParams.body ? JSON.stringify(requestParams.body) : "",
-    })
+    }
+
+    if (requestParams.body) requestObj.body = JSON.stringify(requestParams.body)
+
+    return fetch(url, requestObj)
   }
 }
 

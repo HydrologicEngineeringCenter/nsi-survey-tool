@@ -31,6 +31,8 @@ const NewSurveyPrompt = (props) => {
     doStoreBackend,
   } = props
 
+  // TODO once the modify and manage all functions are created, move this
+  // to somewhere else accessible to all 3 functionalities
   const backend = new SurveyApi()
   doStoreBackend(backend)
 
