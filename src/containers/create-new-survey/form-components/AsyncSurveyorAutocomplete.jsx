@@ -39,6 +39,14 @@ const AsyncSurveyorAutocomplete = props => {
           );
         }}
 
+        isOptionEqualToValue={(option, value) => {
+          if (option.userId === value.userId) {
+            return true
+          } else {
+            return false
+          }
+        }}
+
       // onChange={(_, v) => {
       //   if (v) {
       //     doSendRequestSearchUser(v);

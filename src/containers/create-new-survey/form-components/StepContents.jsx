@@ -61,6 +61,7 @@ const StepContents = (props) => {
       return (
         <Fragment>
           <AsyncSurveyorAutocomplete />
+          <p />
           <ButtonHelp>Add Surveyors</ButtonHelp>
           <p />
           <p />

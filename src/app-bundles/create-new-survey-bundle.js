@@ -25,13 +25,7 @@ export default {
       flagChangeSurveyElementsProperties: false,
       backend: null,
       usersList: [],
-      // usersList: [ // for testing
-      //   { id: 1029373, userName: 'abchjdubasidi' },
-      //   { id: 5029373, userName: 'abc8sdubasidi' },
-      //   { id: 1029073, userName: 'abcysdubasidi' },
-      //   { id: 1099773, userName: 'abcasdubas7di' },
-      // ],
-      selectedUser: "",
+      selectedUser: null,
     };
     return (state = initialData, { type, payload }) => {
       switch (type) {
@@ -186,7 +180,7 @@ export default {
       payload: {
         'selectedUser': {
           userName: '',
-          id: null,
+          userId: null,
         }
       }
     })
@@ -213,15 +207,29 @@ export default {
         .then(response => response.json())
         .then(data => {
           if (data != null) {
-            dispatch({
-              type: CREATE_NEW_SURVEY_ACTION.UPDATE_USERS_LIST,
-              payload: { usersList: [...data] }
-            })
+            // there has to be a less verbose way to parse both single obj and array of objs
+            if (Array.isArray(data)) {
+              dispatch({
+                type: CREATE_NEW_SURVEY_ACTION.UPDATE_USERS_LIST,
+                payload: { usersList: [...data] }
+              })
+            } else { // single object response
+              dispatch({
+                type: CREATE_NEW_SURVEY_ACTION.UPDATE_USERS_LIST,
+                payload: { usersList: [data] }
+              })
+            }
           }
         })
         .catch((err) => {
           console.log(err)
         })
+    } else {
+      store.doCreateSurveyClearSelectedUser()
+      dispatch({
+        type: CREATE_NEW_SURVEY_ACTION.UPDATE_USERS_LIST,
+        payload: { usersList: [] }
+      })
     }
   },
 

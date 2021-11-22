@@ -8,7 +8,6 @@ import {
   Step,
   StepLabel,
   StepContent,
-  Typography,
 } from "@material-ui/core"
 import Button from "@material-ui/core/Button"
 import StepContents from "./form-components/StepContents"
@@ -162,7 +161,7 @@ const NewSurveyPrompt = (props) => {
           ))}
 
           <div className={classes.actionsContainer}>
-            <div>
+            <Fragment>
 
               {/* replace with a cancel button instead of back button
                     implementing the back button would mean
@@ -186,9 +185,8 @@ const NewSurveyPrompt = (props) => {
               >
                 {createSurveyStep === stepHeaders.length - 1 ? "Finish" : "Next"}
               </Button>
-            </div>
+            </Fragment>
           </div>
-
         </Stepper>
       </div>
     </Modal>
