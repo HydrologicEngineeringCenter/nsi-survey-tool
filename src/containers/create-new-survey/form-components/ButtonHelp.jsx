@@ -7,7 +7,7 @@ const ButtonHelp = (props) => {
 
   return (
     <div className={classes.container}>
-      <Button variant="contained">{children}</Button>
+      <Button variant="contained" onClick={props.onClick}>{children}</Button>
       {/* <img className={classes["vector"]} src={HelpSvg} /> */}
     </div>
   );

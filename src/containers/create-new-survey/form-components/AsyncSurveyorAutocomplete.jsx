@@ -9,9 +9,10 @@ const AsyncSurveyorAutocomplete = props => {
 
   const autocompleteRef = useRef()
   const {
-    createSurveyUsersList: usersList,
+    usersList,
     doSendRequestSearchUser,
-    doCreateSurveyClearSelectedUser,
+    doUser_updateSelectedUser,
+    user_selectedUser,
   } = props
 
   //  TODO put a throttle somewhere so we don't ddos the backend
@@ -25,7 +26,6 @@ const AsyncSurveyorAutocomplete = props => {
         getOptionLabel={option => option.userName}
 
         onInputChange={(e, newInputValue) => {
-          doCreateSurveyClearSelectedUser()
           doSendRequestSearchUser(newInputValue)
         }}
 
@@ -47,11 +47,13 @@ const AsyncSurveyorAutocomplete = props => {
           }
         }}
 
-      // onChange={(_, v) => {
-      //   if (v) {
-      //     doSendRequestSearchUser(v);
-      //   }
-      // }}
+        // selectedUser is value
+        value={user_selectedUser}
+        onChange={(_, v) => {
+          if (v) {
+            doUser_updateSelectedUser(v);
+          }
+        }}
       />
     </div>
   )
@@ -59,8 +61,9 @@ const AsyncSurveyorAutocomplete = props => {
 
 
 export default connect(
-  'selectCreateSurveyUsersList',
+  'selectUsersList',
   'doSendRequestSearchUser',
-  'doCreateSurveyClearSelectedUser',
+  'doUser_updateSelectedUser',
+  'selectUser_selectedUser',
   AsyncSurveyorAutocomplete,
 )

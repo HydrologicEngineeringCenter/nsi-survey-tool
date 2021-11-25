@@ -14,13 +14,13 @@ import CreateNewSurveyPrompt from "../create-new-survey/CreateNewSurveyPrompt";
 function SurveySplashPage(props) {
   const { doUpdateUrl, authAccessToken } = props;
 
-  // fix to 
-  const validateUser = () => {
-    if (!authAccessToken) {
-      doUpdateUrl("/nsi-survey/");
-    }
-  }
-  setTimeout(validateUser, 0)
+  // TODO UNCOMMENT THIS IN PRODUCTION
+  // const validateUser = () => {
+  //   if (!authAccessToken) {
+  //     doUpdateUrl("/nsi-survey/");
+  //   }
+  // }
+  // setTimeout(validateUser, 0)
 
   const [flagShowCreateSurvey, setFlagShowCreateSurvey] = useState(false);
 
@@ -45,7 +45,7 @@ function SurveySplashPage(props) {
             text="Create New Survey"
             onClick={showCreateSurvey}
           />
-          <Button vector={ModifyExistingSvg} text="Modify Existing Survey" />
+          <Button vector={ModifyExistingSvg} text="Choose Active Survey" />
           <Button vector={ManageAllSvg} text="Manage All Surveys" />
         </div>
       </div>

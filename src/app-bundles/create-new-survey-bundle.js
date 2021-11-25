@@ -1,7 +1,6 @@
 import { createSelector } from "redux-bundler"
 import CSVMetaArrayUtils from "../lib/data/CSVMetaArrayUtils"
 import CREATE_SURVEY_STEP from "../stores/newSurveyStep"
-import REQUESTS from '../stores/requestParams'
 
 const CREATE_NEW_SURVEY_ACTION = {
   STORE_STEP: "CREATE_NEW_SURVEY_ACTION.STORE_STEP",
@@ -24,8 +23,6 @@ export default {
       surveyElements: null,
       flagChangeSurveyElementsProperties: false,
       backend: null,
-      usersList: [],
-      selectedUser: null,
     };
     return (state = initialData, { type, payload }) => {
       switch (type) {
@@ -34,8 +31,6 @@ export default {
         case CREATE_NEW_SURVEY_ACTION.STORE_ELEMENTS:
         case CREATE_NEW_SURVEY_ACTION.FLAG_CHANGE_PROPERTIES:
         case CREATE_NEW_SURVEY_ACTION.STORE_BACKEND:
-        case CREATE_NEW_SURVEY_ACTION.UPDATE_USERS_LIST:
-        case CREATE_NEW_SURVEY_ACTION.CLEAR_SELECTED_USER:
         default:
           return payload ? { ...state, ...payload } : { ...state }
       }
@@ -174,64 +169,6 @@ export default {
       });
   },
 
-  doCreateSurveyClearSelectedUser: () => ({ dispatch }) => {
-    dispatch({
-      type: CREATE_NEW_SURVEY_ACTION.CLEAR_SELECTED_USER,
-      payload: {
-        'selectedUser': {
-          userName: '',
-          userId: null,
-        }
-      }
-    })
-  },
-
-  doSendRequestSearchUser: (user) => ({
-    dispatch,
-    store,
-    handleErrors
-  }) => {
-
-    // validation - don't request an empty query
-    if (user && user.length !== 0) {
-      const authAccessToken = store.selectAuthAccessToken()
-      let requestParams = REQUESTS.SEARCH_USERS
-      requestParams.query = {
-        q: user, // query
-        r: 5, // result limit
-        p: 0, // page offset
-      }
-      store.selectBackend()
-        .fetch(authAccessToken, requestParams)
-        .then(handleErrors)
-        .then(response => response.json())
-        .then(data => {
-          if (data != null) {
-            // there has to be a less verbose way to parse both single obj and array of objs
-            if (Array.isArray(data)) {
-              dispatch({
-                type: CREATE_NEW_SURVEY_ACTION.UPDATE_USERS_LIST,
-                payload: { usersList: [...data] }
-              })
-            } else { // single object response
-              dispatch({
-                type: CREATE_NEW_SURVEY_ACTION.UPDATE_USERS_LIST,
-                payload: { usersList: [data] }
-              })
-            }
-          }
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    } else {
-      store.doCreateSurveyClearSelectedUser()
-      dispatch({
-        type: CREATE_NEW_SURVEY_ACTION.UPDATE_USERS_LIST,
-        payload: { usersList: [] }
-      })
-    }
-  },
 
   // TODO find a better place for this backend access object
   selectBackend: state => state.createNewSurvey.backend,
@@ -244,5 +181,4 @@ export default {
 
   selectCreateSurveyElements: state => state.createNewSurvey.surveyElements,
 
-  selectCreateSurveyUsersList: state => state.createNewSurvey.usersList,
 };

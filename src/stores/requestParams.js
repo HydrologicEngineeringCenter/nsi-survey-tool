@@ -11,6 +11,8 @@ const END_POINT = {
 
 const SUFFIX = {
   ELEMENTS: "/elements",
+  MEMBERS: "/members",
+  MEMBER: "/member",
 }
 
 const METHOD = {
@@ -60,11 +62,18 @@ export default {
   },
 
   GET_SURVEY_MEMBERS: {
-
+    endpoint: END_POINT.SURVEY,
+    pathParam: null,
+    suffix: SUFFIX.MEMBERS,
+    method: METHOD.GET,
   },
 
   UPSERT_SURVEY_MEMBER: {
-
+    endpoint: END_POINT.SURVEY,
+    pathParam: null,
+    suffix: SUFFIX.MEMBER,
+    method: METHOD.POST,
+    body: null,
   },
 
   REMOVE_SURVEY_MEMBER: {

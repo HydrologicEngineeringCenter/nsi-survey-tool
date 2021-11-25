@@ -20,14 +20,15 @@ const StepContents = (props) => {
 
   const {
     createSurveyStep: step,
+    doUser_sendRequestAddSurveyor,
+    user_selectedUser,
+    createSurveyId,
     nameInputRef,
     descriptionInputRef,
     activeSwitchRef,
     setElements
   } = props;
 
-
-  // component contents
   switch (step) {
 
     case CREATE_SURVEY_STEP.BASIC_INFO:
@@ -43,10 +44,10 @@ const StepContents = (props) => {
         </Card>
       )
 
+    // TODO add loading graphic
     case CREATE_SURVEY_STEP.POINTS:
       return (
         <Fragment>
-          {/* <ButtonHelp>Add Survey Points</ButtonHelp> */}
           <p />
           <p />
           <Uploader setElements={setElements} />
@@ -62,7 +63,12 @@ const StepContents = (props) => {
         <Fragment>
           <AsyncSurveyorAutocomplete />
           <p />
-          <ButtonHelp>Add Surveyors</ButtonHelp>
+          <ButtonHelp onClick={_ =>
+            doUser_sendRequestAddSurveyor(
+              createSurveyId,
+              user_selectedUser.userId
+            )}>Add Surveyors
+          </ButtonHelp>
           <p />
           <p />
           <Card className={classes["surveyors-container"]}>
@@ -78,5 +84,8 @@ const StepContents = (props) => {
 
 export default connect(
   'selectCreateSurveyStep',
+  'doUser_sendRequestAddSurveyor',
+  'selectUser_selectedUser',
+  'selectCreateSurveyId',
   StepContents
 )
