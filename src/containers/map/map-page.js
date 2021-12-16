@@ -25,7 +25,7 @@ import st from '../../cm-plugins/survey-tray/index'
 
  /*import nsiHexBin from '../../cm-plugins/hexbins/index' */
 
-let mapHook = null 
+let mapHook = null
 
 if (mapHook) {
   mapHook(props)
@@ -61,12 +61,11 @@ function MapPage(props) {
                 }
               })
             ]}
-          />        
+          />
       </div>
   );
 }
 
 export default connect(
-  "selectAuthNSIToken",
   MapPage
 );

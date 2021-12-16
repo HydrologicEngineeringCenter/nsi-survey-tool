@@ -16,3 +16,13 @@
 .checkbox {
   color: rgba(0,0,0,.54);
 }
+
+/* make sure <a> without href would look like a link */
+a {
+    text-decoration: underline !important;
+    cursor: pointer;
+}
+
+a:hover{
+    text-decoration: none !important;
+}

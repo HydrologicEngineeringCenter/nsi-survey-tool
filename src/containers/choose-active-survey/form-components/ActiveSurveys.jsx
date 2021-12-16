@@ -14,7 +14,12 @@ const ActiveSurveyList = (props) => {
   // each element in usersList is an obj with 2 properties: userId and userName
   const {
     survey_surveys,
+    doUpdateUrl,
   } = props
+
+  const handleRedirectToSurveyTray = _ => {
+    doUpdateUrl("/nsi-survey/main")
+  }
 
   return (
     <TableContainer component={Paper} className={classes["active-survey-list"]}>
@@ -45,8 +50,9 @@ const ActiveSurveyList = (props) => {
                 <Checkbox className={classes.checkbox} id={`checkbox__${row.id}`} checked={row.active} />
               </TableCell>
 
+              {/* do a client side rerouting or redux states will reset to empty*/}
               <TableCell component="th" scope="row">
-                {`${row.id}`}
+                <a onClick={handleRedirectToSurveyTray}>{`${row.id}`}</a>
               </TableCell>
 
             </TableRow>
@@ -59,5 +65,6 @@ const ActiveSurveyList = (props) => {
 
 export default connect(
   "selectSurvey_surveys",
+  "doUpdateUrl",
   ActiveSurveyList
 )

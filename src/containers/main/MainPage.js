@@ -4,7 +4,7 @@ import Map from '../map/map-page';
 import NavBar from '../components/navbar/NavBar';
 
 function MainPage(props){
-    const {doUpdateUrl,authNSIToken} = props;
+    const {doUpdateUrl, authAccessToken:authNSIToken} = props;
 
     // if(!authNSIToken){
     //   doUpdateUrl("/nsi-survey/");
@@ -14,7 +14,7 @@ function MainPage(props){
       <div >
         <NavBar/>
           <div className="row no-gutters">
-              <Map/>         
+              <Map/>
           </div>
         </div>
     )
@@ -22,6 +22,6 @@ function MainPage(props){
 
 export default connect(
   'doUpdateUrl',
-  'selectAuthNSIToken',
+  'selectAuthAccessToken',
   MainPage
 );

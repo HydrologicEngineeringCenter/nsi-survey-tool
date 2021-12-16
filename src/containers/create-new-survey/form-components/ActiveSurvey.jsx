@@ -1,6 +1,5 @@
 import React from "react"
 import { useState } from "react";
-import ToggleSwitch from "../../components/ToggleSwitch/ToggleSwitch";
 import classes from "./ActiveSurvey.module.css";
 import Switch from "@material-ui/core/Switch";
 import Grid from '@material-ui/core/Grid';
@@ -8,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 
 const ActiveSurvey = (props) => {
   const [switchChecked, setSwitchChecked] = useState(false);
+
   return (
     <div className={classes["overlap-group"]}>
       <div className={classes["active-label"]}>Survey active?</div>
@@ -38,4 +38,4 @@ const ActiveSurvey = (props) => {
   );
 };
 
-export default ActiveSurvey;
+export default ActiveSurvey
