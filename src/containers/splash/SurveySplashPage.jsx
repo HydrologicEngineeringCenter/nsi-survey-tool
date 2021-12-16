@@ -2,6 +2,7 @@ import React, { createContext, Fragment, useState } from "react";
 import { connect } from "redux-bundler-react";
 import NavBar from "../components/navbar/NavBar";
 import classes from "./SurveySplashPage.module.css";
+import SurveyApi from "../../lib/rest/api"
 
 // incons from https://fonts.google.com/icons
 import CreateNewSvg from "../../resources/survey-splash/add_box_white_24dp.svg";
@@ -10,9 +11,15 @@ import ManageAllSvg from "../../resources/survey-splash/settings_white_24dp.svg"
 
 import Button from "./Button";
 import CreateNewSurveyPrompt from "../create-new-survey/CreateNewSurveyPrompt";
+import ChooseActiveSurveyPrompt from "../choose-active-survey/ChooseActiveSurveyPrompt";
 
 function SurveySplashPage(props) {
-  const { doUpdateUrl, authAccessToken } = props;
+  const {
+    doUpdateUrl,
+    authAccessToken,
+    doSurvey_sendRequestGetSurveys,
+    doStoreBackend,
+  } = props;
 
   // TODO UNCOMMENT THIS IN PRODUCTION
   // const validateUser = () => {
@@ -23,21 +30,50 @@ function SurveySplashPage(props) {
   // setTimeout(validateUser, 0)
 
   const [flagShowCreateSurvey, setFlagShowCreateSurvey] = useState(false);
+  const [flagChooseActiveSurvey, setFlagChooseActiveSurvey] = useState(false);
+  const [flagManageAllSurveys, setFlagManageAllSurveys] = useState(false);
+
+  const backend = new SurveyApi()
+  doStoreBackend(backend)
 
   const showCreateSurvey = () => {
-    setFlagShowCreateSurvey(true);
+    setFlagShowCreateSurvey(true)
   };
 
   const hideCreateSurvey = () => {
     setFlagShowCreateSurvey(false);
   };
 
+  const showChooseActiveSurvey = () => {
+    doSurvey_sendRequestGetSurveys()
+    setFlagChooseActiveSurvey(true)
+  };
+
+  const hideChooseActiveSurvey = () => {
+    setFlagChooseActiveSurvey(false);
+  };
+
+  const showManageAllSurveys = () => {
+    setFlagManageAllSurveys(true)
+  };
+
+  const hideManageAllSurveys = () => {
+    setFlagChooseActiveSurvey(false);
+  };
+
   return (
     <div className={classes["container-center-vertical"]}>
+
       {flagShowCreateSurvey && (
         <CreateNewSurveyPrompt onClose={hideCreateSurvey} />
       )}
+
+      {flagChooseActiveSurvey && (
+        <ChooseActiveSurveyPrompt onClose={hideChooseActiveSurvey} />
+      )}
+
       <NavBar />
+
       <div className={classes["overlap-group"]}>
         <div className={classes["buttons"]}>
           <Button
@@ -45,7 +81,11 @@ function SurveySplashPage(props) {
             text="Create New Survey"
             onClick={showCreateSurvey}
           />
-          <Button vector={ModifyExistingSvg} text="Choose Active Survey" />
+          <Button
+            vector={ModifyExistingSvg}
+            text="Choose Active Survey"
+            onClick={showChooseActiveSurvey}
+          />
           <Button vector={ManageAllSvg} text="Manage All Surveys" />
         </div>
       </div>
@@ -56,5 +96,7 @@ function SurveySplashPage(props) {
 export default connect(
   "doUpdateUrl",
   "selectAuthAccessToken",
+  "doSurvey_sendRequestGetSurveys",
+  "doStoreBackend",
   SurveySplashPage
 );

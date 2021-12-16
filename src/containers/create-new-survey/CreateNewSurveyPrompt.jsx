@@ -1,7 +1,7 @@
 import React, { useState, Fragment, useRef, useEffect } from "react"
 import Modal from "../components/UI/Modal"
 import { connect } from 'redux-bundler-react'
-import FunctionTitle from "./form-components/FunctionTitle"
+import FunctionTitle from "../components/UI/FunctionTitle"
 import classes from "./CreateNewSurveyPrompt.module.css"
 import {
   Stepper,
@@ -27,13 +27,7 @@ const NewSurveyPrompt = (props) => {
     doStoreCreateSurveyStep,
     doSendRequestCreateSurvey,
     doSendRequestInsertElements,
-    doStoreBackend,
   } = props
-
-  // TODO once the modify and manage all functions are created, move this
-  // to somewhere else accessible to all 3 functionalities
-  const backend = new SurveyApi()
-  doStoreBackend(backend)
 
   /*******************
    * Refs + states
@@ -109,10 +103,8 @@ const NewSurveyPrompt = (props) => {
 
   /**
    * Selector for handler specific to each step
-   * @returns
    */
   const handleConfirm = () => {
-    console.log(createSurveyStep)
     switch (createSurveyStep) {
       case CREATE_SURVEY_STEP.BASIC_INFO:
         handleBasicInfo()
@@ -179,7 +171,6 @@ const NewSurveyPrompt = (props) => {
                 // color="primary"
                 onClick={ // interact with backend onclick
                   handleConfirm
-                  // handleNext
                 }
                 className={classes.button}
               >
@@ -198,5 +189,4 @@ export default connect(
   'doStoreCreateSurveyStep',
   'doSendRequestCreateSurvey',
   'doSendRequestInsertElements',
-  'doStoreBackend',
   NewSurveyPrompt);

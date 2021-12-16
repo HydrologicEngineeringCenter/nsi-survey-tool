@@ -10,6 +10,8 @@ import authKeycloakBundle from './auth-keycloak-bundle-refactored';
 import routesBundle from './routes-bundle';
 import createNewSurveyBundle from './create-new-survey-bundle';
 import userBundle from './userBundle'
+import surveyBundle from './surveyBundle'
+import generalBundle from './generalBundle'
 
 export default composeBundles(
   routesBundle,
@@ -18,6 +20,8 @@ export default composeBundles(
   authKeycloakBundle,
   createNewSurveyBundle,
   userBundle,
+  surveyBundle,
+  generalBundle,
   createUrlBundle(),
   createCacheBundle(cache.set),
 );
