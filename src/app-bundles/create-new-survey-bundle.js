@@ -61,15 +61,6 @@ export default {
     })
   },
 
-  doStoreBackend: backend => ({ dispatch }) => {
-    dispatch({
-      type: CREATE_NEW_SURVEY_ACTION.STORE_BACKEND,
-      payload: {
-        backend: backend
-      }
-    })
-  },
-
   /**
   * @param backend a SurveyApi object providing connection to backend db
   * @param requestParams object providing params to construct request
@@ -168,10 +159,6 @@ export default {
         console.log(err)
       });
   },
-
-
-  // TODO find a better place for this backend access object
-  selectBackend: state => state.createNewSurvey.backend,
 
   selectFlagChangeProperties: state => state.createNewSurvey.flagChangeSurveyElementsProperties,
 
