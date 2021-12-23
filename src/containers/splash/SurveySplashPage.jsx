@@ -1,4 +1,4 @@
-import React, { createContext, Fragment, useState } from "react";
+import React, { useState } from "react";
 import { connect } from "redux-bundler-react";
 import NavBar from "../components/navbar/NavBar";
 import classes from "./SurveySplashPage.module.css";
@@ -12,6 +12,7 @@ import ManageAllSvg from "../../resources/survey-splash/settings_white_24dp.svg"
 import Button from "./Button";
 import CreateNewSurveyPrompt from "../create-new-survey/CreateNewSurveyPrompt";
 import ChooseActiveSurveyPrompt from "../choose-active-survey/ChooseActiveSurveyPrompt";
+import ManageAllSurveysPrompt from "../manage-all-surveys/ManageAllSurveysPrompt";
 
 function SurveySplashPage(props) {
   const {
@@ -58,7 +59,7 @@ function SurveySplashPage(props) {
   };
 
   const hideManageAllSurveys = () => {
-    setFlagChooseActiveSurvey(false);
+    setFlagManageAllSurveys(false);
   };
 
   return (
@@ -70,6 +71,10 @@ function SurveySplashPage(props) {
 
       {flagChooseActiveSurvey && (
         <ChooseActiveSurveyPrompt onClose={hideChooseActiveSurvey} />
+      )}
+
+      {flagManageAllSurveys && (
+        <ManageAllSurveysPrompt onClose={hideManageAllSurveys} />
       )}
 
       <NavBar />
@@ -86,7 +91,11 @@ function SurveySplashPage(props) {
             text="Choose Active Survey"
             onClick={showChooseActiveSurvey}
           />
-          <Button vector={ManageAllSvg} text="Manage All Surveys" />
+          <Button
+            vector={ManageAllSvg}
+            text="Manage All Surveys"
+            onClick={showManageAllSurveys}
+          />
         </div>
       </div>
     </div>

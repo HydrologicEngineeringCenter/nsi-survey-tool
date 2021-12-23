@@ -12,7 +12,6 @@ import {
 import Button from "@material-ui/core/Button"
 import StepContents from "./form-components/StepContents"
 
-import SurveyApi from "../../lib/rest/api"
 import allValidProperties from "../../utils/obj"
 import REQUEST_PARAMS from "../../stores/requestParams"
 import CREATE_SURVEY_STEP from "../../stores/newSurveyStep"
