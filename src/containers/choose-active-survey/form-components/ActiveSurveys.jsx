@@ -15,10 +15,12 @@ const ActiveSurveyList = (props) => {
   const {
     survey_surveys,
     doUpdateUrl,
+    doSurvey_loadSurveyTray,
   } = props
 
   const handleRedirectToSurveyTray = _ => {
     doUpdateUrl("/nsi-survey/main")
+    doSurvey_loadSurveyTray()
   }
 
   return (
@@ -66,5 +68,6 @@ const ActiveSurveyList = (props) => {
 export default connect(
   "selectSurvey_surveys",
   "doUpdateUrl",
+  "doSurvey_loadSurveyTray",
   ActiveSurveyList
 )

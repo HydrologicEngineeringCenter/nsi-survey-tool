@@ -18,11 +18,11 @@
 }
 
 /* make sure <a> without href would look like a link */
-a {
+th a {
     text-decoration: underline !important;
     cursor: pointer;
 }
 
-a:hover{
+th a:hover{
     text-decoration: none !important;
 }
