@@ -58,7 +58,10 @@ export default {
 
 
   UPDATE_SURVEY: {
-
+    endpoint: END_POINT.SURVEY,
+    pathParam: null,
+    suffix: null,
+    method: METHOD.PUT,
   },
 
   GET_SURVEY_MEMBERS: {

@@ -20,6 +20,7 @@ function SurveySplashPage(props) {
     authAccessToken,
     doSurvey_sendRequestGetSurveys,
     doStoreBackend,
+    doManageSurvey_dispatchShouldInitControlPromptArray,
   } = props;
 
   // TODO UNCOMMENT THIS IN PRODUCTION
@@ -55,6 +56,8 @@ function SurveySplashPage(props) {
   };
 
   const showManageAllSurveys = () => {
+    doSurvey_sendRequestGetSurveys()
+    doManageSurvey_dispatchShouldInitControlPromptArray()
     setFlagManageAllSurveys(true)
   };
 
@@ -107,5 +110,6 @@ export default connect(
   "selectAuthAccessToken",
   "doSurvey_sendRequestGetSurveys",
   "doStoreBackend",
+  "doManageSurvey_dispatchShouldInitControlPromptArray",
   SurveySplashPage
 );

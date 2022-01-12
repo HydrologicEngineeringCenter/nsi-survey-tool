@@ -1,6 +1,6 @@
 import Modal from "../components/UI/Modal"
 import FunctionTitle from "../components/UI/FunctionTitle"
-// import AllSurveyList from "./form-components/AllSurveyList"
+import AllSurveyList from "./form-components/AllSurveyList"
 
 const ManageAllSurveyPrompt = (props) => {
 
@@ -11,7 +11,7 @@ const ManageAllSurveyPrompt = (props) => {
       </div>
 
       <div className="modal-body">
-        // <AllSurveyList />
+        <AllSurveyList />
       </div>
     </Modal>
   )

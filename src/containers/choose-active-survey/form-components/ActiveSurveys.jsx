@@ -18,7 +18,8 @@ const ActiveSurveyList = (props) => {
     doSurvey_loadSurveyTray,
   } = props
 
-  const handleRedirectToSurveyTray = _ => {
+  const handleRedirectToSurveyTray = rowId => {
+    console.log(rowId)
     doUpdateUrl("/nsi-survey/main")
     doSurvey_loadSurveyTray()
   }
@@ -54,7 +55,7 @@ const ActiveSurveyList = (props) => {
 
               {/* do a client side rerouting or redux states will reset to empty*/}
               <TableCell component="th" scope="row">
-                <a onClick={handleRedirectToSurveyTray}>{`${row.id}`}</a>
+                <a onClick={_ => handleRedirectToSurveyTray(row.id)}>{`${row.id}`}</a>
               </TableCell>
 
             </TableRow>

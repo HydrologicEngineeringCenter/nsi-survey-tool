@@ -12,16 +12,16 @@ import createNewSurveyBundle from './create-new-survey-bundle';
 import userBundle from './userBundle'
 import surveyBundle from './surveyBundle'
 import generalBundle from './generalBundle'
+import manageSurveyBundle from './manageSurveyBundle';
 
 export default composeBundles(
   routesBundle,
-  // authBundle,
-  // authKeycloakBundle,
   authKeycloakBundle,
   createNewSurveyBundle,
   userBundle,
   surveyBundle,
   generalBundle,
+  manageSurveyBundle,
   createUrlBundle(),
   createCacheBundle(cache.set),
 );
