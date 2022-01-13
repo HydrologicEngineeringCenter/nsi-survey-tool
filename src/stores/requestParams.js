@@ -19,6 +19,7 @@ const METHOD = {
   GET: "GET",
   POST: "POST",
   DELETE: "DELETE",
+  PUT: "PUT",
 }
 
 // e.GET(urlPrefix+"/version", surveyHandler.Version)
