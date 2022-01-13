@@ -10,7 +10,7 @@ import Collapse from '@material-ui/core/Collapse'
 import IconButton from '@material-ui/core/IconButton'
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp'
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
-import { useState, Fragment, useMemo } from "react"
+import { useState, Fragment} from "react"
 import ControlPrompt from "./ControlPrompt"
 
 import { connect } from 'redux-bundler-react';
