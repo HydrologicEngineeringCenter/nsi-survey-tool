@@ -10,7 +10,7 @@ import Collapse from '@material-ui/core/Collapse'
 import IconButton from '@material-ui/core/IconButton'
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp'
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
-import { useState, Fragment } from "react"
+import { useState, Fragment, useMemo } from "react"
 import ControlPrompt from "./ControlPrompt"
 
 import { connect } from 'redux-bundler-react';
@@ -22,16 +22,20 @@ const AllSurveyList = (props) => {
     survey_surveys,
     doUpdateUrl,
     doSurvey_loadSurveyTray,
-    doSurvey_showManageSurvey,
-    manageSurvey_showControlPrompt,
-    doManageSurvey_flipControlPromptDisplay,
   } = props
+
+  const [showControl, setShowControl] = useState({})
 
   const handleRedirectToSurveyTray = _ => {
     doUpdateUrl("/nsi-survey/main")
     doSurvey_loadSurveyTray()
   }
-  const handleChangeActive = _ => {
+
+  const handleChangeActive = id => {
+    var localControl = {}
+    survey_surveys.forEach(survey => localControl[survey.id] = false)
+    localControl[id] = !showControl[id]
+    setShowControl(localControl)
   }
 
   return (
@@ -49,16 +53,16 @@ const AllSurveyList = (props) => {
         </TableHead>
 
         <TableBody>
-          {survey_surveys && survey_surveys.map((row, idx) => (
+          {survey_surveys && survey_surveys.map((row) => (
             <Fragment>
               <TableRow key={row.id}>
                 <TableCell>
                   <IconButton
                     aria-label="expand row"
                     size="small"
-                    onClick={_ => doManageSurvey_flipControlPromptDisplay(row.id)}
+                    onClick={_ => handleChangeActive(row.id)}
                   >
-                    {manageSurvey_showControlPrompt[row.id] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                    {showControl[row.id] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                   </IconButton>
                 </TableCell>
                 <TableCell component="th" scope="row">
@@ -83,7 +87,7 @@ const AllSurveyList = (props) => {
 
               {/* expanded prompt */}
               <TableRow>
-                <Collapse in={manageSurvey_showControlPrompt[row.id]} >
+                <Collapse in={showControl[row.id]} timeout="auto">
                   <ControlPrompt />
                 </Collapse>
               </TableRow>
@@ -100,8 +104,5 @@ export default connect(
   "selectSurvey_surveys",
   "doUpdateUrl",
   "doSurvey_loadSurveyTray",
-  "doSurvey_showManageSurvey",
-  "selectManageSurvey_showControlPrompt",
-  "doManageSurvey_flipControlPromptDisplay",
   AllSurveyList
 )

@@ -8,7 +8,7 @@ export default {
   getReducer: () => {
     const initialData = {
       shouldInitControlPromptArray: false,
-      showControlPrompt: [], // map determining whether control prompt should be collapsed for each survey
+      showControlPrompt: {}, // map determining whether control prompt should be collapsed for each survey
     }
     return (state = initialData, { type, payload }) => {
       switch (type) {
@@ -30,23 +30,28 @@ export default {
 
   // init showControlPrompt array with dynamic sizing based on number of surveys
   doManageSurvey_initShowControlPromptArray: _ => ({ dispatch, store }) => {
+    let controlPromptMap = {}
+    store.selectSurvey_surveys().forEach(survey => {
+      controlPromptMap[survey.id] = false
+    })
     dispatch({
       type: MANAGE_SURVEY_ACTION.MUTATE_STORE,
       payload: {
-        showControlPrompt: new Array(store.selectSurvey_surveys().length).fill(false),
+        // showControlPrompt: new Array(store.selectSurvey_surveys().length).fill(false),
+        showControlPrompt: controlPromptMap,
         shouldInitControlPromptArray: false,
       }
     })
   },
 
   // Change control prompt from show to hide for a single survey and vice versa
-  doManageSurvey_flipControlPromptDisplay: idx => ({ dispatch, store }) => {
+  doManageSurvey_flipControlPromptDisplay: id => ({ dispatch, store }) => {
     let controlPromptMap = store.selectManageSurvey_showControlPrompt()
-    controlPromptMap[idx] = !controlPromptMap[idx]
+    controlPromptMap[id] = !controlPromptMap[id]
     dispatch({
       type: MANAGE_SURVEY_ACTION.MUTATE_STORE,
       payload: {
-        showControlPrompt: controlPromptMap
+        showControlPrompt: controlPromptMap,
       }
     })
   },

@@ -56,8 +56,8 @@ function SurveySplashPage(props) {
   };
 
   const showManageAllSurveys = () => {
-    doSurvey_sendRequestGetSurveys()
     doManageSurvey_dispatchShouldInitControlPromptArray()
+    doSurvey_sendRequestGetSurveys()
     setFlagManageAllSurveys(true)
   };
 

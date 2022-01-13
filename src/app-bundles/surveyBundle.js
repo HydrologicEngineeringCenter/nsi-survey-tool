@@ -83,6 +83,7 @@ export default {
     })
   },
 
+  // surveys is an Array of maps. Each map contains 4 fields: active, description, id, and title
   selectSurvey_surveys: state => state.survey.surveys,
 
   selectSurvey_showManageSurvey: state => state.survey.showManagesurvey,
