@@ -5,7 +5,6 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import Switch from "@material-ui/core/Switch";
 import Collapse from '@material-ui/core/Collapse'
 import IconButton from '@material-ui/core/IconButton'
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp'
@@ -38,13 +37,6 @@ const AllSurveyList = (props) => {
     setShowControl(localControl)
   }
 
-  // Switch toggle between activate and inactivate survey
-  const handleChangeActive = survey => {
-    let body = {...survey}
-    body["active"] = !survey["active"]
-    doSurvey_sendRequestUpdateSurvey(body)
-  }
-
   return (
     <TableContainer component={Paper} className={classes["active-survey-list"]}>
       <Table className={classes.table} arial-label="simple-table">
@@ -54,7 +46,6 @@ const AllSurveyList = (props) => {
             <TableCell />
             <TableCell>Title</TableCell>
             <TableCell>Description</TableCell>
-            <TableCell>Active?</TableCell>
             <TableCell>ID</TableCell>
           </TableRow>
         </TableHead>
@@ -77,14 +68,6 @@ const AllSurveyList = (props) => {
                 </TableCell>
                 <TableCell component="th" scope="row">
                   {`${row.description}`}
-                </TableCell>
-                <TableCell padding="checkbox" >
-                  <Switch
-                    checked={row.active}
-                    onClick={_ => handleChangeActive(row)}
-                    name="checkedC"
-                    inputRef={props.inputRef}
-                  />
                 </TableCell>
                 {/* do a client side rerouting or redux states will reset to empty*/}
                 <TableCell component="th" scope="row">
@@ -111,5 +94,6 @@ export default connect(
   "selectSurvey_surveys",
   "doUpdateUrl",
   "doSurvey_loadSurveyTray",
+  "doSurvey_sendRequestUpdateSurvey",
   AllSurveyList
 )
