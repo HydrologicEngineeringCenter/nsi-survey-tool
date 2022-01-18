@@ -63,6 +63,7 @@ export default {
     pathParam: null,
     suffix: null,
     method: METHOD.PUT,
+    body: null,
   },
 
   GET_SURVEY_MEMBERS: {

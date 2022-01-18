@@ -47,11 +47,13 @@ export default {
       })
   },
 
-  doSurvey_sendRequestUpdateSurvey: _ => ({ }) => {
+  // payload is a map containing 4 fields: id, title, description, active
+  doSurvey_sendRequestUpdateSurvey: payload => ({ dispatch, store }) => {
 
     const authAccessToken = store.selectAuthAccessToken()
     let requestParams = REQUESTS.UPDATE_SURVEY
     requestParams.pathParam = "/" + surveyId
+    requestParams.body = payload
 
     store.selectBackend()
       .fetch(authAccessToken, requestParams)

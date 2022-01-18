@@ -10,7 +10,7 @@ import Collapse from '@material-ui/core/Collapse'
 import IconButton from '@material-ui/core/IconButton'
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp'
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
-import { useState, Fragment} from "react"
+import { useState, Fragment } from "react"
 import ControlPrompt from "./ControlPrompt"
 
 import { connect } from 'redux-bundler-react';
@@ -31,11 +31,18 @@ const AllSurveyList = (props) => {
     doSurvey_loadSurveyTray()
   }
 
-  const handleChangeActive = id => {
+  const handleCollapse = id => {
     var localControl = {}
     survey_surveys.forEach(survey => localControl[survey.id] = false)
     localControl[id] = !showControl[id]
     setShowControl(localControl)
+  }
+
+  // Switch toggle between activate and inactivate survey
+  const handleChangeActive = survey => {
+    let body = {...survey}
+    body["active"] = !survey["active"]
+    doSurvey_sendRequestUpdateSurvey(body)
   }
 
   return (
@@ -60,7 +67,7 @@ const AllSurveyList = (props) => {
                   <IconButton
                     aria-label="expand row"
                     size="small"
-                    onClick={_ => handleChangeActive(row.id)}
+                    onClick={_ => handleCollapse(row.id)}
                   >
                     {showControl[row.id] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                   </IconButton>
@@ -74,7 +81,7 @@ const AllSurveyList = (props) => {
                 <TableCell padding="checkbox" >
                   <Switch
                     checked={row.active}
-                    onChange={handleChangeActive}
+                    onClick={_ => handleChangeActive(row)}
                     name="checkedC"
                     inputRef={props.inputRef}
                   />
