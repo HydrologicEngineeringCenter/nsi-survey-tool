@@ -52,12 +52,11 @@ export default {
 
     const authAccessToken = store.selectAuthAccessToken()
     let requestParams = REQUESTS.UPDATE_SURVEY
-    requestParams.pathParam = "/" + surveyId
+    requestParams.pathParam = "/" + payload.id
     requestParams.body = payload
 
     store.selectBackend()
       .fetch(authAccessToken, requestParams)
-      .then(handleErrors)
       .then(response => response.json())
       .then(data => {
         dispatch({

@@ -61,7 +61,7 @@ export default {
   UPDATE_SURVEY: {
     endpoint: END_POINT.SURVEY,
     pathParam: null,
-    suffix: null,
+    suffix: "",
     method: METHOD.PUT,
     body: null,
   },
