@@ -26,7 +26,7 @@ const ActiveSurveyList = (props) => {
 
   return (
     <TableContainer component={Paper} className={classes["active-survey-list"]}>
-      <Table className={classes.table} arial-label="simple-table">
+      <Table className={classes.table} stickyHeader arial-label="simple-table">
 
         <TableHead>
           <TableRow>
