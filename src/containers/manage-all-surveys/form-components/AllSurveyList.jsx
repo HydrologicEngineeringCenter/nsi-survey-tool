@@ -21,6 +21,7 @@ const AllSurveyList = (props) => {
     survey_surveys,
     doUpdateUrl,
     doSurvey_loadSurveyTray,
+    doManageSurvey_controlPrompt,
   } = props
 
   const [showControl, setShowControl] = useState({})
@@ -30,11 +31,12 @@ const AllSurveyList = (props) => {
     doSurvey_loadSurveyTray()
   }
 
-  const handleCollapse = id => {
+  const handleCollapse = survey => {
     var localControl = {}
-    survey_surveys.forEach(survey => localControl[survey.id] = false)
-    localControl[id] = !showControl[id]
+    survey_surveys.forEach(s => localControl[s.id] = false)
+    localControl[survey.id] = !showControl[survey.id]
     setShowControl(localControl)
+    doManageSurvey_controlPrompt(survey)
   }
 
   return (
@@ -58,7 +60,7 @@ const AllSurveyList = (props) => {
                   <IconButton
                     aria-label="expand row"
                     size="small"
-                    onClick={_ => handleCollapse(row.id)}
+                    onClick={_ => handleCollapse(row)}
                   >
                     {showControl[row.id] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                   </IconButton>
@@ -78,7 +80,7 @@ const AllSurveyList = (props) => {
               {/* expanded prompt */}
               <TableRow>
                 <Collapse in={showControl[row.id]} timeout="auto">
-                  <ControlPrompt />
+                  <ControlPrompt initActive={row.active} />
                 </Collapse>
               </TableRow>
 
@@ -95,5 +97,6 @@ export default connect(
   "doUpdateUrl",
   "doSurvey_loadSurveyTray",
   "doSurvey_sendRequestUpdateSurvey",
+  "doManageSurvey_controlPrompt",
   AllSurveyList
 )

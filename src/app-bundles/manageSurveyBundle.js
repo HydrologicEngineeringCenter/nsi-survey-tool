@@ -9,6 +9,7 @@ export default {
     const initialData = {
       shouldInitControlPromptArray: false,
       showControlPrompt: {}, // map determining whether control prompt should be collapsed for each survey
+      controlSurvey: null,
     }
     return (state = initialData, { type, payload }) => {
       switch (type) {
@@ -56,10 +57,35 @@ export default {
     })
   },
 
+  // store current uncollapsed survey
+  doManageSurvey_controlPrompt: survey => ({ dispatch }) => {
+    dispatch({
+      type: MANAGE_SURVEY_ACTION.MUTATE_STORE,
+      payload: {
+        controlSurvey: survey,
+      }
+    })
+  },
+
+  doManageSurvey_flipActive: _ => ({ dispatch, store }) => {
+    let workingSurvey = { ...store.selectManageSurvey_controlSurvey() }
+    workingSurvey["active"] = !workingSurvey["active"]
+    // send request to backend and mutate list in survey bundle
+    store.doSurvey_sendRequestUpdateSurvey(workingSurvey)
+    // mutate selection in manageSurvey bundle
+    dispatch({
+      type: MANAGE_SURVEY_ACTION.MUTATE_STORE,
+      payload: {
+        controlSurvey: workingSurvey,
+      }
+    })
+  },
+
   // reactor to init control prompt array
   reactInitShowControlPromptArray: state => {
     if (state.manageSurvey.shouldInitControlPromptArray) return { actionCreator: 'doManageSurvey_initShowControlPromptArray' }
   },
 
   selectManageSurvey_showControlPrompt: state => state.manageSurvey.showControlPrompt,
+  selectManageSurvey_controlSurvey: state => state.manageSurvey.controlSurvey,
 }

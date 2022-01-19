@@ -1,4 +1,5 @@
 import REQUESTS from "../stores/requestParams"
+import HTTP_STATUS from "../stores/httpStatus"
 
 const SURVEY_ACTION = {
   GET_SURVEYS_FOR_USER: "SURVEY_ACTION.GET_SURVEYS_FOR_USER",
@@ -47,7 +48,7 @@ export default {
       })
   },
 
-  // payload is a map containing 4 fields: id, title, description, active
+  // payload is a mutated survey map containing 4 fields: id, title, description, active
   doSurvey_sendRequestUpdateSurvey: payload => ({ dispatch, store }) => {
 
     const authAccessToken = store.selectAuthAccessToken()
@@ -55,16 +56,22 @@ export default {
     requestParams.pathParam = "/" + payload.id
     requestParams.body = payload
 
+    let workingSurveys = [...store.selectSurvey_surveys()]
+    const idx = workingSurveys.findIndex(s => s.id == payload.id)
+    workingSurveys[idx] = payload
+
     store.selectBackend()
       .fetch(authAccessToken, requestParams)
-      .then(response => response.json())
-      .then(data => {
-        dispatch({
-          type: SURVEY_ACTION.UPDATE_SURVEYS,
-          payload: {
-            surveys: Array.isArray(data) ? [...data] : [data],
-          }
-        })
+      .then(res => {
+        // only update if response status is 200
+        if (res.status == HTTP_STATUS.StatusOK) {
+          dispatch({
+            type: SURVEY_ACTION.UPDATE_SURVEYS,
+            payload: {
+              surveys: workingSurveys,
+            }
+          })
+        }
       })
       .catch((err) => {
         console.log(err)
@@ -72,7 +79,6 @@ export default {
   },
 
   doSurvey_loadSurveyTray: _ => ({ }) => {
-
   },
 
   doSurvey_openManageSurvey: _ => ({ dispatch }) => {
