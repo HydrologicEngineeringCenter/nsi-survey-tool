@@ -38,7 +38,7 @@ const ActiveSurveyList = (props) => {
         </TableHead>
 
         <TableBody>
-          {survey_surveys && survey_surveys.map((row) => (
+          {survey_surveys && survey_surveys.filter(s => s.active).map((row) => (
             <TableRow key={row.id}>
 
               <TableCell component="th" scope="row">
