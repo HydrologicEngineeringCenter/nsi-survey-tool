@@ -79,9 +79,11 @@ const AllSurveyList = (props) => {
 
               {/* expanded prompt */}
               <TableRow>
-                <Collapse in={showControl[row.id]} timeout="auto">
-                  <ControlPrompt initActive={row.active} />
-                </Collapse>
+                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={4}>
+                  <Collapse in={showControl[row.id]} timeout="auto">
+                    <ControlPrompt initActive={row.active} />
+                  </Collapse>
+                </TableCell>
               </TableRow>
 
             </Fragment>
