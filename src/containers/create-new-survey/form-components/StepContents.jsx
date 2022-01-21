@@ -22,7 +22,7 @@ const StepContents = (props) => {
     createSurveyStep: step,
     doUser_sendRequestAddSurveyor,
     user_selectedUser,
-    createSurveyId,
+    survey_selectedSurvey,
     nameInputRef,
     descriptionInputRef,
     activeSwitchRef,
@@ -65,7 +65,7 @@ const StepContents = (props) => {
           <p />
           <ButtonHelp onClick={_ =>
             doUser_sendRequestAddSurveyor(
-              createSurveyId,
+              survey_selectedSurvey.id,
               user_selectedUser.userId
             )}>Add Surveyors
           </ButtonHelp>
@@ -86,6 +86,6 @@ export default connect(
   'selectCreateSurveyStep',
   'doUser_sendRequestAddSurveyor',
   'selectUser_selectedUser',
-  'selectCreateSurveyId',
+  'selectSurvey_selectedSurvey',
   StepContents
 )

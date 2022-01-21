@@ -1,0 +1,13 @@
+.vector {
+  height: 20px;
+  width: 20px
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  width: 100%;
+  /* position: relative; */
+  justify-content: space-between;
+}

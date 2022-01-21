@@ -69,8 +69,13 @@ export default class {
   addCol(key, val) {
     const type = typeof (val)
 
+    if (val == null) {
+      throw new Error("csvMetaArray.addCol: val is null")
+    }
+
     switch (type) {
       case 'string':
+      // auto fallthrough, handling for string and number are the same
       case 'number':
         this.metaArray.values.map(row => row.push(val))
         break
@@ -84,7 +89,7 @@ export default class {
         }
       default:
         throw new Error(
-          'Input value has to be a string, number, or array with the same number of rows as existing data'
+          'csvMetaArray.addCol: val has to be a string, number, or array with the same number of rows as existing data'
         )
     }
     this.metaArray.properties.push(key)

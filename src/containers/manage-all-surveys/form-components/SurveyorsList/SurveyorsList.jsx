@@ -17,12 +17,14 @@ const SurveyorsList = (props) => {
   const {
     doSendRequestGetSurveyMembers,
     userSurveyMembers: surveyMembers,
-    createSurveyId: surveyId
+    survey_selectedSurvey,
   } = props
 
   // load existing members on init
   useEffect(_ => {
-    doSendRequestGetSurveyMembers(surveyId)
+    if (survey_selectedSurvey) {
+      doSendRequestGetSurveyMembers(survey_selectedSurvey.id)
+    }
   }, [])
 
   return (
@@ -58,6 +60,6 @@ const SurveyorsList = (props) => {
 export default connect(
   'doSendRequestGetSurveyMembers',
   'selectUserSurveyMembers',
-  'selectCreateSurveyId',
+  'selectSurvey_selectedSurvey',
   SurveyorsList
 )

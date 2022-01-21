@@ -19,7 +19,6 @@ export default {
   getReducer: () => {
     const initialData = {
       surveyStep: 0,
-      surveyId: "",
       surveyElements: null,
       flagChangeSurveyElementsProperties: false,
       backend: null,
@@ -81,10 +80,13 @@ export default {
       .then(handleErrors)
       .then(response => response.json())
       .then(data => {
+        // update based on for valid response
         if (data != null) {
-          dispatch({
-            type: CREATE_NEW_SURVEY_ACTION.UPDATE_SURVEY_ID,
-            payload: { 'surveyId': data.surveyId } // store surveyId within bundler
+          store.doSurvey_updateSelectedSurvey({
+            id: data.surveyId,
+            title: requestParams.title,
+            description: requestParams.description,
+            active: requestParams.active,
           })
         }
       })
@@ -130,9 +132,9 @@ export default {
     // authAccessToken is always refreshing, have to update from auth bundle
     // before sending request everytime
     const authAccessToken = store.selectAuthAccessToken()
-    requestParams.pathParam = "/" + store.selectCreateSurveyId()
+    requestParams.pathParam = "/" + store.selectSurvey_selectedSurvey().id
 
-    if (store.selectCreateSurveyId() === undefined) {
+    if (store.selectSurvey_selectedSurvey() === undefined) {
       throw new Error('Unable to read createSurveyId when trying to sendElements')
     }
 
@@ -140,7 +142,7 @@ export default {
     dataPipeline
       .addIndex(1)
       .changePropertyByName('index', 'surveyOrder')
-      .addCol('surveyId', store.selectCreateSurveyId())
+      .addCol('surveyId', store.selectSurvey_selectedSurvey().id)
 
     let body = dataPipeline.jsonArray()
     requestParams.body = body

@@ -81,7 +81,7 @@ const AllSurveyList = (props) => {
               <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={4}>
                   <Collapse in={showControl[row.id]} timeout="auto">
-                    <ControlPrompt initActive={row.active} />
+                    <ControlPrompt initActive={row.active} surveyId={row.id}/>
                   </Collapse>
                 </TableCell>
               </TableRow>

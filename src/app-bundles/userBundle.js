@@ -151,19 +151,25 @@ export default {
           payload: { flagChangedUserList: true }
         })
       })
+      .then(_ => {
+        dispatch({
+          type: USER_ACTION.UPDATE_SELECTED_USER,
+          payload: { selectedUser: null }
+        })
+      })
       .catch((err) => {
         console.log(err)
       })
   },
 
   reactRefreshUserListOnAddedMember: createSelector(
-    'selectCreateSurveyId',
+    'selectSurvey_selectedSurvey',
     'selectUser_flagChangedUserList',
-    (createSurveyId, user_flagChangeUserList) => {
-      if (user_flagChangeUserList) {
+    (survey_selectedSurvey, user_flagChangeUserList) => {
+      if (user_flagChangeUserList && survey_selectedSurvey) {
         return {
           actionCreator: 'doSendRequestGetSurveyMembers',
-          args: [createSurveyId],
+          args: [survey_selectedSurvey.id],
         }
       }
     }

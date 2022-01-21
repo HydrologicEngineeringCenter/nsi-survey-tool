@@ -10,6 +10,7 @@ export default {
       shouldInitControlPromptArray: false,
       showControlPrompt: {}, // map determining whether control prompt should be collapsed for each survey
       controlSurvey: null,
+      flagChangedUserList: false,
     }
     return (state = initialData, { type, payload }) => {
       switch (type) {
@@ -58,13 +59,14 @@ export default {
   },
 
   // store current uncollapsed survey
-  doManageSurvey_controlPrompt: survey => ({ dispatch }) => {
+  doManageSurvey_controlPrompt: survey => ({ dispatch, store }) => {
     dispatch({
       type: MANAGE_SURVEY_ACTION.MUTATE_STORE,
       payload: {
         controlSurvey: survey,
       }
     })
+    store.doSendRequestGetSurveyMembers(survey.id)
   },
 
   doManageSurvey_flipActive: _ => ({ dispatch, store }) => {
@@ -88,4 +90,5 @@ export default {
 
   selectManageSurvey_showControlPrompt: state => state.manageSurvey.showControlPrompt,
   selectManageSurvey_controlSurvey: state => state.manageSurvey.controlSurvey,
+  selectManageSurvey_flagChangedUserList: state => state.manageSurvey.flagChangedUserList,
 }
