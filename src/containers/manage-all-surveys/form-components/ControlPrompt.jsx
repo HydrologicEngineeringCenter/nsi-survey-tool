@@ -6,7 +6,7 @@ import Card from "@material-ui/core/Card"
 import ActiveSurveySwitch from "./ActiveSurveySwitch/ActiveSurveySwitch"
 import AsyncSurveyorAutocomplete from "./../../components/SurveyorPrompt/AsyncSurveyorAutocomplete"
 import SurveyorsList from "./../../components/SurveyorPrompt/SurveyorsList"
-import ButtonHelp from "./../../components/SurveyorPrompt/ButtonHelp"
+import SelectButton from "./../../components/SelectButton/SelectButton"
 
 // TODO refactor common components
 const ControlPrompt = props => {
@@ -26,16 +26,16 @@ const ControlPrompt = props => {
           <p />
           <AsyncSurveyorAutocomplete />
           <p />
-          <ButtonHelp onClick={_ =>
+          <SelectButton onClick={_ =>
             doUser_sendRequestAddSurveyor(
               survey_selectedSurvey.id,
               user_selectedUser.userId
             )}>Add Surveyors
-          </ButtonHelp>
+          </SelectButton>
           <p />
           <p />
           <Card className={"surveyors-container"}>
-            <SurveyorsList />
+            <SurveyorsList showDelete={true} />
           </Card>
         </Typography>
       </Box>

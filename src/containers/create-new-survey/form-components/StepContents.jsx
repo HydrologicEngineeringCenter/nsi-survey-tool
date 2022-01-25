@@ -3,7 +3,7 @@ import Card from "@material-ui/core/Card";
 import NameInput from "./NameInput";
 import ActiveSurvey from "./ActiveSurvey";
 import SurveyorsList from "./../../components/SurveyorPrompt/SurveyorsList";
-import ButtonHelp from "./../../components/SurveyorPrompt/ButtonHelp";
+import SelectButton from "./../../components/SelectButton/SelectButton";
 import Uploader from "./Uploader";
 import classes from "../CreateNewSurveyPrompt.module.css";
 import { Fragment } from "react";
@@ -63,12 +63,12 @@ const StepContents = (props) => {
         <Fragment>
           <AsyncSurveyorAutocomplete />
           <p />
-          <ButtonHelp onClick={_ =>
+          <SelectButton onClick={_ =>
             doUser_sendRequestAddSurveyor(
               survey_selectedSurvey.id,
               user_selectedUser.userId
             )}>Add Surveyors
-          </ButtonHelp>
+          </SelectButton>
           <p />
           <p />
           <Card className={classes["surveyors-container"]}>

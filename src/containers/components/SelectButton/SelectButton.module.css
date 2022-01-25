@@ -1,26 +1,13 @@
-.button {
-  height: 32px;
-  width: 166px;
-  background-color: #e0e0e0;
-  border-radius: 6px;
-  height: 32px;
+.vector {
+  height: 20px;
+  width: 20px
+}
+
+.container {
   display: flex;
   align-items: center;
-
-
-}
-
-.label {
-  color: white;
-  font-family: 'IBM Plex Sans', Helvetica;
-  font-size: 1rem;
-  font-weight: 550;
-  text-align: left;
-  padding-left: 10px;
-}
-
-.valign-text-middle {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  height: 32px;
+  width: 100%;
+  /* position: relative; */
+  justify-content: space-between;
 }
