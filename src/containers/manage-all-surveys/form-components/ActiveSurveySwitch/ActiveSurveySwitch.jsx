@@ -9,7 +9,7 @@ const ActiveSurvey = (props) => {
 
   const {
     doManageSurvey_flipActive,
-    manageSurvey_controlSurvey: survey,
+    survey_selectedSurvey: survey,
     initActive
   } = props
 
@@ -42,6 +42,6 @@ const ActiveSurvey = (props) => {
 
 export default connect(
   "doManageSurvey_flipActive",
-  "selectManageSurvey_controlSurvey",
+  "selectSurvey_selectedSurvey",
   ActiveSurvey,
 )

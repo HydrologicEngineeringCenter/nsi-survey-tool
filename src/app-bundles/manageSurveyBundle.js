@@ -67,7 +67,7 @@ export default {
   },
 
   doManageSurvey_flipActive: _ => ({ dispatch, store }) => {
-    let workingSurvey = { ...store.selectManageSurvey_controlSurvey() }
+    let workingSurvey = { ...store.selectSurvey_selectedSurvey() }
     workingSurvey["active"] = !workingSurvey["active"]
     // send request to backend and mutate list in survey bundle
     store.doSurvey_sendRequestUpdateSurvey(workingSurvey)
