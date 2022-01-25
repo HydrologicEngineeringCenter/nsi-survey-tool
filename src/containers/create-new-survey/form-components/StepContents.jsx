@@ -2,15 +2,15 @@ import React from "react"
 import Card from "@material-ui/core/Card";
 import NameInput from "./NameInput";
 import ActiveSurvey from "./ActiveSurvey";
-import SurveyorsList from "./SurveyorsList";
-import ButtonHelp from "./ButtonHelp";
+import SurveyorsList from "./../../components/SurveyorPrompt/SurveyorsList";
+import ButtonHelp from "./../../components/SurveyorPrompt/ButtonHelp";
 import Uploader from "./Uploader";
 import classes from "../CreateNewSurveyPrompt.module.css";
-import { Fragment, useCallback } from "react";
+import { Fragment } from "react";
 import { connect } from 'redux-bundler-react';
 import CREATE_SURVEY_STEP from "../../../stores/newSurveyStep";
 import DescriptionInput from "./DescriptionInput";
-import AsyncSurveyorAutocomplete from "./AsyncSurveyorAutocomplete"
+import AsyncSurveyorAutocomplete from "./../../components/SurveyorPrompt/AsyncSurveyorAutocomplete"
 
 /**
  *
