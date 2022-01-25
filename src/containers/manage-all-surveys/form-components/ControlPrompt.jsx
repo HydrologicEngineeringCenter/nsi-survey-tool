@@ -4,18 +4,17 @@ import Box from "@material-ui/core/Box"
 import Typography from "@material-ui/core/Typography"
 import Card from "@material-ui/core/Card"
 import ActiveSurveySwitch from "./ActiveSurveySwitch/ActiveSurveySwitch"
-import AsyncSurveyorAutocomplete from "./AsyncSurveyorAutocomplete"
-import SurveyorsList from "./SurveyorsList/SurveyorsList"
-import ButtonHelp from "./ButtonHelp/ButtonHelp"
+import AsyncSurveyorAutocomplete from "./../../components/SurveyorPrompt/AsyncSurveyorAutocomplete"
+import SurveyorsList from "./../../components/SurveyorPrompt/SurveyorsList"
+import ButtonHelp from "./../../components/SurveyorPrompt/ButtonHelp"
 
 // TODO refactor common components
 const ControlPrompt = props => {
   const {
-    doSendRequestGetSurveyMembers,
     doUser_sendRequestAddSurveyor,
     user_selectedUser,
     initActive,
-    surveyId
+    survey_selectedSurvey,
   } = props
 
   return (
@@ -24,18 +23,19 @@ const ControlPrompt = props => {
         <Typography variant="h6" gutterBottom component="div">
           Edit Survey
           <ActiveSurveySwitch initActive={initActive} />
+          <p />
           <AsyncSurveyorAutocomplete />
           <p />
           <ButtonHelp onClick={_ =>
             doUser_sendRequestAddSurveyor(
-              surveyId,
+              survey_selectedSurvey.id,
               user_selectedUser.userId
             )}>Add Surveyors
           </ButtonHelp>
           <p />
           <p />
           <Card className={"surveyors-container"}>
-            <SurveyorsList surveyId={surveyId} />
+            <SurveyorsList />
           </Card>
         </Typography>
       </Box>
@@ -47,5 +47,6 @@ export default connect(
   "doSendRequestGetSurveyMembers",
   "doUser_sendRequestAddSurveyor",
   "selectUser_selectedUser",
+  "selectSurvey_selectedSurvey",
   ControlPrompt
 )

@@ -22,7 +22,9 @@ const SurveyorsList = (props) => {
 
   // load existing members on init
   useEffect(_ => {
-    doSendRequestGetSurveyMembers(survey_selectedSurvey.id)
+    if (survey_selectedSurvey) {
+      doSendRequestGetSurveyMembers(survey_selectedSurvey.id)
+    }
   }, [])
 
   return (

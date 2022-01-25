@@ -60,13 +60,10 @@ export default {
 
   // store current uncollapsed survey
   doManageSurvey_controlPrompt: survey => ({ dispatch, store }) => {
-    dispatch({
-      type: MANAGE_SURVEY_ACTION.MUTATE_STORE,
-      payload: {
-        controlSurvey: survey,
-      }
-    })
-    store.doSendRequestGetSurveyMembers(survey.id)
+    if (survey != null) {
+      store.doSurvey_updateSelectedSurvey(survey)
+      store.doSendRequestGetSurveyMembers(survey.id)
+    }
   },
 
   doManageSurvey_flipActive: _ => ({ dispatch, store }) => {
