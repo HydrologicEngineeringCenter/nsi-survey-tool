@@ -103,6 +103,26 @@ export default {
     })
   },
 
+  doSurvey_downloadReport: _ => ({ store }) => {
+
+    const authAccessToken = store.selectAuthAccessToken()
+    let id = store.selectSurvey_selectedSurvey().id
+    let requestParams = REQUESTS.GET_SURVEY_REPORT
+    requestParams.pathParam = "/" + id
+
+    store.selectBackend()
+      .fetch(authAccessToken, requestParams)
+      .then(res => res.blob())
+      .then(data => {
+        var a = document.createElement("a")
+        a.href = window.URL.createObjectURL(data)
+        a.click()
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  },
+
   // surveys is an Array of maps. Each map contains 4 fields: active, description, id, and title
   selectSurvey_surveys: state => state.survey.surveys,
   selectSurvey_showManageSurvey: state => state.survey.showManagesurvey,

@@ -13,6 +13,7 @@ const SUFFIX = {
   ELEMENTS: "/elements",
   MEMBERS: "/members",
   MEMBER: "/member",
+  REPORT: "/report",
 }
 
 const METHOD = {
@@ -30,6 +31,7 @@ const METHOD = {
 // e.GET(urlPrefix+"/survey/:surveyid/members", auth.AuthorizeRoute(surveyHandler.GETSURVEYMEMBERS, ADMIN, SURVEY_OWNER))
 // e.POST(urlPrefix+"/survey/:surveyid/member", auth.AuthorizeRoute(surveyHandler.UPSERTSURVEYMEMBER, ADMIN, SURVEY_OWNER))
 // e.DELETE(urlPrefix+"/survey/member/:memberid", auth.AuthorizeRoute(surveyHandler.REMOVESURVEYMEMBER, ADMIN, SURVEY_OWNER))
+// e.DELETE(urlPrefix+"/survey/:surveyid/member/:memberid", auth.AuthorizeRoute(surveyHandler.RemoveMemberFromSurvey, ADMIN, SURVEY_OWNER))
 // e.POST(urlPrefix+"/survey/:surveyid/elements", auth.AuthorizeRoute(surveyHandler.INSERTSURVEYELEMENTS, ADMIN, SURVEY_OWNER))
 // e.POST(urlPrefix+"/survey/:surveyid/assignments", auth.AuthorizeRoute(surveyHandler.ADDASSIGNMENTS, ADMIN))
 // e.GET(urlPrefix+"/survey/:surveyid/assignment", auth.AuthorizeRoute(surveyHandler.ASSIGNSURVEYELEMENT, SURVEY_MEMBER))
@@ -85,6 +87,14 @@ export default {
 
   },
 
+  REMOVE_MEMBER_FROM_SURVEY: {
+    endpoint: END_POINT.SURVEY,
+    pathParam: null,
+    pathParam2: null,
+    suffix: SUFFIX.MEMBER,
+    method: METHOD.DELETE,
+  },
+
   INSERT_SURVEY_ELEMENTS: {
     endpoint: END_POINT.SURVEY,
     pathParams: null,
@@ -114,7 +124,10 @@ export default {
   },
 
   GET_SURVEY_REPORT: {
-
+    endpoint: END_POINT.SURVEY,
+    pathParam: null,
+    suffix: SUFFIX.REPORT,
+    method: METHOD.GET,
   },
 
 }
