@@ -162,6 +162,34 @@ export default {
       })
   },
 
+  doUser_sendRequestRemoveUser: (surveyId, memberId) => ({ dispatch, store, handleErrors }) => {
+
+    const authAccessToken = store.selectAuthAccessToken()
+    let requestParams = REQUESTS.REMOVE_MEMBER_FROM_SURVEY
+    requestParams.pathParam = "/" + surveyId
+    requestParams.pathParam2 = "/" + memberId
+
+    if (surveyId === undefined) {
+      throw new Error('Unable to read surveyId when trying to removeUser')
+    }
+    if (memberId === undefined) {
+      throw new Error('Unable to read memberId when trying to removeUser')
+    }
+
+    store.selectBackend()
+      .fetch(authAccessToken, requestParams)
+      .then(handleErrors)
+      .then(_ => {
+        dispatch({
+          type: USER_ACTION.UPDATE_SURVEY_MEMBERS,
+          payload: { flagChangedUserList: true }
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  },
+
   reactRefreshUserListOnAddedMember: createSelector(
     'selectSurvey_selectedSurvey',
     'selectUser_flagChangedUserList',

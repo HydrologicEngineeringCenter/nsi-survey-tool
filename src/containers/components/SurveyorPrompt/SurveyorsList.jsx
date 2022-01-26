@@ -7,6 +7,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button'
 import { connect } from 'redux-bundler-react';
 
 import classes from "./SurveyorsList.module.css";
@@ -17,7 +18,9 @@ const SurveyorsList = (props) => {
   const {
     doSendRequestGetSurveyMembers,
     userSurveyMembers: surveyMembers,
-    survey_selectedSurvey
+    survey_selectedSurvey,
+    doUser_sendRequestRemoveUser,
+    showDelete, // show delete button next to surveyor
   } = props
 
   // load existing members on init
@@ -34,6 +37,9 @@ const SurveyorsList = (props) => {
           <TableRow>
             <TableCell>USER</TableCell>
             <TableCell align="right">OWNER?</TableCell>
+            {showDelete &&
+              <TableCell align="right">REMOVE</TableCell>
+            }
           </TableRow>
         </TableHead>
 
@@ -49,6 +55,11 @@ const SurveyorsList = (props) => {
                 <Checkbox className={classes.checkbox} id={`checkbox__${row.id}`} checked={row.isOwner} />
               </TableCell>
 
+              {showDelete &&
+                <TableCell align="right" component="th" scope="row">
+                  <Button variant="outlined" color="error" onClick={_ => doUser_sendRequestRemoveUser(survey_selectedSurvey.id, row.userId)}>X</Button>
+                </TableCell>
+              }
             </TableRow>
           ))}
         </TableBody>
@@ -61,5 +72,6 @@ export default connect(
   'doSendRequestGetSurveyMembers',
   'selectUserSurveyMembers',
   'selectSurvey_selectedSurvey',
+  'doUser_sendRequestRemoveUser',
   SurveyorsList
 )
