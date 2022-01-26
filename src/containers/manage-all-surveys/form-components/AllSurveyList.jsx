@@ -54,8 +54,8 @@ const AllSurveyList = (props) => {
 
         <TableBody>
           {survey_surveys && survey_surveys.map((row) => (
-            <Fragment>
-              <TableRow key={row.id}>
+            <Fragment key={`survey_${row.id}`}>
+              <TableRow>
                 <TableCell>
                   <IconButton
                     aria-label="expand row"

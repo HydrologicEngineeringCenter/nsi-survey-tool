@@ -25,7 +25,7 @@ const AsyncSurveyorAutocomplete = props => {
         ref={autocompleteRef}
         getOptionLabel={option => option.userName}
 
-        onInputChange={(e, newInputValue) => {
+        onInputChange={(_, newInputValue) => {
           doSendRequestSearchUser(newInputValue)
         }}
 
@@ -39,7 +39,7 @@ const AsyncSurveyorAutocomplete = props => {
           );
         }}
 
-        isOptionEqualToValue={(option, value) => {
+        getOptionSelected={(option, value) => {
           if (option.userId === value.userId) {
             return true
           } else {

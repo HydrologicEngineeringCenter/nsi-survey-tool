@@ -44,7 +44,7 @@ const SurveyorsList = (props) => {
         </TableHead>
 
         <TableBody>
-          {surveyMembers && surveyMembers.map((row) => (
+          {surveyMembers && [...surveyMembers].reverse().map((row) => (
             <TableRow key={row.userId}>
 
               <TableCell component="th" scope="row">
@@ -57,7 +57,7 @@ const SurveyorsList = (props) => {
 
               {showDelete &&
                 <TableCell align="right" component="th" scope="row">
-                  <Button variant="outlined" color="error" onClick={_ => doUser_sendRequestRemoveUser(survey_selectedSurvey.id, row.userId)}>X</Button>
+                  <Button variant="outlined" color="secondary" onClick={_ => doUser_sendRequestRemoveUser(survey_selectedSurvey.id, row.userId)}>X</Button>
                 </TableCell>
               }
             </TableRow>
