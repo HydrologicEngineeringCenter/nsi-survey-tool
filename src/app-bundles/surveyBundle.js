@@ -1,3 +1,5 @@
+import { createSelector } from "redux-bundler"
+import changeSurveyInSurveys from "../utils/changeSurveyInSurveys"
 import REQUESTS from "../stores/requestParams"
 import HTTP_STATUS from "../stores/httpStatus"
 
@@ -19,6 +21,7 @@ export default {
       // selectedSurvey is populated after create-new-survey step 1
       // or on specific survey selection in manage-all-surveys
       selectedSurvey: null,
+      flagUpdateSelected: false,
     }
     return (state = initialData, { type, payload }) => {
       switch (type) {
@@ -84,6 +87,15 @@ export default {
               surveys: workingSurveys,
             }
           })
+          // update selectedSurvey
+          if (store.selectSurvey_selectedSurvey().id == payload.id) {
+            dispatch({
+              type: SURVEY_ACTION.UPDATE_SELECTED_SURVEY,
+              payload: {
+                flagUpdateSelected: true,
+              },
+            })
+          }
         }
       })
       .catch((err) => {
@@ -104,7 +116,6 @@ export default {
   },
 
   doSurvey_downloadReport: _ => ({ store }) => {
-
     const authAccessToken = store.selectAuthAccessToken()
     let id = store.selectSurvey_selectedSurvey().id
     let requestParams = REQUESTS.GET_SURVEY_REPORT
@@ -123,8 +134,44 @@ export default {
       })
   },
 
+  doSurvey_updateSurveys: surveys => ({ dispatch }) => {
+    dispatch({
+      type: SURVEY_ACTION.UPDATE_SURVEYS,
+      payload: {
+        surveys: surveys,
+      }
+    })
+  },
+
+  doSurvey_updateSelectedFromSurveys: _ => ({ dispatch }) => {
+    let workingSurveys = store.selectSurvey_surveys()
+    let selected = store.selectSurvey_selectedSurvey()
+    selected = workingSurveys.filter(s => s.id == selected.id)[0]
+    store.doSurvey_updateSelectedSurvey(selected)
+    dispatch({
+      type: SURVEY_ACTION.UPDATE_SURVEYS,
+      payload: {
+        flagUpdateSelected: false,
+      },
+    })
+  },
+
+  reactUpdateSelected: createSelector(
+    "selectSurvey_flagUpdateSelected",
+    "selectSurvey_selectedSurvey",
+    (flag, selected) => {
+      if (flag) {
+        return {
+          actionCreator: "doSurvey_updateSelectedFromSurveys",
+          args: [selected],
+        }
+      }
+    }
+  ),
+
   // surveys is an Array of maps. Each map contains 4 fields: active, description, id, and title
   selectSurvey_surveys: state => state.survey.surveys,
   selectSurvey_showManageSurvey: state => state.survey.showManagesurvey,
   selectSurvey_selectedSurvey: state => state.survey.selectedSurvey,
+  selectSurvey_flagUpdateSelected: state => state.survey.flagUpdateSelected,
 }

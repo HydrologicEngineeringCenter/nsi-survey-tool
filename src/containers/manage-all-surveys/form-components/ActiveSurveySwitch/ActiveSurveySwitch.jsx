@@ -22,7 +22,7 @@ const ActiveSurvey = (props) => {
 
   return (
     <div className={classes["overlap-group"]}>
-      <div className={classes["active-label"]}>Active</div>
+      <div className={classes["active-label"]}>Active?</div>
 
       <Grid component="label" container alignItems="center" spacing={1}>
         <Grid item>Off</Grid>

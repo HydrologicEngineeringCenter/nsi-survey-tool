@@ -1,3 +1,5 @@
+import changeSurveyInSurveys from "../utils/changeSurveyInSurveys"
+
 const MANAGE_SURVEY_ACTION = {
   MUTATE_STORE: "MANAGE_SURVEY_ACTION.MUTATE_STORE"
 }
@@ -9,7 +11,6 @@ export default {
     const initialData = {
       shouldInitControlPromptArray: false,
       showControlPrompt: {}, // map determining whether control prompt should be collapsed for each survey
-      controlSurvey: null,
       flagChangedUserList: false,
     }
     return (state = initialData, { type, payload }) => {
@@ -66,18 +67,11 @@ export default {
     }
   },
 
-  doManageSurvey_flipActive: _ => ({ dispatch, store }) => {
+  doManageSurvey_flipActive: _ => ({ store }) => {
     let workingSurvey = { ...store.selectSurvey_selectedSurvey() }
     workingSurvey["active"] = !workingSurvey["active"]
     // send request to backend and mutate list in survey bundle
     store.doSurvey_sendRequestUpdateSurvey(workingSurvey)
-    // mutate selection in manageSurvey bundle
-    dispatch({
-      type: MANAGE_SURVEY_ACTION.MUTATE_STORE,
-      payload: {
-        controlSurvey: workingSurvey,
-      }
-    })
   },
 
   // reactor to init control prompt array
