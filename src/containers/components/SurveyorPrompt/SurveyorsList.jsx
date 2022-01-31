@@ -68,10 +68,10 @@ const SurveyorsList = (props) => {
 };
 
 export default connect(
-  'doSendRequestGetSurveyMembers',
   'selectUserSurveyMembers',
   'selectSurvey_selectedSurvey',
   'doUser_sendRequestRemoveUser',
+  'doUser_flipOwner',
   'selectUser_userIsAdminOrOwnerOfSelectedSurvey',
   SurveyorsList
 )

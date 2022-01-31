@@ -197,6 +197,44 @@ export default {
     })
   },
 
+  doUser_flipOwner: user => ({ dispatch, store, handleErrors }) => {
+    const authAccessToken = store.selectAuthAccessToken()
+    let wUser = { ...user }
+    wUser["isOwner"] = !wUser["isOwner"]
+
+    const selectedSurvey = store.selectSurvey_selectedSurvey()
+    let requestParams = REQUESTS.UPSERT_SURVEY_MEMBER
+    requestParams.pathParam = "/" + selectedSurvey.id
+    requestParams.body = {
+      surveyId: selectedSurvey["id"],
+      userId: wUser.userId,
+      isOwner: wUser.isOwner,
+    }
+
+    if (selectedSurvey.id === null) {
+      throw new Error('Unable to read surveyId when trying to addSurveyor')
+    }
+
+    store.selectBackend()
+      .fetch(authAccessToken, requestParams)
+      .then(handleErrors)
+      .then(_ => {
+        dispatch({
+          type: USER_ACTION.UPDATE_SURVEY_MEMBERS,
+          payload: { flagChangedUserList: true }
+        })
+      })
+      .then(_ => {
+        dispatch({
+          type: USER_ACTION.UPDATE_SELECTED_USER,
+          payload: { selectedUser: null }
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  },
+
   reactRefreshUserListOnAddedMember: createSelector(
     'selectSurvey_selectedSurvey',
     'selectUser_flagChangedUserList',
