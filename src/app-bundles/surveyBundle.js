@@ -1,5 +1,4 @@
 import { createSelector } from "redux-bundler"
-import changeSurveyInSurveys from "../utils/changeSurveyInSurveys"
 import REQUESTS from "../stores/requestParams"
 import HTTP_STATUS from "../stores/httpStatus"
 
