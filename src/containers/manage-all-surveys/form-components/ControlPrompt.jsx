@@ -1,6 +1,5 @@
 import { useState, Fragment } from "react"
 import { connect } from "redux-bundler-react"
-import Box from "@material-ui/core/Box"
 import Typography from "@material-ui/core/Typography"
 import Card from "@material-ui/core/Card"
 import ActiveSurveySwitch from "./ActiveSurveySwitch/ActiveSurveySwitch"
@@ -21,6 +20,7 @@ const ControlPrompt = props => {
     initActive,
     survey_selectedSurvey,
     doSurvey_downloadReport,
+    user_userIsAdminOrOwnerOfSelectedSurvey: higherControl,
   } = props
 
   const [value, setValue] = useState(0)
@@ -36,51 +36,59 @@ const ControlPrompt = props => {
 
   return (
     <Fragment>
-      <Card className={"surveyors-container"}>
+      {higherControl &&
+        <Card className={"surveyors-container"}>
 
-        <Typography variant="h6" gutterBottom component="div">
-          Edit Survey
+          <Typography variant="h6" gutterBottom component="div">
+            Edit Survey
+          </Typography>
+
+          <AppBar position="static" color="default">
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              indicatorColor="primary"
+              textColor="primary"
+              variant="scrollable"
+              scrollButtons="auto"
+              aria-label="scrollable auto tabs example"
+            >
+              <Tab label={survey_selectedSurvey ? survey_selectedSurvey.id : ""} {...a11yProps(0)} />
+              <Tab label="Change Surveyors" {...a11yProps(1)} />
+            </Tabs>
+          </AppBar>
+          <TabPanel value={value} index={0}>
+            <ActiveSurveySwitch initActive={initActive} />
+            <p />
+            <p />
+            <SelectButton onClick={doSurvey_downloadReport}>Download</SelectButton>
+            <p />
+            <p />
+          </TabPanel>
+
+          <TabPanel value={value} index={1}>
+            <AsyncSurveyorAutocomplete />
+            <p />
+            <p />
+            <SelectButton onClick={_ =>
+              doUser_sendRequestAddSurveyor(
+                survey_selectedSurvey.id,
+                user_selectedUser.userId
+              )}>Add Surveyors
+            </SelectButton>
+            <p />
+            <p />
+            <SurveyorsList />
+          </TabPanel>
+        </Card>
+      }
+
+      {/* Higher level control would not be available to survey member*/}
+      {!higherControl &&
+        <Typography>
+          User is not an admin or owner of survey
         </Typography>
-
-        <AppBar position="static" color="default">
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            indicatorColor="primary"
-            textColor="primary"
-            variant="scrollable"
-            scrollButtons="auto"
-            aria-label="scrollable auto tabs example"
-          >
-            <Tab label={survey_selectedSurvey ? survey_selectedSurvey.id : ""} {...a11yProps(0)} />
-            <Tab label="Change Surveyors" {...a11yProps(1)} />
-          </Tabs>
-        </AppBar>
-        <TabPanel value={value} index={0}>
-          <ActiveSurveySwitch initActive={initActive} />
-          <p />
-          <p />
-          <SelectButton onClick={doSurvey_downloadReport}>Download</SelectButton>
-          <p />
-          <p />
-        </TabPanel>
-
-        <TabPanel value={value} index={1}>
-          <AsyncSurveyorAutocomplete />
-          <p />
-          <p />
-          <SelectButton onClick={_ =>
-            doUser_sendRequestAddSurveyor(
-              survey_selectedSurvey.id,
-              user_selectedUser.userId
-            )}>Add Surveyors
-          </SelectButton>
-          <p />
-          <p />
-          <SurveyorsList showDelete={true} />
-        </TabPanel>
-
-      </Card>
+      }
     </Fragment >
   )
 }
@@ -91,5 +99,6 @@ export default connect(
   "selectUser_selectedUser",
   "selectSurvey_selectedSurvey",
   "doSurvey_downloadReport",
+  "selectUser_userIsAdminOrOwnerOfSelectedSurvey",
   ControlPrompt
 )

@@ -20,15 +20,8 @@ const SurveyorsList = (props) => {
     userSurveyMembers: surveyMembers,
     survey_selectedSurvey,
     doUser_sendRequestRemoveUser,
-    showDelete, // show delete button next to surveyor
+    user_userIsAdminOrOwnerOfSelectedSurvey: showDelete, // show delete button next to surveyor
   } = props
-
-  // load existing members on init
-  useEffect(_ => {
-    if (survey_selectedSurvey) {
-      doSendRequestGetSurveyMembers(survey_selectedSurvey.id)
-    }
-  }, [])
 
   return (
     <TableContainer component={Paper} className={classes["surveyors-list"]}>
@@ -55,16 +48,22 @@ const SurveyorsList = (props) => {
                 <Checkbox className={classes.checkbox} id={`checkbox__${row.id}`} checked={row.isOwner} />
               </TableCell>
 
-              {showDelete &&
+              {showDelete && !row.isOwner &&
                 <TableCell align="right" component="th" scope="row">
                   <Button variant="outlined" color="secondary" onClick={_ => doUser_sendRequestRemoveUser(survey_selectedSurvey.id, row.userId)}>X</Button>
                 </TableCell>
               }
+
+              {showDelete && row.isOwner &&
+                <TableCell align="right" component="th" scope="row">
+                </TableCell>
+              }
+
             </TableRow>
           ))}
         </TableBody>
       </Table>
-    </TableContainer>
+    </TableContainer >
   );
 };
 
@@ -73,5 +72,6 @@ export default connect(
   'selectUserSurveyMembers',
   'selectSurvey_selectedSurvey',
   'doUser_sendRequestRemoveUser',
+  'selectUser_userIsAdminOrOwnerOfSelectedSurvey',
   SurveyorsList
 )
