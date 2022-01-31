@@ -193,8 +193,8 @@ export default {
   reactRefreshUserListOnAddedMember: createSelector(
     'selectSurvey_selectedSurvey',
     'selectUser_flagChangedUserList',
-    (survey_selectedSurvey, user_flagChangeUserList) => {
-      if (user_flagChangeUserList && survey_selectedSurvey) {
+    (survey_selectedSurvey, user_flagChangedUserList) => {
+      if (user_flagChangedUserList && survey_selectedSurvey) {
         return {
           actionCreator: 'doSendRequestGetSurveyMembers',
           args: [survey_selectedSurvey.id],
@@ -210,4 +210,21 @@ export default {
   selectUser_selectedUser: state => state.user.selectedUser,
 
   selectUser_flagChangedUserList: state => state.user.flagChangedUserList,
+
+  //check if user should have higher management priviledges
+  selectUser_userIsAdminOrOwnerOfSelectedSurvey: createSelector(
+    'selectAuth_roles',
+    'selectAuth_userId',
+    'selectUserSurveyMembers',
+    (roles, userId, members) => {
+      if (roles ? roles.includes("ADMIN") : null) {
+        return true
+      }
+      const owner = members ? members.filter(m => m.isOwner == true)[0] : null
+      if (userId == (owner ? owner.userId : null)) {
+        return true
+      }
+      return false
+    }
+  )
 }

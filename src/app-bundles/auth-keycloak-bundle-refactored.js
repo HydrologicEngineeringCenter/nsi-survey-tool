@@ -139,6 +139,7 @@ const auth = {
   selectAuthAccessToken: state => state.auth.data ? state.auth.data.jwt : null,
   selectAuthFullname: state => state.auth.data ? state.auth.data.fullName : null,
   selectAuth_roles: state => state.auth.data ? state.auth.data.roles : null,
+  selectAuth_userId: state => state.auth.data ? state.auth.data.userId : null,
 };
 
 export default auth;
