@@ -61,12 +61,11 @@ const NewSurveyPrompt = (props) => {
     // a little business logic pollution in this component wouldn't hurt anyone
     const enteredSurveyName = nameInputRef.current.value;
     const enteredSurveyDescription = descriptionInputRef.current.value;
-    const enteredActiveSwitch = activeSurveySwitchRef.current.checked;
     const requestParams = Object.assign(REQUEST_PARAMS.CREATE_NEW_SURVEY, {
       body: {
         title: enteredSurveyName,
         description: enteredSurveyDescription,
-        active: enteredActiveSwitch,
+        active: true,
       }
     })
 
@@ -133,7 +132,7 @@ const NewSurveyPrompt = (props) => {
       <div className="modal-body">
         <Stepper activeStep={createSurveyStep} orientation="vertical">
 
-          {stepHeaders.map((label, index) => (
+          {stepHeaders.map((label) => (
             <Step key={label}>
               <StepLabel>{label}</StepLabel>
               <StepContent>

@@ -25,7 +25,6 @@ const StepContents = (props) => {
     survey_selectedSurvey,
     nameInputRef,
     descriptionInputRef,
-    activeSwitchRef,
     setElements
   } = props;
 
@@ -39,8 +38,6 @@ const StepContents = (props) => {
           <p />
           <DescriptionInput inputRef={descriptionInputRef} />
           <p />
-          <p />
-          <ActiveSurvey inputRef={activeSwitchRef} />
         </Card>
       )
 

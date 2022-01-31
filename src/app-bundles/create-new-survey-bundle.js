@@ -86,7 +86,7 @@ export default {
             id: data.surveyId,
             title: requestParams.title,
             description: requestParams.description,
-            active: requestParams.active,
+            active: true,
           }
           store.doSurvey_updateSelectedSurvey(createdSurvey)
         }
