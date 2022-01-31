@@ -190,6 +190,13 @@ export default {
       })
   },
 
+  doUser_shouldUpdateSurveyMembers: _ => ({ dispatch }) => {
+    dispatch({
+      type: USER_ACTION.UPDATE_SURVEY_MEMBERS,
+      payload: { flagChangedUserList: true }
+    })
+  },
+
   reactRefreshUserListOnAddedMember: createSelector(
     'selectSurvey_selectedSurvey',
     'selectUser_flagChangedUserList',

@@ -82,12 +82,13 @@ export default {
       .then(data => {
         // update based on for valid response
         if (data != null) {
-          store.doSurvey_updateSelectedSurvey({
+          const createdSurvey = {
             id: data.surveyId,
             title: requestParams.title,
             description: requestParams.description,
             active: requestParams.active,
-          })
+          }
+          store.doSurvey_updateSelectedSurvey(createdSurvey)
         }
       })
       .then(_ => {
@@ -156,6 +157,9 @@ export default {
           type: CREATE_NEW_SURVEY_ACTION.STORE_STEP,
           payload: { 'surveyStep': CREATE_SURVEY_STEP.SURVEYORS }
         })
+      })
+      .then(_ => {
+        store.doUser_shouldUpdateSurveyMembers()
       })
       .catch((err) => {
         console.log(err)
