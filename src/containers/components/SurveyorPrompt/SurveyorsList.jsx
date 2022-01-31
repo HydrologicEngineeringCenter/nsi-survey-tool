@@ -8,18 +8,17 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button'
+import Switch from "@material-ui/core/Switch";
 import { connect } from 'redux-bundler-react';
-
 import classes from "./SurveyorsList.module.css";
-import { Checkbox } from '@material-ui/core';
 
 const SurveyorsList = (props) => {
   // each element in usersList is an obj with 2 properties: userId and userName
   const {
-    doSendRequestGetSurveyMembers,
     userSurveyMembers: surveyMembers,
     survey_selectedSurvey,
     doUser_sendRequestRemoveUser,
+    doUser_flipOwner,
     user_userIsAdminOrOwnerOfSelectedSurvey: showDelete, // show delete button next to surveyor
   } = props
 
@@ -45,7 +44,11 @@ const SurveyorsList = (props) => {
               </TableCell>
 
               <TableCell padding="checkbox" >
-                <Checkbox className={classes.checkbox} id={`checkbox__${row.id}`} checked={row.isOwner} />
+                <Switch
+                  checked={row.isOwner}
+                  onChange={_ => doUser_flipOwner(row)}
+                  name={`switch-${row.userId}`}
+                />
               </TableCell>
 
               {showDelete && !row.isOwner &&
