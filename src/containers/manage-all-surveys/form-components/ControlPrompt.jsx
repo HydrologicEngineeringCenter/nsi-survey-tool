@@ -53,8 +53,9 @@ const ControlPrompt = props => {
               scrollButtons="auto"
               aria-label="scrollable auto tabs example"
             >
-              <Tab label={survey_selectedSurvey ? survey_selectedSurvey.id : ""} {...a11yProps(0)} />
+              <Tab label={survey_selectedSurvey ? survey_selectedSurvey.title : ""} {...a11yProps(0)} />
               <Tab label="Change Surveyors" {...a11yProps(1)} />
+              <Tab label="Assignments" {...a11yProps(1)} />
             </Tabs>
           </AppBar>
           <TabPanel value={value} index={0}>
