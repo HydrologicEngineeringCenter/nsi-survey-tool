@@ -116,9 +116,9 @@ export default {
 
   doSurvey_downloadReport: _ => ({ store }) => {
     const authAccessToken = store.selectAuthAccessToken()
-    let id = store.selectSurvey_selectedSurvey().id
+    const survey = store.selectSurvey_selectedSurvey()
     let requestParams = REQUESTS.GET_SURVEY_REPORT
-    requestParams.pathParam = "/" + id
+    requestParams.pathParam = "/" + survey.id
 
     store.selectBackend()
       .fetch(authAccessToken, requestParams)
@@ -126,6 +126,7 @@ export default {
       .then(data => {
         var a = document.createElement("a")
         a.href = window.URL.createObjectURL(data)
+        a.download = "surveys.csv"
         a.click()
       })
       .catch((err) => {
