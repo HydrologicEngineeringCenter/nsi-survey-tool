@@ -152,31 +152,34 @@ export default {
       throw new Error('Unable to read createSurveyId when trying to sendElements')
     }
 
-    const dataPipeline = new CSVMetaArrayUtils(store.selectCreateSurveyElements())
-    dataPipeline
-      .addIndex(1)
-      .changePropertyByName('index', 'surveyOrder')
-      .addCol('surveyId', store.selectSurvey_selectedSurvey().id)
+    // only send request if there is data
+    if (store.selectCreateSurveyElements() && store.selectCreateSurveyElements().length > 0) {
+      const dataPipeline = new CSVMetaArrayUtils(store.selectCreateSurveyElements())
+      dataPipeline
+        .addIndex(1)
+        .changePropertyByName('index', 'surveyOrder')
+        .addCol('surveyId', store.selectSurvey_selectedSurvey().id)
 
-    let body = dataPipeline.jsonArray()
-    requestParams.body = body
+      let body = dataPipeline.jsonArray()
+      requestParams.body = body
 
-    // send request, process response, update display step
-    store.selectBackend()
-      .fetch(authAccessToken, requestParams)
-      .then(handleErrors)
-      .then(_ => {
-        dispatch({
-          type: CREATE_NEW_SURVEY_ACTION.STORE_STEP,
-          payload: { 'surveyStep': CREATE_SURVEY_STEP.SURVEYORS }
+      // send request, process response, update display step
+      store.selectBackend()
+        .fetch(authAccessToken, requestParams)
+        .then(handleErrors)
+        .then(_ => {
+          dispatch({
+            type: CREATE_NEW_SURVEY_ACTION.STORE_STEP,
+            payload: { 'surveyStep': CREATE_SURVEY_STEP.SURVEYORS }
+          })
         })
-      })
-      .then(_ => {
-        store.doUser_shouldUpdateSurveyMembers()
-      })
-      .catch((err) => {
-        console.log(err)
-      });
+        .then(_ => {
+          store.doUser_shouldUpdateSurveyMembers()
+        })
+        .catch((err) => {
+          console.log(err)
+        });
+    }
   },
 
   selectFlagChangeProperties: state => state.createNewSurvey.flagChangeSurveyElementsProperties,
