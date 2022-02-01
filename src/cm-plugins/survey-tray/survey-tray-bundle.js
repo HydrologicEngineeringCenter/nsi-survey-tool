@@ -299,7 +299,7 @@ const stBundle = function(config) {
         window.open(url, "_blank");
       },
 
-      doSt_openTray: _ => ({ }) => {
+      doSt_openTray: _ => ({ store }) => {
         store.doPrimaryPanelOpen({
           openedBy: "Survey Tray",
           options: null,
