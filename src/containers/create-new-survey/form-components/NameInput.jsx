@@ -1,5 +1,4 @@
 import React from 'react';
-import classes from "./NameInput.module.css";
 import TextField from '@material-ui/core/TextField';
 
 const NameInput = (props) => {
