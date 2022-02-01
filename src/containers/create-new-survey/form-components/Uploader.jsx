@@ -57,6 +57,7 @@ const Uploader = (props) => {
         acceptFiles={["application/vnd.ms-excel"]}
         onChange={onDrop}
         onDelete={onDelete}
+        filesLimit={1}
       />
     </div>
   );
