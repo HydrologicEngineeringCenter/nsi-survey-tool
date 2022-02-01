@@ -4,6 +4,7 @@ import { useCallback, useMemo } from "react"
 import { useDropzone } from 'react-dropzone'
 import CSVMetaArrayReader from "../../../lib/data/CSVMetaArrayReader"
 import { connect } from "redux-bundler-react"
+import { DropzoneArea } from "material-ui-dropzone"
 
 const baseStyle = {
   display: 'flex',
@@ -38,53 +39,25 @@ const Uploader = (props) => {
 
   const onDrop = useCallback(acceptedFiles => {
     acceptedFiles.forEach((file) => {
-      // read in stream is going to be in a different priority task queue,
+      // read-in stream is going to be in a different priority task queue,
       // tasks on the main thread won't be able to access data,
       // processing logic have to be in redux
       const surveyList = new CSVMetaArrayReader(file)
       surveyList.readFile(doStoreCreateSurveyElements)
-      // surveyList.readFile(data => {
-      //   const processor = new CSVMetaArrayProcessor(data)
-      //   // rename fields
-      //   const newNames = ['fdId', 'isControl']
-      //   newNames.forEach((name, idx) => {
-      //     processor.changePropertyByIndex(idx, name)
-      //   })
-      //   doStoreCreateSurveyElements(processor.data)
-      // })
     })
   }, []);
 
-  const {
-    getRootProps,
-    getInputProps,
-    isDragActive,
-    isDragAccept,
-    isDragReject
-  } = useDropzone({
-    onDrop,
-    accept: 'application/vnd.ms-excel, .csv'
-  });
-
-  const style = useMemo(() => ({
-    ...baseStyle,
-    ...(isDragActive ? activeStyle : {}),
-    ...(isDragAccept ? acceptStyle : {}),
-    ...(isDragReject ? rejectStyle : {})
-  }), [
-    isDragActive,
-    isDragReject,
-    isDragAccept
-  ]);
+  const onDelete = _ => {
+    doStoreCreateSurveyElements([])
+  }
 
   return (
     <div className={classes.uploader}>
-      <section>
-        <div {...getRootProps({ style })}>
-          <input {...getInputProps()} />
-          <div>Drag and drop your csv file here.</div>
-        </div>
-      </section>
+      <DropzoneArea
+        acceptFiles={["application/vnd.ms-excel"]}
+        onChange={onDrop}
+        onDelete={onDelete}
+      />
     </div>
   );
 };

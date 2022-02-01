@@ -108,6 +108,18 @@ export default {
     'selectFlagChangeProperties',
     (createSurveyElements, flagChangeProperties) => {
       const newNames = ['fdId', 'isControl']
+
+      // removed file from dropzone
+      if (flagChangeProperties && createSurveyElements.length == 0) {
+        return {
+          type: CREATE_NEW_SURVEY_ACTION.STORE_ELEMENTS,
+          payload: {
+            surveyElements: [],
+            flagChangeSurveyElementsProperties: false
+          }
+        }
+      }
+
       if (flagChangeProperties) {
         const dataPipeline = new CSVMetaArrayUtils(createSurveyElements)
         dataPipeline
@@ -122,6 +134,7 @@ export default {
           }
         }
       }
+
     }
   ),
 
@@ -130,7 +143,7 @@ export default {
     store,
     handleErrors
   }) => {
-    // authAccessToken is always refreshing, have to update from auth bundle
+    // authAccessToken is always refreshing, it has to be updated from auth bundle
     // before sending request everytime
     const authAccessToken = store.selectAuthAccessToken()
     requestParams.pathParam = "/" + store.selectSurvey_selectedSurvey().id
