@@ -106,6 +106,7 @@ const stBundle = function(config) {
         });
         config.registerHook(store)
         dispatch({ type: UPDATE_PARENT_PROPS, payload: { "appProps": config.appProps } });
+        store.doSt_openTray()
       },
 
       doSurveyUpdateData: (survey) => ({ dispatch, store }) => {
@@ -311,12 +312,13 @@ const stBundle = function(config) {
         if (state.st._shouldInitialize) return { actionCreator: "doStInitialize" };
       },
 
+
       selectSurveyData: (state) => state.st.survey,
       selectSurveyLoading: state => state.st.surveyLoading,
       selectSurveyAuthToken: state => state.st.appProps?.authNSIToken,
       selectSurveySaved: state => state.st.surveySaved,
       selectAllSurveysCompleted: state => state.st.surveysCompleted,
-      selectMapLoading: state => false,
+      selectMapLoading: _ => false,
     });
 }
 
