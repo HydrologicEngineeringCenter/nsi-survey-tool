@@ -23,13 +23,9 @@ function SurveySplashPage(props) {
     doManageSurvey_dispatchShouldInitControlPromptArray,
   } = props;
 
-  // TODO UNCOMMENT THIS IN PRODUCTION
-  // const validateUser = () => {
-  //   if (!authAccessToken) {
-  //     doUpdateUrl("/nsi-survey/");
-  //   }
-  // }
-  // setTimeout(validateUser, 0)
+  if (!authAccessToken) {
+    doUpdateUrl("/nsi-survey/");
+  }
 
   const [flagShowCreateSurvey, setFlagShowCreateSurvey] = useState(false);
   const [flagChooseActiveSurvey, setFlagChooseActiveSurvey] = useState(false);
