@@ -15,13 +15,12 @@ const ActiveSurveyList = (props) => {
   const {
     survey_surveys,
     doUpdateUrl,
-    doSurvey_loadSurveyTray,
+    doSurvey_updateSelectedSurvey,
   } = props
 
-  const handleRedirectToSurveyTray = rowId => {
-    console.log(rowId)
+  const handleRedirectToSurveyTray = survey => {
+    doSurvey_updateSelectedSurvey(survey)
     doUpdateUrl("/nsi-survey/main")
-    doSurvey_loadSurveyTray()
   }
 
   return (
@@ -53,9 +52,9 @@ const ActiveSurveyList = (props) => {
                 <Checkbox className={classes.checkbox} id={`checkbox__${row.id}`} checked={row.active} />
               </TableCell>
 
-              {/* do a client side rerouting or redux states will reset to empty*/}
+              {/* do a client side rerouting here or redux states will reset to empty*/}
               <TableCell component="th" scope="row">
-                <a onClick={_ => handleRedirectToSurveyTray(row.id)}>{`${row.id}`}</a>
+                <a onClick={_ => handleRedirectToSurveyTray(row)}>{`${row.id}`}</a>
               </TableCell>
 
             </TableRow>
@@ -69,6 +68,6 @@ const ActiveSurveyList = (props) => {
 export default connect(
   "selectSurvey_surveys",
   "doUpdateUrl",
-  "doSurvey_loadSurveyTray",
+  "doSurvey_updateSelectedSurvey",
   ActiveSurveyList
 )
