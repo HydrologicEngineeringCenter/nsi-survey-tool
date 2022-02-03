@@ -73,7 +73,7 @@ const AllSurveyList = (props) => {
                 </TableCell>
                 {/* do a client side rerouting or redux states will reset to empty*/}
                 <TableCell component="th" scope="row">
-                  <a onClick={handleRedirectToSurveyTray}>{`${row.id}`}</a>
+                  {`${row.id}`}
                 </TableCell>
               </TableRow>
 
