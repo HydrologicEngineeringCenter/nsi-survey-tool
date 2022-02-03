@@ -7,6 +7,7 @@ const SURVEY_ACTION = {
   UPDATE_SURVEYS: "SURVEY_ACTION.UPDATE_SURVEYS",
   OPEN_MANAGE_SURVEY: "SURVEY_ACTION.OPEN_MANAGE_SURVEY",
   UPDATE_SELECTED_SURVEY: "SURVEY_ACTION.UPDATE_SELECTED_SURVEY",
+  ELEMENTS_RETRIEVED: "ELEMENTS_RETRIEVED",
 }
 
 export default {
@@ -21,6 +22,7 @@ export default {
       // or on specific survey selection in manage-all-surveys
       selectedSurvey: null,
       flagUpdateSelected: false,
+      elements: [],
     }
     return (state = initialData, { type, payload }) => {
       switch (type) {
@@ -102,9 +104,6 @@ export default {
       })
   },
 
-  doSurvey_loadSurveyTray: _ => ({ }) => {
-  },
-
   doSurvey_openManageSurvey: _ => ({ dispatch }) => {
     dispatch({
       type: SURVEY_ACTION.OPEN_MANAGE_SURVEY,
@@ -156,6 +155,30 @@ export default {
     })
   },
 
+  // Each element is an obj with fdId, isControl, seId, surveyId,
+  doSurvey_sendRequestGetElements: _ => ({ dispatch, store, handleErrors }) => {
+    const surveyId = store.selectSurvey_selectedSurvey().id
+    // validation - don't request an empty query
+    const authAccessToken = store.selectAuthAccessToken()
+    let requestParams = REQUESTS.GET_ELEMENTS
+    requestParams.pathParam = "/" + surveyId
+    store.selectBackend()
+      .fetch(authAccessToken, requestParams)
+      .then(handleErrors)
+      .then(response => response.json())
+      .then(data => {
+        if (data != null) {
+          dispatch({
+            type: SURVEY_ACTION.ELEMENTS_RETRIEVED,
+            payload: { elements: Array.isArray(data) ? [...data] : [data] }
+          })
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  },
+
   reactUpdateSelected: createSelector(
     "selectSurvey_flagUpdateSelected",
     "selectSurvey_selectedSurvey",
@@ -171,6 +194,7 @@ export default {
 
   // surveys is an Array of maps. Each map contains 4 fields: active, description, id, and title
   selectSurvey_surveys: state => state.survey.surveys,
+  selectSurvey_elements: state => state.survey.elements,
   selectSurvey_showManageSurvey: state => state.survey.showManagesurvey,
   selectSurvey_selectedSurvey: state => state.survey.selectedSurvey,
   selectSurvey_flagUpdateSelected: state => state.survey.flagUpdateSelected,

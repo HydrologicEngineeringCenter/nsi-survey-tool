@@ -104,6 +104,13 @@ export default {
     expectedResponseStatus: httpStatus.StatusCreated,
   },
 
+  GET_ELEMENTS: {
+    endpoint: END_POINT.SURVEY,
+    pathParam: null,
+    suffix: SUFFIX.ELEMENTS,
+    method: METHOD.GET,
+    body: null,
+  },
   ADD_ASSIGNMENTS: {
 
   },
