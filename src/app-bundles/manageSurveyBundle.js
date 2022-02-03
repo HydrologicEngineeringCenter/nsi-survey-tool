@@ -1,5 +1,3 @@
-import changeSurveyInSurveys from "../utils/changeSurveyInSurveys"
-
 const MANAGE_SURVEY_ACTION = {
   MUTATE_STORE: "MANAGE_SURVEY_ACTION.MUTATE_STORE"
 }
