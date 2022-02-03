@@ -153,7 +153,7 @@ export default {
     }
 
     // only send request if there is data
-    if (store.selectCreateSurveyElements() && store.selectCreateSurveyElements().length > 0) {
+    if (store.selectCreateSurveyElements() && store.selectCreateSurveyElements().values.length > 0) {
       const dataPipeline = new CSVMetaArrayUtils(store.selectCreateSurveyElements())
       dataPipeline
         .addIndex(1)
