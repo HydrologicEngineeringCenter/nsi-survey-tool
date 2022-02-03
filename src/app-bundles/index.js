@@ -13,6 +13,7 @@ import userBundle from './userBundle'
 import surveyBundle from './surveyBundle'
 import generalBundle from './generalBundle'
 import manageSurveyBundle from './manageSurveyBundle';
+import storesConnector from './monkeypatch-bundler'
 
 export default composeBundles(
   routesBundle,
@@ -22,6 +23,7 @@ export default composeBundles(
   surveyBundle,
   generalBundle,
   manageSurveyBundle,
+  storesConnector,
   createUrlBundle(),
   createCacheBundle(cache.set),
 );
