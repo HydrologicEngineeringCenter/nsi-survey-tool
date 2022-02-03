@@ -10,6 +10,7 @@ import Tabs from "@material-ui/core/Tabs"
 import Tab from "@material-ui/core/Tab"
 import TabPanel from "./TabPanel"
 import AppBar from "@material-ui/core/AppBar"
+import ElementTable from "./ElementTable"
 import classes from "./ControlPrompt.module.css"
 
 // TODO customize css
@@ -54,7 +55,8 @@ const ControlPrompt = props => {
               aria-label="scrollable auto tabs example"
             >
               <Tab label={survey_selectedSurvey ? survey_selectedSurvey.title : ""} {...a11yProps(0)} />
-              <Tab label="Change Surveyors" {...a11yProps(1)} />
+              <Tab label="Surveyors" {...a11yProps(1)} />
+              <Tab label="Elements" {...a11yProps(1)} />
               <Tab label="Assignments" {...a11yProps(1)} />
             </Tabs>
           </AppBar>
@@ -81,6 +83,11 @@ const ControlPrompt = props => {
             <p />
             <SurveyorsList />
           </TabPanel>
+
+          <TabPanel value={value} index={2}>
+            <ElementTable />
+          </TabPanel>
+
         </Card>
       }
 
