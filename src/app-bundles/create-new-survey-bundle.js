@@ -102,6 +102,13 @@ export default {
       });
   },
 
+  doCreateNew_createSurveyStep: step => ({ dispatch }) => {
+    dispatch({
+      type: CREATE_NEW_SURVEY_ACTION.STORE_STEP,
+      payload: { 'surveyStep': step }
+    })
+  },
+
   // process elements on load
   reactChangeElementProperties: createSelector(
     'selectCreateSurveyElements',

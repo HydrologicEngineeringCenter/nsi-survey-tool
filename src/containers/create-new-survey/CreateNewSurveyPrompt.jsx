@@ -26,6 +26,7 @@ const NewSurveyPrompt = (props) => {
     doStoreCreateSurveyStep,
     doSendRequestCreateSurvey,
     doSendRequestInsertElements,
+    doCreateNew_createSurveyStep,
   } = props
 
   /*******************
@@ -97,6 +98,8 @@ const NewSurveyPrompt = (props) => {
   }
 
   const handleAddSurveyors = () => {
+    doCreateNew_createSurveyStep(CREATE_SURVEY_STEP.BASIC_INFO)
+    props.onClose()
   };
 
   /**
@@ -187,4 +190,5 @@ export default connect(
   'doStoreCreateSurveyStep',
   'doSendRequestCreateSurvey',
   'doSendRequestInsertElements',
+  'doCreateNew_createSurveyStep',
   NewSurveyPrompt);
