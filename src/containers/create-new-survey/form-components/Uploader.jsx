@@ -1,36 +1,9 @@
 import React from 'react'
 import classes from "./Uploader.module.css"
-import { useCallback, useMemo } from "react"
-import { useDropzone } from 'react-dropzone'
+import { useCallback } from "react"
 import CSVMetaArrayReader from "../../../lib/data/CSVMetaArrayReader"
 import { connect } from "redux-bundler-react"
 import { DropzoneArea } from "material-ui-dropzone"
-
-const baseStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  padding: '20px',
-  borderWidth: 2,
-  borderRadius: 2,
-  borderColor: '#eeeeee',
-  borderStyle: 'dashed',
-  backgroundColor: '#fafafa',
-  color: '#bdbdbd',
-  transition: 'border .3s ease-in-out'
-};
-
-const activeStyle = {
-  borderColor: '#2196f3'
-};
-
-const acceptStyle = {
-  borderColor: '#00e676'
-};
-
-const rejectStyle = {
-  borderColor: '#ff1744'
-};
 
 // https://www.digitalocean.com/community/tutorials/react-react-dropzone
 const Uploader = (props) => {
