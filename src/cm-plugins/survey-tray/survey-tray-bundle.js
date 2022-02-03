@@ -14,7 +14,7 @@ const ST_INITIALIZE_FINISHED = 'ST_INITIALIZE_FINISHED'
 const SURVEY_LOADING = 'SURVEY_LOADING';
 const UPDATE_SURVEY_SAVED = 'UPDATE_SURVEY_SAVED';
 
-const apiHost = process.env.REACT_APP_APIHOST_NSI
+const apiHost = process.env.REACT_APP_SURVEY_API
 const publicFolder = process.env.PUBLIC_URL
 
 let markerLayer = null;
@@ -123,10 +123,12 @@ const stBundle = function(config) {
       },
 
       doSurveyFetch: () => ({ dispatch, store }) => {
-        const token = store.selectSurveyAuthToken();
+        const storeOuter = store.selectMonkeyPatchOuterStore()
+        const token = storeOuter.selectAuthAccessToken();
+        const selectedSurvey = storeOuter.selectSurvey_selectedSurvey()
         if (token) {
           dispatch({ type: SURVEY_LOADING, payload: { "surveyLoading": true } });
-          fetch(`${apiHost}/nsisapi/survey`, {
+          fetch(`${apiHost}/survey/${selectedSurvey.id}/assignment`, {
             method: 'get',
             headers: {
               'Accept': 'application/json',
@@ -181,10 +183,11 @@ const stBundle = function(config) {
       },
 
       doSurveySave: () => ({ dispatch, store }) => {
-        const token = store.selectSurveyAuthToken();
+        const storeOuter = store.selectMonkeyPatchOuterStore()
+        const token = storeOuter.selectAuthAccessToken();
         let survey = store.selectSurveyData()
         if (token) {
-          fetch(`${apiHost}/nsisapi/survey`, {
+          fetch(`${apiHost}/survey/assignment`, {
             method: 'post',
             headers: {
               'Accept': 'application/json',
