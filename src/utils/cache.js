@@ -13,5 +13,6 @@ import pkg from '../../package.json';
 // So, there are gotchas, but it sure is cool when you've got it all set up.
 export default getConfiguredCache({
   maxAge: 1000 * 60 * 60,
-  version: pkg.version
+  // version: pkg.version,
+  version: pkg.version,
 })
