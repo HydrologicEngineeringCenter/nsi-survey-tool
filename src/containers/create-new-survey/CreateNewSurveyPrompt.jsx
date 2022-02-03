@@ -97,7 +97,7 @@ const NewSurveyPrompt = (props) => {
     }
   }
 
-  const handleAddSurveyors = () => {
+  const handleCloseReset = () => {
     doCreateNew_createSurveyStep(CREATE_SURVEY_STEP.BASIC_INFO)
     props.onClose()
   };
@@ -114,7 +114,7 @@ const NewSurveyPrompt = (props) => {
         handleLoadPoints()
         return
       case CREATE_SURVEY_STEP.SURVEYORS:
-        handleAddSurveyors()
+        handleCloseReset()
         return
       default:
         throw Error("Unable to determine CREATE_SURVEY_STEP")
@@ -161,7 +161,7 @@ const NewSurveyPrompt = (props) => {
                     rolling back entry that was already sent to the backend db */}
               <Button
                 // disabled={createSurveyStep === 0}
-                onClick={props.onClose}
+                onClick={handleCloseReset}
                 className={classes.button}
               >
                 Cancel
