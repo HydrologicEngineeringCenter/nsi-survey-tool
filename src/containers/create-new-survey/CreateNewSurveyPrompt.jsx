@@ -36,8 +36,6 @@ const NewSurveyPrompt = (props) => {
   const nameInputRef = useRef();
   const descriptionInputRef = useRef();
   const activeSurveySwitchRef = useRef();
-  const [elements, setElements] = useState() // survey elements for upload
-  let [surveyId, setSurveyId] = useState() // store guid from backend response
 
   /*******************
    * Handling backend interactions
@@ -83,8 +81,9 @@ const NewSurveyPrompt = (props) => {
         handleBasicInfo()
         return
       case CREATE_SURVEY_STEP.POINTS:
-        doElement_insertElements()
-        doStoreCreateSurveyStep(CREATE_SURVEY_STEP.SURVEYORS)
+        doElement_insertElements(_ => {
+          doStoreCreateSurveyStep(CREATE_SURVEY_STEP.SURVEYORS)
+        })
         doUser_shouldUpdateSurveyMembers()
         return
       case CREATE_SURVEY_STEP.SURVEYORS:
@@ -117,7 +116,6 @@ const NewSurveyPrompt = (props) => {
                   nameInputRef={nameInputRef}
                   descriptionInputRef={descriptionInputRef}
                   activeSwitchRef={activeSurveySwitchRef}
-                  setElements={setElements}
                 />
                 {/* {stepContents(index)} */}
                 <p />

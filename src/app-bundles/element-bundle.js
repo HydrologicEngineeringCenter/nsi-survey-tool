@@ -43,14 +43,15 @@ export default {
   },
 
   // doElement_insertElements sends a list of elements to the api and update
-  // the survey status to active
+  // the survey status to active, postFetchCallback enables async follow-up on request ending
   doElement_insertElements: postFetchCallback => ({ store, handleErrors }) => {
 
     const requestParams = REQUESTS.INSERT_SURVEY_ELEMENTS
     // authAccessToken is always refreshing, it has to be updated from auth bundle
     // before sending request everytime
     const authAccessToken = store.selectAuthAccessToken()
-    requestParams.pathParam = "/" + store.selectSurvey_selectedSurvey().id
+    const survey_selected = store.selectSurvey_selectedSurvey()
+    requestParams.pathParam = "/" + survey_selected.id
 
     if (store.selectSurvey_selectedSurvey() === undefined) {
       throw new Error('Unable to read createSurveyId when trying to sendElements')
