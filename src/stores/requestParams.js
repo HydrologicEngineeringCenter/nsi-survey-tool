@@ -14,6 +14,7 @@ const SUFFIX = {
   MEMBERS: "/members",
   MEMBER: "/member",
   REPORT: "/report",
+  VALID: "/valid",
 }
 
 const METHOD = {
@@ -97,10 +98,9 @@ export default {
 
   INSERT_SURVEY_ELEMENTS: {
     endpoint: END_POINT.SURVEY,
-    pathParams: null,
+    pathParam: null,
     suffix: SUFFIX.ELEMENTS,
     method: METHOD.POST,
-    body: null,
     expectedResponseStatus: httpStatus.StatusCreated,
   },
 
@@ -111,6 +111,7 @@ export default {
     method: METHOD.GET,
     body: null,
   },
+
   ADD_ASSIGNMENTS: {
 
   },
@@ -134,6 +135,12 @@ export default {
     endpoint: END_POINT.SURVEY,
     pathParam: null,
     suffix: SUFFIX.REPORT,
+    method: METHOD.GET,
+  },
+
+  VALIDATE_SURVEY_NAME: {
+    endpoint: END_POINT.SURVEY,
+    suffix: SUFFIX.VALID,
     method: METHOD.GET,
   },
 
