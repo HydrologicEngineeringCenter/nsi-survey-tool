@@ -76,6 +76,30 @@ export default {
     }
   },
 
+  // Each element is an obj with fdId, isControl, surveyOrder
+  doElement_sendRequestGetElements: survey => ({ dispatch, store, handleErrors }) => {
+    const surveyId = survey.id
+    // validation - don't request an empty query
+    const authAccessToken = store.selectAuthAccessToken()
+    let requestParams = REQUESTS.GET_ELEMENTS
+    requestParams.pathParam = "/" + surveyId
+    store.selectBackend()
+      .fetch(authAccessToken, requestParams)
+      .then(handleErrors)
+      .then(response => response.json())
+      .then(data => {
+        if (data != null) {
+          dispatch({
+            type: ELEMENT_ACTION.ELEMENTS_RETRIEVED,
+            payload: { elements: Array.isArray(data) ? [...data] : [data] }
+          })
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  },
+
   // process elements on load
   reactChangeElementProperties: createSelector(
     'selectElement_elements',
