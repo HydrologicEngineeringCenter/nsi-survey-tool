@@ -8,7 +8,7 @@ import { DropzoneArea } from "material-ui-dropzone"
 // https://www.digitalocean.com/community/tutorials/react-react-dropzone
 const Uploader = (props) => {
 
-  const { doStoreCreateSurveyElements } = props
+  const { doElement_storeElements } = props
 
   const onDrop = useCallback(acceptedFiles => {
     acceptedFiles.forEach((file) => {
@@ -16,12 +16,12 @@ const Uploader = (props) => {
       // tasks on the main thread won't be able to access data,
       // processing logic have to be in redux
       const surveyList = new CSVMetaArrayReader(file)
-      surveyList.readFile(doStoreCreateSurveyElements)
+      surveyList.readFile(doElement_storeElements)
     })
   }, []);
 
   const onDelete = _ => {
-    doStoreCreateSurveyElements([])
+    doElement_storeElements([])
   }
 
   return (
@@ -37,6 +37,6 @@ const Uploader = (props) => {
 };
 
 export default connect(
-  'doStoreCreateSurveyElements',
+  'doElement_storeElements',
   Uploader
 )
