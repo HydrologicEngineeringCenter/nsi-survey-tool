@@ -42,7 +42,9 @@ export default {
     })
   },
 
-  doElement_insertElements: _ => ({ dispatch, store, handleErrors }) => {
+  // doElement_insertElements sends a list of elements to the api and update
+  // the survey status to active
+  doElement_insertElements: postFetchCallback => ({ store, handleErrors }) => {
 
     const requestParams = REQUESTS.INSERT_SURVEY_ELEMENTS
     // authAccessToken is always refreshing, it has to be updated from auth bundle
@@ -70,6 +72,10 @@ export default {
       store.selectBackend()
         .fetch(authAccessToken, requestParams)
         .then(handleErrors)
+        .then(postFetchCallback)
+        .then(
+          store.doSurvey_sendRequestUpdateSurvey({ ...survey_selected, active: true })
+        )
         .catch((err) => {
           console.log(err)
         });

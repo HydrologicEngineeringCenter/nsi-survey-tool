@@ -65,9 +65,10 @@ const ControlPrompt = props => {
 
   // Upload button on Insert Elements tab
   const handleInsertElement = _ => {
-    doElement_insertElements()
-    doElement_sendRequestGetElements(survey_selected)
-    setValue(STEP_INDEX.ELEMENT_VIEW)
+    doElement_insertElements(_ => {
+      doElement_sendRequestGetElements(survey_selected)
+      setValue(STEP_INDEX.ELEMENT_VIEW)
+    })
   }
 
   return (

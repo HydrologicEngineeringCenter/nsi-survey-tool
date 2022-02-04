@@ -57,7 +57,7 @@ const NewSurveyPrompt = (props) => {
       body: {
         title: enteredSurveyName,
         description: enteredSurveyDescription,
-        active: true,
+        active: false,
       }
     })
 
