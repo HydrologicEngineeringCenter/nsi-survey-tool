@@ -5,7 +5,7 @@ import { connect } from "redux-bundler-react"
 import classes from "./ElementTable.module.css"
 
 const ElementTable = props => {
-  const { survey_elements } = props
+  const { element_elements } = props
   const columns = [
     { field: 'fdId', headerName: 'fdId', width: 150 },
     { field: 'surveyOrder', headerName: 'order', width: 150 },
@@ -16,7 +16,7 @@ const ElementTable = props => {
     <Fragment>
       <div style={{ height: 370, width: '100%' }}>
         <DataGrid
-          rows={survey_elements}
+          rows={element_elements}
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5]}
@@ -28,6 +28,6 @@ const ElementTable = props => {
 }
 
 export default connect(
-  "selectSurvey_elements",
+  "selectElement_elements",
   ElementTable
 )
