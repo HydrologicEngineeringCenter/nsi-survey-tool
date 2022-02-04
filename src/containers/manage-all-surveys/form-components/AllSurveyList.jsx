@@ -19,17 +19,10 @@ const AllSurveyList = (props) => {
   // each element in usersList is an obj with 2 properties: userId and userName
   const {
     survey_surveys,
-    doUpdateUrl,
-    doSurvey_loadSurveyTray,
     doManageSurvey_controlPrompt,
   } = props
 
   const [showControl, setShowControl] = useState({})
-
-  const handleRedirectToSurveyTray = _ => {
-    doUpdateUrl("/nsi-survey/main")
-    doSurvey_loadSurveyTray()
-  }
 
   const handleCollapse = survey => {
     var localControl = {}

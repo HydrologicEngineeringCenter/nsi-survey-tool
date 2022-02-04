@@ -92,7 +92,7 @@ export default {
     }
   },
 
-  doSendRequestGetSurveyMembers: surveyId => ({
+  doSendRequestGetSurveyMembers: survey => ({
     dispatch,
     store,
     handleErrors
@@ -100,9 +100,9 @@ export default {
 
     const authAccessToken = store.selectAuthAccessToken()
     let requestParams = REQUESTS.GET_SURVEY_MEMBERS
-    requestParams.pathParam = "/" + surveyId
+    requestParams.pathParam = "/" + survey.id
 
-    if (surveyId === undefined) {
+    if (survey === undefined) {
       throw new Error('Unable to read surveyId when trying to getSurveyMembers')
     }
 

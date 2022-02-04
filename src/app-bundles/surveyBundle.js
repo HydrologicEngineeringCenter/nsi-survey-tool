@@ -156,8 +156,8 @@ export default {
   },
 
   // Each element is an obj with fdId, isControl, seId, surveyId,
-  doSurvey_sendRequestGetElements: _ => ({ dispatch, store, handleErrors }) => {
-    const surveyId = store.selectSurvey_selectedSurvey().id
+  doSurvey_sendRequestGetElements: survey => ({ dispatch, store, handleErrors }) => {
+    const surveyId = survey.id
     // validation - don't request an empty query
     const authAccessToken = store.selectAuthAccessToken()
     let requestParams = REQUESTS.GET_ELEMENTS

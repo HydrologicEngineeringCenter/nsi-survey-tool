@@ -19,13 +19,29 @@ const ControlPrompt = props => {
     doUser_sendRequestAddSurveyor,
     user_selectedUser,
     initActive,
-    survey_selectedSurvey,
+    survey_selectedSurvey: survey_selected,
     doSurvey_downloadReport,
     user_userIsAdminOrOwnerOfSelectedSurvey: higherControl,
+    doSurvey_sendRequestGetElements,
+    doSendRequestGetSurveyMembers,
   } = props
 
   const [value, setValue] = useState(0)
+  const STEP_INDEX = {
+    GENERAL: 0,
+    SURVEYOR: 1,
+    ELEMENT: 2,
+    ASSIGNMENT: 3,
+  }
   const handleChange = (_, newValue) => {
+    switch (newValue) {
+      case STEP_INDEX.SURVEYOR:
+        doSendRequestGetSurveyMembers(survey_selected)
+        break
+      case STEP_INDEX.ELEMENT:
+        doSurvey_sendRequestGetElements(survey_selected)
+        break
+    }
     setValue(newValue)
   }
   const a11yProps = idx => {
@@ -54,7 +70,7 @@ const ControlPrompt = props => {
               scrollButtons="auto"
               aria-label="scrollable auto tabs example"
             >
-              <Tab label={survey_selectedSurvey ? survey_selectedSurvey.title : ""} {...a11yProps(0)} />
+              <Tab label={survey_selected ? survey_selected.title : ""} {...a11yProps(0)} />
               <Tab label="Surveyors" {...a11yProps(1)} />
               <Tab label="Elements" {...a11yProps(1)} />
               <Tab label="Assignments" {...a11yProps(1)} />
@@ -108,5 +124,6 @@ export default connect(
   "selectSurvey_selectedSurvey",
   "doSurvey_downloadReport",
   "selectUser_userIsAdminOrOwnerOfSelectedSurvey",
+  "doSurvey_sendRequestGetElements",
   ControlPrompt
 )

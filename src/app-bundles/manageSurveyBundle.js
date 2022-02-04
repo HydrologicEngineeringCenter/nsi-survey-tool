@@ -61,7 +61,6 @@ export default {
   doManageSurvey_controlPrompt: survey => ({ dispatch, store }) => {
     if (survey != null) {
       store.doSurvey_updateSelectedSurvey(survey)
-      store.doSendRequestGetSurveyMembers(survey.id)
     }
   },
 
