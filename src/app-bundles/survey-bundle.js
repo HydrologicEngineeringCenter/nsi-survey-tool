@@ -7,7 +7,7 @@ const SURVEY_ACTION = {
   UPDATE_SURVEYS: "SURVEY_ACTION.UPDATE_SURVEYS",
   OPEN_MANAGE_SURVEY: "SURVEY_ACTION.OPEN_MANAGE_SURVEY",
   UPDATE_SELECTED_SURVEY: "SURVEY_ACTION.UPDATE_SELECTED_SURVEY",
-  ELEMENTS_RETRIEVED: "ELEMENTS_RETRIEVED",
+  UPDATE_FLAG_VALID_NAME: "SURVEY_ACTION.UPDATE_FLAG_VALID_NAME",
 }
 
 export default {
@@ -22,6 +22,7 @@ export default {
       // or on specific survey selection in manage-all-surveys
       selectedSurvey: null,
       flagUpdateSelected: false,
+      flagValidName: false,
       elements: [],
     }
     return (state = initialData, { type, payload }) => {
@@ -155,7 +156,38 @@ export default {
     })
   },
 
-  // Each element is an obj with fdId, isControl, seId, surveyId,
+  doSurvey_sendRequestValidateSurveyName: surveyName => ({ dispatch, store, handleErrors }) => {
+    if (surveyName && surveyName.length !== 0) {
+      const authAccessToken = store.selectAuthAccessToken()
+      let requestParams = REQUESTS.VALIDATE_SURVEY_NAME
+      requestParams.query = {
+        q: surveyName, // query
+      }
+      store.selectBackend()
+        .fetch(authAccessToken, requestParams)
+        .then(handleErrors)
+        .then(response => response.json())
+        .then(data => {
+          if (data != null) {
+            dispatch({
+              type: SURVEY_ACTION.UPDATE_FLAG_VALID_NAME,
+              payload: { flagValidName: data["result"] }
+            })
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    } else {
+      store.doUser_clearSelectedUser()
+      dispatch({
+        type: USER_ACTION.UPDATE_USERS_LIST,
+        payload: { usersList: [] }
+      })
+    }
+  },
+
+  // Each element is an obj with fdId, isControl, surveyOrder
   doSurvey_sendRequestGetElements: survey => ({ dispatch, store, handleErrors }) => {
     const surveyId = survey.id
     // validation - don't request an empty query
@@ -194,8 +226,8 @@ export default {
 
   // surveys is an Array of maps. Each map contains 4 fields: active, description, id, and title
   selectSurvey_surveys: state => state.survey.surveys,
-  selectSurvey_elements: state => state.survey.elements,
   selectSurvey_showManageSurvey: state => state.survey.showManagesurvey,
   selectSurvey_selectedSurvey: state => state.survey.selectedSurvey,
   selectSurvey_flagUpdateSelected: state => state.survey.flagUpdateSelected,
+  selectSurvey_flagValidSurveyName: state => state.survey.flagValidName,
 }
