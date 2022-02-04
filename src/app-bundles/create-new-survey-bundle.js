@@ -1,5 +1,3 @@
-import { createSelector } from "redux-bundler"
-import CSVMetaArrayUtils from "../lib/data/CSVMetaArrayUtils"
 import CREATE_SURVEY_STEP from "../stores/newSurveyStep"
 
 const CREATE_NEW_SURVEY_ACTION = {
@@ -41,21 +39,6 @@ export default {
       type: CREATE_NEW_SURVEY_ACTION.STORE_STEP,
       payload: {
         surveyStep: surveyStep,
-      }
-    })
-  },
-
-  doStoreCreateSurveyElements: surveyElements => ({ dispatch }) => {
-    dispatch({
-      type: CREATE_NEW_SURVEY_ACTION.STORE_ELEMENTS,
-      payload: {
-        surveyElements: surveyElements,
-      }
-    })
-    dispatch({
-      type: CREATE_NEW_SURVEY_ACTION.FLAG_CHANGE_PROPERTIES,
-      payload: {
-        flagChangeSurveyElementsProperties: true
       }
     })
   },
@@ -109,92 +92,6 @@ export default {
     })
   },
 
-  // process elements on load
-  reactChangeElementProperties: createSelector(
-    'selectCreateSurveyElements',
-    'selectFlagChangeProperties',
-    (createSurveyElements, flagChangeProperties) => {
-      const newNames = ['fdId', 'isControl']
-
-      // removed file from dropzone
-      if (flagChangeProperties && createSurveyElements.length == 0) {
-        return {
-          type: CREATE_NEW_SURVEY_ACTION.STORE_ELEMENTS,
-          payload: {
-            surveyElements: [],
-            flagChangeSurveyElementsProperties: false
-          }
-        }
-      }
-
-      if (flagChangeProperties) {
-        const dataPipeline = new CSVMetaArrayUtils(createSurveyElements)
-        dataPipeline
-          .changeProperty(newNames)
-          // convert cols from string to numeric and boolean
-          .mapRow(row => [Number(row[0]), row[1] === '1' ? true : false])
-        return {
-          type: CREATE_NEW_SURVEY_ACTION.STORE_ELEMENTS,
-          payload: {
-            surveyElements: dataPipeline.data(),
-            flagChangeSurveyElementsProperties: false
-          }
-        }
-      }
-
-    }
-  ),
-
-  doSendRequestInsertElements: (requestParams) => ({
-    dispatch,
-    store,
-    handleErrors
-  }) => {
-    // authAccessToken is always refreshing, it has to be updated from auth bundle
-    // before sending request everytime
-    const authAccessToken = store.selectAuthAccessToken()
-    requestParams.pathParam = "/" + store.selectSurvey_selectedSurvey().id
-
-    if (store.selectSurvey_selectedSurvey() === undefined) {
-      throw new Error('Unable to read createSurveyId when trying to sendElements')
-    }
-
-    // only send request if there is data
-    if (store.selectCreateSurveyElements() && store.selectCreateSurveyElements().values.length > 0) {
-      const dataPipeline = new CSVMetaArrayUtils(store.selectCreateSurveyElements())
-      dataPipeline
-        .addIndex(1)
-        .changePropertyByName('index', 'surveyOrder')
-        .addCol('surveyId', store.selectSurvey_selectedSurvey().id)
-
-      let body = dataPipeline.jsonArray()
-      requestParams.body = body
-
-      // send request, process response, update display step
-      store.selectBackend()
-        .fetch(authAccessToken, requestParams)
-        .then(handleErrors)
-        .then(_ => {
-          dispatch({
-            type: CREATE_NEW_SURVEY_ACTION.STORE_STEP,
-            payload: { 'surveyStep': CREATE_SURVEY_STEP.SURVEYORS }
-          })
-        })
-        .then(_ => {
-          store.doUser_shouldUpdateSurveyMembers()
-        })
-        .catch((err) => {
-          console.log(err)
-        });
-    }
-  },
-
-  selectFlagChangeProperties: state => state.createNewSurvey.flagChangeSurveyElementsProperties,
-
   selectCreateSurveyStep: state => state.createNewSurvey.surveyStep,
-
   selectCreateSurveyId: state => state.createNewSurvey.surveyId,
-
-  selectCreateSurveyElements: state => state.createNewSurvey.surveyElements,
-
-};
+}

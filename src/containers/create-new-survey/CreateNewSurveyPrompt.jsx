@@ -23,10 +23,11 @@ const NewSurveyPrompt = (props) => {
 
   const {
     createSurveyStep,
-    doStoreCreateSurveyStep,
     doSendRequestCreateSurvey,
-    doSendRequestInsertElements,
+    doElement_insertElements,
     doCreateNew_createSurveyStep,
+    doUser_shouldUpdateSurveyMembers,
+    doStoreCreateSurveyStep,
   } = props
 
   /*******************
@@ -37,16 +38,6 @@ const NewSurveyPrompt = (props) => {
   const activeSurveySwitchRef = useRef();
   const [elements, setElements] = useState() // survey elements for upload
   let [surveyId, setSurveyId] = useState() // store guid from backend response
-
-  /*******************
-   * Handling basic stepper
-   *******************/
-  const handleNext = () => {
-    // reset if already on last step
-    doStoreCreateSurveyStep(createSurveyStep === stepHeaders.length - 1 ? 0 : createSurveyStep + 1);
-  }
-
-  const handleBack = () => doStoreCreateSurveyStep(createSurveyStep - 1);
 
   /*******************
    * Handling backend interactions
@@ -78,25 +69,6 @@ const NewSurveyPrompt = (props) => {
     }
   }
 
-  /**
-   * Add survey elements
-   */
-  const handleLoadPoints = () => {
-
-    // empty required args can be populated in bundle
-    const requestParams = Object.assign(REQUEST_PARAMS.INSERT_SURVEY_ELEMENTS, {
-      body: "",
-      varArg: "",
-    })
-
-    // validate params
-    if (allValidProperties(requestParams)) {
-      doSendRequestInsertElements(requestParams)
-    } else {
-      throw new InvalidRequestError("Invalid request param to backend API");
-    }
-  }
-
   const handleCloseReset = () => {
     doCreateNew_createSurveyStep(CREATE_SURVEY_STEP.BASIC_INFO)
     props.onClose()
@@ -111,7 +83,9 @@ const NewSurveyPrompt = (props) => {
         handleBasicInfo()
         return
       case CREATE_SURVEY_STEP.POINTS:
-        handleLoadPoints()
+        doElement_insertElements()
+        doStoreCreateSurveyStep(CREATE_SURVEY_STEP.SURVEYORS)
+        doUser_shouldUpdateSurveyMembers()
         return
       case CREATE_SURVEY_STEP.SURVEYORS:
         handleCloseReset()
@@ -187,8 +161,9 @@ const NewSurveyPrompt = (props) => {
 
 export default connect(
   'selectCreateSurveyStep',
-  'doStoreCreateSurveyStep',
   'doSendRequestCreateSurvey',
-  'doSendRequestInsertElements',
+  'doElement_insertElements',
   'doCreateNew_createSurveyStep',
+  "doUser_shouldUpdateSurveyMembers",
+  "doStoreCreateSurveyStep",
   NewSurveyPrompt);

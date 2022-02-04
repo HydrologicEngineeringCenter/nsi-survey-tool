@@ -4,7 +4,7 @@ import NameInput from "./NameInput";
 import ActiveSurvey from "./ActiveSurvey";
 import SurveyorsList from "./../../components/SurveyorPrompt/SurveyorsList";
 import SelectButton from "./../../components/SelectButton/SelectButton";
-import Uploader from "./Uploader";
+import Uploader from "../../components/Uploader/Uploader";
 import classes from "../CreateNewSurveyPrompt.module.css";
 import { Fragment } from "react";
 import { connect } from 'redux-bundler-react';
@@ -47,7 +47,7 @@ const StepContents = (props) => {
         <Fragment>
           <p />
           <p />
-          <Uploader setElements={setElements} />
+          <Uploader />
           <p />
           <p />
           <p />
