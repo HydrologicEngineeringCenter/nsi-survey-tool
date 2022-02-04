@@ -235,6 +235,7 @@ export default {
       })
   },
 
+  // Update the list of survey members
   reactRefreshUserListOnAddedMember: createSelector(
     'selectSurvey_selectedSurvey',
     'selectUser_flagChangedUserList',
@@ -242,7 +243,7 @@ export default {
       if (user_flagChangedUserList && survey_selectedSurvey) {
         return {
           actionCreator: 'doSendRequestGetSurveyMembers',
-          args: [survey_selectedSurvey.id],
+          args: [survey_selectedSurvey],
         }
       }
     }

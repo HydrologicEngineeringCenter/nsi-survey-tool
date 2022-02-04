@@ -91,7 +91,7 @@ const ControlPrompt = props => {
             <p />
             <SelectButton onClick={_ =>
               doUser_sendRequestAddSurveyor(
-                survey_selectedSurvey.id,
+                survey_selected.id,
                 user_selectedUser.userId
               )}>Add Surveyors
             </SelectButton>
