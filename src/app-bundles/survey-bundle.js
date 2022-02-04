@@ -23,7 +23,6 @@ export default {
       selectedSurvey: null,
       flagUpdateSelected: false,
       flagValidName: false,
-      elements: [],
     }
     return (state = initialData, { type, payload }) => {
       switch (type) {
@@ -144,6 +143,7 @@ export default {
   },
 
   doSurvey_updateSelectedFromSurveys: _ => ({ dispatch }) => {
+    // if (store.selectSurvey_surveys == )
     let workingSurveys = store.selectSurvey_surveys()
     let selected = store.selectSurvey_selectedSurvey()
     selected = workingSurveys.filter(s => s.id == selected.id)[0]
@@ -187,14 +187,24 @@ export default {
     }
   },
 
+  // reactUpdateSelected update selectedSurvey on changes to any of its properties
   reactUpdateSelected: createSelector(
     "selectSurvey_flagUpdateSelected",
     "selectSurvey_selectedSurvey",
-    (flag, selected) => {
+    "selectSurvey_surveys",
+    (flag, selected, surveys) => {
       if (flag) {
-        return {
-          actionCreator: "doSurvey_updateSelectedFromSurveys",
-          args: [selected],
+        // test if current selected id exists in survey list
+        if (surveys.filter(s => s.id == selected.id).length > 0) { // in manage-all
+          return {
+            actionCreator: "doSurvey_updateSelectedFromSurveys",
+            args: [selected],
+          }
+        } else { // in create-new after inserting elements
+          return {
+            actionCreator: "doSurvey_updateSelectedSurvey",
+            args: [{ ...selected, active: true }],
+          }
         }
       }
     }
