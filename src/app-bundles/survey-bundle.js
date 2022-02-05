@@ -177,12 +177,6 @@ export default {
         .catch((err) => {
           console.log(err)
         })
-    } else {
-      store.doUser_clearSelectedUser()
-      dispatch({
-        type: USER_ACTION.UPDATE_USERS_LIST,
-        payload: { usersList: [] }
-      })
     }
   },
 
