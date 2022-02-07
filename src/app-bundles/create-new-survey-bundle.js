@@ -53,6 +53,10 @@ export default {
     handleErrors
   }) => {
 
+    // this whole validation is as spaghetti as it gets, consider refactoring to move all validation logics to one place
+    if (requestParams.body.title == "") {
+      store.doSurvey_updateFlagValidName(false)
+    }
     // only send request if the survey name is valid
     if (store.selectSurvey_flagValidSurveyName()) {
 

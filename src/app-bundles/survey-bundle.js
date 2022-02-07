@@ -43,6 +43,15 @@ export default {
     })
   },
 
+  doSurvey_updateFlagValidName: flag => ({ dispatch }) => {
+    dispatch({
+      type: SURVEY_ACTION.UPDATE_FLAG_VALID_NAME,
+      payload: {
+        flagValidName: flag
+      },
+    })
+  },
+
   // doSurvey_sendRequestGetSurveys requests list of all surveys for users from backend
   doSurvey_sendRequestGetSurveys: _ => ({ dispatch, store, handleErrors }) => {
 
