@@ -1,7 +1,6 @@
 import React from "react"
 import Card from "@material-ui/core/Card";
 import NameInput from "./NameInput";
-import ActiveSurvey from "./ActiveSurvey";
 import SurveyorsList from "./../../components/SurveyorPrompt/SurveyorsList";
 import SelectButton from "./../../components/SelectButton/SelectButton";
 import Uploader from "../../components/Uploader/Uploader";

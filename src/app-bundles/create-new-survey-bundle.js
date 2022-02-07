@@ -53,36 +53,42 @@ export default {
     handleErrors
   }) => {
 
-    // authAccessToken is always refreshing, have to update from auth bundle
-    // before sending request everytime
-    const authAccessToken = store.selectAuthAccessToken()
+    // only send request if the survey name is valid
+    if (store.selectSurvey_flagValidSurveyName()) {
 
-    // send request, process response, update display step
-    store.selectBackend()
-      .fetch(authAccessToken, requestParams)
-      .then(handleErrors)
-      .then(response => response.json())
-      .then(data => {
-        // update based on for valid response
-        if (data != null) {
-          const createdSurvey = {
-            id: data.surveyId,
-            title: requestParams.title,
-            description: requestParams.description,
-            active: true,
+      // authAccessToken is always refreshing, have to update from auth bundle
+      // before sending request everytime
+      const authAccessToken = store.selectAuthAccessToken()
+      // send request, process response, update display step
+      store.selectBackend()
+        .fetch(authAccessToken, requestParams)
+        .then(handleErrors)
+        .then(response => response.json())
+        .then(data => {
+          // update based on for valid response
+          if (data != null) {
+            const createdSurvey = {
+              id: data.surveyId,
+              title: requestParams.title,
+              description: requestParams.description,
+              active: true,
+            }
+            store.doSurvey_updateSelectedSurvey(createdSurvey)
           }
-          store.doSurvey_updateSelectedSurvey(createdSurvey)
-        }
-      })
-      .then(_ => {
-        dispatch({
-          type: CREATE_NEW_SURVEY_ACTION.STORE_STEP,
-          payload: { 'surveyStep': CREATE_SURVEY_STEP.POINTS }
         })
-      })
-      .catch((err) => {
-        console.log(err)
-      });
+        .then(_ => {
+          dispatch({
+            type: CREATE_NEW_SURVEY_ACTION.STORE_STEP,
+            payload: {
+              surveyStep: CREATE_SURVEY_STEP.POINTS,
+              flagValidSurveyName: true, // reset survey name validate flag to true
+            }
+          })
+        })
+        .catch((err) => {
+          console.log(err)
+        });
+    }
   },
 
   doCreateNew_createSurveyStep: step => ({ dispatch }) => {

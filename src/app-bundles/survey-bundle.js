@@ -22,7 +22,7 @@ export default {
       // or on specific survey selection in manage-all-surveys
       selectedSurvey: null,
       flagUpdateSelected: false,
-      flagValidName: false,
+      flagValidName: true,
     }
     return (state = initialData, { type, payload }) => {
       switch (type) {

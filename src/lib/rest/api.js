@@ -34,7 +34,7 @@ class SurveyApi {
         url += `${requestParams.pathParam2}`
       }
     } else {
-      url = `${apiHost}${requestParams.endpoint}`
+      url = `${apiHost}${requestParams.endpoint}${requestParams.suffix ? requestParams.suffix : ""}`
     }
 
     // add in query string
