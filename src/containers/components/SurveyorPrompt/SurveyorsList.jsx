@@ -22,6 +22,16 @@ const SurveyorsList = (props) => {
     user_userIsAdminOrOwnerOfSelectedSurvey: showDelete, // show delete button next to surveyor
   } = props
 
+  const handleChangeOwner = user => {
+    // filter out removing ownership from last user
+    // removing the flip logic here keeps the isOwner switch available for view rather than completely removing it which could be a source of confusion
+    const noOwners = (surveyMembers?(surveyMembers.filter(m => m.isOwner)).length:0)
+    if (noOwners == 1 && user.isOwner) {
+      return
+    }
+    doUser_flipOwner(user)
+  }
+
   return (
     <TableContainer component={Paper} className={classes["surveyors-list"]}>
       <Table className={classes.table} arial-label="simple-table">
@@ -46,7 +56,7 @@ const SurveyorsList = (props) => {
               <TableCell padding="checkbox" >
                 <Switch
                   checked={row.isOwner}
-                  onChange={_ => doUser_flipOwner(row)}
+                  onChange={_ => handleChangeOwner(row)}
                   name={`switch-${row.userId}`}
                 />
               </TableCell>
