@@ -95,7 +95,10 @@ const ControlPrompt = props => {
                 <Tab label="Surveyors" {...a11yProps(1)} />
                 <Tab label="View Elements" {...a11yProps(1)} />
                 <Tab label="Insert Elements" {...a11yProps(1)} />
+                {/*
+                uncomment this after implementing manual assignment
                 <Tab label="Assignments" {...a11yProps(1)} />
+          */}
               </Tabs>
             </AppBar>
             <TabPanel value={value} index={STEP_INDEX.GENERAL}>
