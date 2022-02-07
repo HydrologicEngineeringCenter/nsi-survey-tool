@@ -38,6 +38,7 @@ export default {
       type: SURVEY_ACTION.UPDATE_SELECTED_SURVEY,
       payload: {
         selectedSurvey: survey,
+        flagUpdateSelected: false,
       }
     })
   },
