@@ -25,7 +25,6 @@ const StepContents = (props) => {
     survey_selectedSurvey,
     nameInputRef,
     descriptionInputRef,
-    setElements
   } = props;
 
   switch (step) {
