@@ -74,9 +74,9 @@ export default {
         .fetch(authAccessToken, requestParams)
         .then(handleErrors)
         .then(postFetchCallback)
-        .then(
+        .then(_ => {
           store.doSurvey_sendRequestUpdateSurvey({ ...survey_selected, active: true })
-        )
+        })
         .catch((err) => {
           console.log(err)
         });

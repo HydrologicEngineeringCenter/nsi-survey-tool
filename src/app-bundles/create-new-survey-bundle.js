@@ -64,20 +64,21 @@ export default {
       // before sending request everytime
       const authAccessToken = store.selectAuthAccessToken()
       // send request, process response, update display step
+      store.doSurvey_updateSelectedSurvey(requestParams.body)
       store.selectBackend()
         .fetch(authAccessToken, requestParams)
         .then(handleErrors)
         .then(response => response.json())
         .then(data => {
-          // update based on for valid response
-          if (data != null) {
-            const createdSurvey = {
+          if (data != null) { // update based on for valid response
+            const survey_selected = store.selectSurvey_selectedSurvey()
+            store.doSurvey_updateSelectedSurvey({
+              ...survey_selected,
               id: data.surveyId,
-              title: requestParams.title,
-              description: requestParams.description,
               active: true,
-            }
-            store.doSurvey_updateSelectedSurvey(createdSurvey)
+            })
+          } else { // update based on invalid response
+            store.doSurvey_updateSelectedSurvey()
           }
         })
         .then(_ => {
