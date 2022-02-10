@@ -42,9 +42,9 @@ export default {
     })
   },
 
-  // doElement_insertElements sends a list of elements to the api and update
+  // doElement_sendRequestInsertElements sends a list of elements to the api and update
   // the survey status to active, postFetchCallback enables async follow-up on request ending
-  doElement_insertElements: postFetchCallback => ({ store, handleErrors }) => {
+  doElement_sendRequestInsertElements: postFetchCallback => ({ store, handleErrors }) => {
 
     const requestParams = REQUESTS.INSERT_SURVEY_ELEMENTS
     // authAccessToken is always refreshing, it has to be updated from auth bundle

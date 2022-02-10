@@ -24,7 +24,7 @@ const NewSurveyPrompt = (props) => {
   const {
     createSurveyStep,
     doSendRequestCreateSurvey,
-    doElement_insertElements,
+    doElement_sendRequestInsertElements,
     doCreateNew_createSurveyStep,
     doUser_shouldUpdateSurveyMembers,
     doStoreCreateSurveyStep,
@@ -81,7 +81,7 @@ const NewSurveyPrompt = (props) => {
         handleBasicInfo()
         return
       case CREATE_SURVEY_STEP.POINTS:
-        doElement_insertElements(_ => {
+        doElement_sendRequestInsertElements(_ => {
           doStoreCreateSurveyStep(CREATE_SURVEY_STEP.SURVEYORS)
         })
         doUser_shouldUpdateSurveyMembers()
@@ -160,7 +160,7 @@ const NewSurveyPrompt = (props) => {
 export default connect(
   'selectCreateSurveyStep',
   'doSendRequestCreateSurvey',
-  'doElement_insertElements',
+  'doElement_sendRequestInsertElements',
   'doCreateNew_createSurveyStep',
   "doUser_shouldUpdateSurveyMembers",
   "doStoreCreateSurveyStep",

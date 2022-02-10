@@ -30,7 +30,7 @@ const ControlPrompt = props => {
     user_userIsAdminOrOwnerOfSelectedSurvey: higherControl,
     doElement_sendRequestGetElements,
     doSendRequestGetSurveyMembers,
-    doElement_insertElements,
+    doElement_sendRequestInsertElements,
   } = props
 
   const [value, setValue] = useState(0)
@@ -65,7 +65,7 @@ const ControlPrompt = props => {
 
   // Upload button on Insert Elements tab
   const handleInsertElement = _ => {
-    doElement_insertElements(_ => {
+    doElement_sendRequestInsertElements(_ => {
       doElement_sendRequestGetElements(survey_selected)
       setValue(STEP_INDEX.ELEMENT_VIEW)
     })
@@ -159,6 +159,6 @@ export default connect(
   "doSurvey_downloadReport",
   "selectUser_userIsAdminOrOwnerOfSelectedSurvey",
   "doElement_sendRequestGetElements",
-  "doElement_insertElements",
+  "doElement_sendRequestInsertElements",
   ControlPrompt
 )
