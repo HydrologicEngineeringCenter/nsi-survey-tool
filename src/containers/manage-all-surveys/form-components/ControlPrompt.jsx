@@ -133,7 +133,7 @@ const ControlPrompt = props => {
               <Uploader />
               <p />
               <p />
-              <SelectButton onClick={handleInsertElement}>Download</SelectButton>
+              <SelectButton onClick={handleInsertElement}>Upload</SelectButton>
             </TabPanel>
 
           </Box>
