@@ -249,6 +249,7 @@ export default {
     }
   ),
 
+  // each user is an object with userId, and userName
   selectUsersList: state => state.user.usersList,
 
   selectUserSurveyMembers: state => state.user.surveyMembers,

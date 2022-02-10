@@ -13,6 +13,7 @@ const AsyncSurveyorAutocomplete = props => {
     doSendRequestSearchUser,
     doUser_updateSelectedUser,
     user_selectedUser,
+    auth_userId
   } = props
 
   //  TODO put a throttle somewhere so we don't ddos the backend
@@ -21,7 +22,7 @@ const AsyncSurveyorAutocomplete = props => {
       <AutoComplete
         id="user-surveyor-autocomplete"
         size="small"
-        options={usersList}
+        options={usersList.filter(u => u.userId != auth_userId)}
         ref={autocompleteRef}
         getOptionLabel={option => option.userName}
 
@@ -65,5 +66,6 @@ export default connect(
   'doSendRequestSearchUser',
   'doUser_updateSelectedUser',
   'selectUser_selectedUser',
+  'selectAuth_userId',
   AsyncSurveyorAutocomplete,
 )
