@@ -1,13 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'redux-bundler-react'
 import TextField from '@material-ui/core/TextField';
 
 const NameInput = props => {
-  const { survey_flagValidSurveyName, doSurvey_sendRequestValidateSurveyName, inputRef } = props
+  const {
+    survey_flagValidSurveyName,
+    doSurvey_sendRequestValidateSurveyName,
+    doSurvey_updateFlagValidName,
+    inputRef
+  } = props
 
   const handleChange = e => {
     doSurvey_sendRequestValidateSurveyName(e.target.value)
   }
+
+  useEffect(_ => {
+    doSurvey_updateFlagValidName(true)
+  }, [])
 
   return (
     <TextField
@@ -26,5 +35,6 @@ const NameInput = props => {
 export default connect(
   "selectSurvey_flagValidSurveyName",
   "doSurvey_sendRequestValidateSurveyName",
+  "doSurvey_updateFlagValidName",
   NameInput
 )
