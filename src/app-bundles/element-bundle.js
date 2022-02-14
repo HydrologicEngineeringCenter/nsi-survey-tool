@@ -5,8 +5,9 @@ import REQUESTS from "../stores/requestParams"
 
 const ELEMENT_ACTION = {
   STORE_ELEMENTS: "ELEMENT_ACTION.STORE_ELEMENTS",
+  STORE_PROCESSED_ELEMENTS: "ELEMENT_ACTION.STORE_PROCESSED_ELEMENTS",
   ELEMENTS_RETRIEVED: "ELEMENT_ACTION.RETRIEVED_ELEMENTS",
-  FLAG_CHANGE_PROPERTIES: "ELEMENT_ACTION.FLAG_CHANGE_PROPERTIES",
+  FLAG_PROCESS_RAW_DATA: "ELEMENT_ACTION.FLAG_PROCESS_RAW_DATA",
 }
 
 export default {
@@ -15,8 +16,10 @@ export default {
   getReducer: () => {
     const initialData = {
       elements: [],
-      flagChangeSurveyElementsProperties: false,
       backend: null,
+      flagShouldProcessRawData: false,
+      // processedElements should be a json array
+      processedElements: null,
     }
     return (state = initialData, { type, payload }) => {
       switch (type) {
@@ -35,9 +38,9 @@ export default {
       }
     })
     dispatch({
-      type: ELEMENT_ACTION.FLAG_CHANGE_PROPERTIES,
+      type: ELEMENT_ACTION.FLAG_PROCESS_RAW_DATA,
       payload: {
-        flagChangeSurveyElementsProperties: true
+        flagShouldProcessRawData: true
       }
     })
   },
@@ -57,16 +60,10 @@ export default {
       throw new Error('Unable to read createSurveyId when trying to sendElements')
     }
 
-    const elements = store.selectElement_elements()
+    let elements = store.selectElement_processedElements()
     // only send request if there is data
-    if (elements && elements.values.length > 0) {
-      const dataPipeline = new CSVMetaArrayUtils(elements)
-      dataPipeline
-        .addIndex(1)
-        .changePropertyByName('index', 'surveyOrder')
-        .addCol('surveyId', store.selectSurvey_selectedSurvey().id)
-
-      let body = dataPipeline.jsonArray()
+    if (elements) {
+      let body = elements
       requestParams.body = body
 
       // send request, process response, update display step
@@ -109,40 +106,83 @@ export default {
 
   // process elements on load
   reactChangeElementProperties: createSelector(
+    'selectFlagShouldProcessRawData',
     'selectElement_elements',
-    'selectFlagChangeProperties',
-    (elements, flagChangeProperties) => {
+    (flag, rawElements) => {
       const newNames = ['fdId', 'isControl']
 
       // removed file from dropzone
-      if (flagChangeProperties && elements.length == 0) {
+      if (flag && rawElements && rawElements.values.length == 0) {
         return {
           type: ELEMENT_ACTION.STORE_ELEMENTS,
           payload: {
             elements: [],
-            flagChangeSurveyElementsProperties: false
+            processedElements: null,
+            flagShouldProcessRawData: false
           }
         }
       }
 
-      if (flagChangeProperties) {
-        const dataPipeline = new CSVMetaArrayUtils(elements)
+      if (flag) {
+        const dataPipeline = new CSVMetaArrayUtils(rawElements)
         dataPipeline
           .changeProperty(newNames)
           // convert cols from string to numeric and boolean
           .mapRow(row => [Number(row[0]), row[1] === '1' ? true : false])
+          .addIndex(1)
+          .changePropertyByName('index', 'surveyOrder')
+          .addCol('surveyId', store.selectSurvey_selectedSurvey().id)
         return {
-          type: ELEMENT_ACTION.STORE_ELEMENTS,
+          type: ELEMENT_ACTION.STORE_PROCESSED_ELEMENTS,
           payload: {
-            elements: dataPipeline.data(),
-            flagChangeSurveyElementsProperties: false
+            processedElements: dataPipeline.jsonArray(),
+            flagShouldProcessRawData: false
           }
         }
       }
     }
   ),
 
+  doElement_storeProcessedElements: elements => ({ dispatch }) => {
+    dispatch({
+      type: ELEMENT_ACTION.STORE_PROCESSED_ELEMENTS,
+      payload: {
+        processedElements: elements,
+        flagShouldProcessRawData: false,
+      }
+    })
+  },
+
+  doElement_shouldProcessRawData: _ => ({ dispatch }) => {
+    dispatch({
+      type: ELEMENT_ACTION.FLAG_PROCESS_RAW_DATA,
+      payload: {
+        flagShouldProcessRawData: true,
+      },
+    })
+  },
+
+  // reactProcessRawData: createSelector(
+  //   "selectFlagShouldProcessRawData",
+  //   "selectElement_elements",
+  //   (flag, elements) => {
+  //     if (flag && elements) {
+  //       // only process if there is data
+  //       const dataPipeline = new CSVMetaArrayUtils(elements)
+  //       dataPipeline
+  //         .addIndex(1)
+  //         .changePropertyByName('index', 'surveyOrder')
+  //         .addCol('surveyId', store.selectSurvey_selectedSurvey().id)
+  //       return {
+  //         actionCreator: "doElement_storeProcessedElements",
+  //         args: [dataPipeline.jsonArray()],
+  //       }
+  //     }
+  //   }
+  // ),
 
   selectElement_elements: state => state.element.elements,
+  selectElement_processedElements: state => state.element.processedElements,
   selectFlagChangeProperties: state => state.createNewSurvey.flagChangeSurveyElementsProperties,
+  selectFlagShouldProcessRawData: state => state.element.flagShouldProcessRawData,
 }
