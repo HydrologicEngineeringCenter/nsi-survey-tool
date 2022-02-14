@@ -271,11 +271,13 @@ export default {
       if (roles ? roles.includes("ADMIN") : null) {
         return true
       }
-      const owner = members ? members.filter(m => m.isOwner == true)[0] : null
-      if (userId == (owner ? owner.userId : null)) {
-        return true
-      }
+      const owners = members ? members.filter(m => m.isOwner == true) : []
+      owners.forEach(o => {
+        if (userId == o.userId) {
+          return true
+        }
+      })
       return false
     }
-  )
+  ),
 }
