@@ -272,11 +272,13 @@ export default {
         return true
       }
       const owners = members ? members.filter(m => m.isOwner == true) : []
-      owners.forEach(o => {
-        if (userId == o.userId) {
+      var o
+      for (var idx = 0; idx < owners.length; idx++) {
+        o = owners[idx]
+        if (('' + userId) == ('' + o.userId)) {
           return true
         }
-      })
+      }
       return false
     }
   ),
