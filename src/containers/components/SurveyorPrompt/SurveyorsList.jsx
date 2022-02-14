@@ -28,16 +28,16 @@ const SurveyorsList = (props) => {
 
   const handleChangeOwner = user => {
 
-    // turning over control to confirm prompt if removing ownership from self
-    if (user.isOwner && auth_userId == user.userId) {
-      setShowConfirm(true)
-      return
-    }
-
     // filter out removing ownership from last user
     // removing the flip logic here keeps the isOwner switch available for view rather than completely removing it which could be a source of confusion
     const noOwners = (surveyMembers ? (surveyMembers.filter(m => m.isOwner)).length : 0)
     if (noOwners == 1 && user.isOwner) {
+      return
+    }
+
+    // turning over control to confirm prompt if removing ownership from self
+    if (user.isOwner && auth_userId == user.userId) {
+      setShowConfirm(true)
       return
     }
 
@@ -90,7 +90,7 @@ const SurveyorsList = (props) => {
 
               {
                 showConfirm &&
-                <RemoveSelfConfirmDialog user={row} onClose={_ => setShowConfirm(false)}/>
+                <RemoveSelfConfirmDialog user={row} onClose={_ => setShowConfirm(false)} />
               }
             </TableRow>
           ))}
