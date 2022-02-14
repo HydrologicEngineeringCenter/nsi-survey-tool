@@ -162,25 +162,6 @@ export default {
     })
   },
 
-  // reactProcessRawData: createSelector(
-  //   "selectFlagShouldProcessRawData",
-  //   "selectElement_elements",
-  //   (flag, elements) => {
-  //     if (flag && elements) {
-  //       // only process if there is data
-  //       const dataPipeline = new CSVMetaArrayUtils(elements)
-  //       dataPipeline
-  //         .addIndex(1)
-  //         .changePropertyByName('index', 'surveyOrder')
-  //         .addCol('surveyId', store.selectSurvey_selectedSurvey().id)
-  //       return {
-  //         actionCreator: "doElement_storeProcessedElements",
-  //         args: [dataPipeline.jsonArray()],
-  //       }
-  //     }
-  //   }
-  // ),
-
   selectElement_elements: state => state.element.elements,
   selectElement_processedElements: state => state.element.processedElements,
   selectFlagChangeProperties: state => state.createNewSurvey.flagChangeSurveyElementsProperties,
