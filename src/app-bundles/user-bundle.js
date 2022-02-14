@@ -120,6 +120,13 @@ export default {
         })
       })
       .catch((err) => {
+        dispatch({
+          type: USER_ACTION.UPDATE_SURVEY_MEMBERS,
+          payload: {
+            surveyMembers: [],
+            flagChangedUserList: false,
+          }
+        })
         console.log(err)
       });
   },
@@ -251,11 +258,8 @@ export default {
 
   // each user is an object with userId, and userName
   selectUsersList: state => state.user.usersList,
-
   selectUserSurveyMembers: state => state.user.surveyMembers,
-
   selectUser_selectedUser: state => state.user.selectedUser,
-
   selectUser_flagChangedUserList: state => state.user.flagChangedUserList,
 
   //check if user should have higher management priviledges

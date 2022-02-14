@@ -20,6 +20,7 @@ const AllSurveyList = (props) => {
   const {
     survey_surveys,
     doManageSurvey_controlPrompt,
+    doSendRequestGetSurveyMembers,
   } = props
 
   const [showControl, setShowControl] = useState({})
@@ -29,6 +30,8 @@ const AllSurveyList = (props) => {
     survey_surveys.forEach(s => localControl[s.id] = false)
     localControl[survey.id] = !showControl[survey.id]
     setShowControl(localControl)
+    // get list of survey members to determine if user should have management control
+    doSendRequestGetSurveyMembers(survey)
     doManageSurvey_controlPrompt(survey)
   }
 
@@ -74,7 +77,7 @@ const AllSurveyList = (props) => {
               <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={4}>
                   <Collapse in={showControl[row.id]} timeout="auto">
-                    <ControlPrompt initActive={row.active} surveyId={row.id}/>
+                    <ControlPrompt initActive={row.active} surveyId={row.id} />
                   </Collapse>
                 </TableCell>
               </TableRow>
@@ -93,5 +96,6 @@ export default connect(
   "doSurvey_loadSurveyTray",
   "doSurvey_sendRequestUpdateSurvey",
   "doManageSurvey_controlPrompt",
+  "doSendRequestGetSurveyMembers",
   AllSurveyList
 )
