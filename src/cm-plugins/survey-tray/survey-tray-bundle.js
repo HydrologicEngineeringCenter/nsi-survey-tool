@@ -187,7 +187,7 @@ const stBundle = function(config) {
         const token = storeOuter.selectAuthAccessToken();
         let survey = store.selectSurveyData()
         if (token) {
-          fetch(`${apiHost}/survey/assignment`, {
+          fetch(`${apiHost}/survey/${storeOuter.selectSurvey_selectedSurvey().id}/assignment`, {
             method: 'post',
             headers: {
               'Accept': 'application/json',
