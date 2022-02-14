@@ -1,5 +1,5 @@
 // https://material-ui.com/components/tables/
-import React from "react"
+import React, { Fragment, useState } from "react"
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -10,6 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button'
 import Switch from "@material-ui/core/Switch";
 import { connect } from 'redux-bundler-react';
+import RemoveSelfConfirmDialog from '../RemoveSelfConfirmDialog/RemoveSelfConfirmDialog'
 import classes from "./SurveyorsList.module.css";
 
 const SurveyorsList = (props) => {
@@ -20,15 +21,26 @@ const SurveyorsList = (props) => {
     doUser_sendRequestRemoveUser,
     doUser_flipOwner,
     user_userIsAdminOrOwnerOfSelectedSurvey: showDelete, // show delete button next to surveyor
+    auth_userId,
   } = props
 
+  const [showConfirm, setShowConfirm] = useState(false)
+
   const handleChangeOwner = user => {
+
+    // turning over control to confirm prompt if removing ownership from self
+    if (user.isOwner && auth_userId == user.userId) {
+      setShowConfirm(true)
+      return
+    }
+
     // filter out removing ownership from last user
     // removing the flip logic here keeps the isOwner switch available for view rather than completely removing it which could be a source of confusion
-    const noOwners = (surveyMembers?(surveyMembers.filter(m => m.isOwner)).length:0)
+    const noOwners = (surveyMembers ? (surveyMembers.filter(m => m.isOwner)).length : 0)
     if (noOwners == 1 && user.isOwner) {
       return
     }
+
     doUser_flipOwner(user)
   }
 
@@ -61,17 +73,25 @@ const SurveyorsList = (props) => {
                 />
               </TableCell>
 
-              {showDelete && !row.isOwner &&
+              {
+                showDelete && !row.isOwner &&
+                <Fragment>
+                  <TableCell align="right" component="th" scope="row">
+                    <Button variant="outlined" color="secondary" onClick={_ => doUser_sendRequestRemoveUser(survey_selectedSurvey.id, row.userId)}>X</Button>
+                  </TableCell>
+                </Fragment>
+              }
+
+              {
+                showDelete && row.isOwner &&
                 <TableCell align="right" component="th" scope="row">
-                  <Button variant="outlined" color="secondary" onClick={_ => doUser_sendRequestRemoveUser(survey_selectedSurvey.id, row.userId)}>X</Button>
                 </TableCell>
               }
 
-              {showDelete && row.isOwner &&
-                <TableCell align="right" component="th" scope="row">
-                </TableCell>
+              {
+                showConfirm &&
+                <RemoveSelfConfirmDialog user={row} onClose={_ => setShowConfirm(false)}/>
               }
-
             </TableRow>
           ))}
         </TableBody>
@@ -86,5 +106,6 @@ export default connect(
   'doUser_sendRequestRemoveUser',
   'doUser_flipOwner',
   'selectUser_userIsAdminOrOwnerOfSelectedSurvey',
+  'selectAuth_userId',
   SurveyorsList
 )
