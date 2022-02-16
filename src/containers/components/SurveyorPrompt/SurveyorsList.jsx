@@ -25,23 +25,30 @@ const SurveyorsList = (props) => {
   } = props
 
   const [showConfirm, setShowConfirm] = useState(false)
+  const [lastOwner, setLastOwner] = useState(false)
 
   const handleChangeOwner = user => {
 
     // filter out removing ownership from last user
     // removing the flip logic here keeps the isOwner switch available for view rather than completely removing it which could be a source of confusion
     const noOwners = (surveyMembers ? (surveyMembers.filter(m => m.isOwner)).length : 0)
+    console.log(noOwners)
     if (noOwners == 1 && user.isOwner) {
-      return
+      setLastOwner(true)
     }
 
     // turning over control to confirm prompt if removing ownership from self
-    if (user.isOwner && auth_userId == user.userId) {
+    if (user.isOwner && auth_userId == Number(user.userId)) {
       setShowConfirm(true)
       return
     }
 
     doUser_flipOwner(user)
+  }
+
+  const handleConfirmOnClose = _ => {
+    setLastOwner(false)
+    setShowConfirm(false)
   }
 
   const filteredSelfArr = surveyMembers.filter(m => +m.userId == +auth_userId)
@@ -95,7 +102,7 @@ const SurveyorsList = (props) => {
           ))}
           {
             showConfirm &&
-            <RemoveSelfConfirmDialog user={userSelf} onClose={_ => setShowConfirm(false)} />
+            <RemoveSelfConfirmDialog lastOwner={lastOwner} user={userSelf} onClose={handleConfirmOnClose} />
           }
         </TableBody>
       </Table>

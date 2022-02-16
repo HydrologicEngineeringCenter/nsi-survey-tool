@@ -11,7 +11,7 @@ import {
 import { connect } from "redux-bundler-react"
 
 const RemoveSelfConfirmDiaglog = props => {
-  const { doUser_flipOwner, user, onClose } = props
+  const { doUser_flipOwner, lastOwner, user, onClose } = props
 
   const handleConfirm = user => {
     doUser_flipOwner(user)
@@ -21,19 +21,29 @@ const RemoveSelfConfirmDiaglog = props => {
   return (
     <Fragment>
       <Dialog open={true} maxWidth="sm" onBackdropClick={onClose} fullWidth>
-        <DialogTitle>Confirm removing ownership from yourself?</DialogTitle>
+        <DialogTitle>{
+          !lastOwner ? "Confirm removing ownership from yourself?" : "Invalid action!"
+        }</DialogTitle>
         <Box position="absolute" top={0} right={0}>
         </Box>
         <DialogContent>
-          <Typography>You will not be able to manage this survey without ownership.</Typography>
+          <Typography>{
+            !lastOwner ? "You will not be able to manage this survey without ownership." :
+              "You are the last owner, please assign an additional owner before removing your ownership status."
+          }</Typography>
         </DialogContent>
         <DialogActions>
           <Button color="primary" variant="contained" onClick={onClose}>
-            Cancel
+            {
+              !lastOwner ? "Cancel" : "Close"
+            }
           </Button>
-          <Button color="secondary" variant="contained" onClick={_ => handleConfirm(user)}>
-            Confirm
-          </Button>
+          {
+            !lastOwner &&
+            <Button color="secondary" variant="contained" onClick={_ => handleConfirm(user)}>
+              Confirm
+            </Button>
+          }
         </DialogActions>
       </Dialog>
     </Fragment>
