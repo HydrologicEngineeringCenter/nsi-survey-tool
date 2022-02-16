@@ -30,6 +30,8 @@ export default {
     }
   },
 
+  // doElement_storeElements stores raw uploaded data to redux and trigger
+  // a data processing pipeline
   doElement_storeElements: elements => ({ dispatch }) => {
     dispatch({
       type: ELEMENT_ACTION.STORE_ELEMENTS,
@@ -70,7 +72,11 @@ export default {
       store.selectBackend()
         .fetch(authAccessToken, requestParams)
         .then(handleErrors)
-        .then(postFetchCallback)
+        .then(_ => {
+          if (postFetchCallback) {
+            postFetchCallback()
+          }
+        })
         .then(_ => {
           store.doSurvey_sendRequestUpdateSurvey({ ...survey_selected, active: true })
         })
