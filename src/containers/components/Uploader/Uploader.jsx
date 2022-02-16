@@ -1,28 +1,22 @@
 import React from 'react'
 import classes from "./Uploader.module.css"
-import { useCallback } from "react"
 import CSVMetaArrayReader from "../../../lib/data/CSVMetaArrayReader"
 import { connect } from "redux-bundler-react"
 import { DropzoneArea } from "material-ui-dropzone"
 
-// https://www.digitalocean.com/community/tutorials/react-react-dropzone
 const Uploader = (props) => {
 
-  const { doElement_storeElements, doElement_shouldProcessRawData } = props
+  const { doElement_storeElements } = props
 
-  const onDrop = useCallback(acceptedFiles => {
-    acceptedFiles.forEach((file) => {
-      // read-in stream is going to be in a different priority task queue,
-      // tasks on the main thread won't be able to access data,
-      // processing logic have to be in redux
-      const surveyList = new CSVMetaArrayReader(file)
-      // surveyList.readFile(doElement_storeElements)
+  const onDrop = files => {
+    // Uploader is limiting loaded files to 1 so index 0 is always valid
+    if (files.length > 0) {
+      const surveyList = new CSVMetaArrayReader(files[0])
       surveyList.readFile(data => {
         doElement_storeElements(data)
-        doElement_shouldProcessRawData()
       })
-    })
-  }, []);
+    }
+  }
 
   const onDelete = _ => {
     doElement_storeElements([])

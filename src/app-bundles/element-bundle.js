@@ -1,6 +1,5 @@
 import { createSelector } from "redux-bundler"
 import CSVMetaArrayUtils from "../lib/data/CSVMetaArrayUtils"
-import CREATE_SURVEY_STEP from "../stores/newSurveyStep"
 import REQUESTS from "../stores/requestParams"
 
 const ELEMENT_ACTION = {
@@ -8,6 +7,7 @@ const ELEMENT_ACTION = {
   STORE_PROCESSED_ELEMENTS: "ELEMENT_ACTION.STORE_PROCESSED_ELEMENTS",
   ELEMENTS_RETRIEVED: "ELEMENT_ACTION.RETRIEVED_ELEMENTS",
   FLAG_PROCESS_RAW_DATA: "ELEMENT_ACTION.FLAG_PROCESS_RAW_DATA",
+  REMOVED_ELEMENTS: "ELEMENT_ACTION.REMOVED_ELEMENTS",
 }
 
 export default {
@@ -86,7 +86,7 @@ export default {
     }
   },
 
-  // Each element is an obj with fdId, isControl, surveyOrder
+  // Each element is an obj with fdId, isControl, surveyOrder, and surveyId
   doElement_sendRequestGetElements: survey => ({ dispatch, store, handleErrors }) => {
     const surveyId = survey.id
     // validation - don't request an empty query
@@ -107,6 +107,11 @@ export default {
       })
       .catch((err) => {
         console.log(err)
+        dispatch({
+          type: ELEMENT_ACTION.ELEMENTS_RETRIEVED,
+          payload: { elements: [] }
+        })
+
       })
   },
 
@@ -120,7 +125,7 @@ export default {
       // removed file from dropzone
       if (flag && rawElements && rawElements.values.length == 0) {
         return {
-          type: ELEMENT_ACTION.STORE_ELEMENTS,
+          type: ELEMENT_ACTION.REMOVED_ELEMENTS,
           payload: {
             elements: [],
             processedElements: null,
@@ -130,17 +135,20 @@ export default {
       }
 
       if (flag) {
-        const dataPipeline = new CSVMetaArrayUtils(rawElements)
+        let copiedElements = { ...rawElements }
+        let dataPipeline = new CSVMetaArrayUtils(copiedElements)
+
         dataPipeline
           .changeProperty(newNames)
-          // convert cols from string to numeric and boolean
           .mapRow(row => [Number(row[0]), row[1] === '1' ? true : false])
           .addIndex(1)
           .changePropertyByName('index', 'surveyOrder')
           .addCol('surveyId', store.selectSurvey_selectedSurvey().id)
+
         return {
           type: ELEMENT_ACTION.STORE_PROCESSED_ELEMENTS,
           payload: {
+            elements: [],
             processedElements: dataPipeline.jsonArray(),
             flagShouldProcessRawData: false
           }
