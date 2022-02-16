@@ -44,6 +44,9 @@ const SurveyorsList = (props) => {
     doUser_flipOwner(user)
   }
 
+  const filteredSelfArr = surveyMembers.filter(m => +m.userId == +auth_userId)
+  const userSelf = filteredSelfArr ? filteredSelfArr[0] : null
+
   return (
     <TableContainer component={Paper} className={classes["surveyors-list"]}>
       <Table className={classes.table} arial-label="simple-table">
@@ -88,12 +91,12 @@ const SurveyorsList = (props) => {
                 </TableCell>
               }
 
-              {
-                showConfirm &&
-                <RemoveSelfConfirmDialog user={row} onClose={_ => setShowConfirm(false)} />
-              }
             </TableRow>
           ))}
+          {
+            showConfirm &&
+            <RemoveSelfConfirmDialog user={userSelf} onClose={_ => setShowConfirm(false)} />
+          }
         </TableBody>
       </Table>
     </TableContainer >
