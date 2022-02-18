@@ -166,6 +166,14 @@ export default {
   },
 
   doSurvey_sendRequestValidateSurveyName: surveyName => ({ dispatch, store, handleErrors }) => {
+    if (surveyName && surveyName.length > 200) {
+      dispatch({
+        type: SURVEY_ACTION.UPDATE_FLAG_VALID_NAME,
+        payload: { flagValidName: false }
+      })
+      return
+    }
+
     if (surveyName && surveyName.length !== 0) {
       const authAccessToken = store.selectAuthAccessToken()
       let requestParams = REQUESTS.VALIDATE_SURVEY_NAME
@@ -186,6 +194,10 @@ export default {
         })
         .catch((err) => {
           console.log(err)
+          dispatch({
+            type: SURVEY_ACTION.UPDATE_FLAG_VALID_NAME,
+            payload: { flagValidName: false }
+          })
         })
     }
   },
