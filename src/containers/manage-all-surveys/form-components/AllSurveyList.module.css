@@ -1,0 +1,17 @@
+.active-survey-list {
+  align-items: flex-start;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  height: 60vh;
+  overflow: scroll;
+}
+
+.item-checkbox {
+  height: 48px;
+  left: 150px;
+}
+
+.checkbox {
+  color: rgba(0,0,0,.54);
+}

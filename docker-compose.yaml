@@ -1,0 +1,16 @@
+# use to setup dev environment
+version: "3.9"
+services:
+  nsi_ui:
+    container_name: NSIUI_DEV
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+    ports:
+      - 3000:3000
+    volumes:
+      - $PWD:/workspaces/nsi-survey-tool
+    env_file:
+      - .devcontainer/devcontainer.ui.env
+    working_dir: /workspaces/nsi-survey-tool
+    tty: true

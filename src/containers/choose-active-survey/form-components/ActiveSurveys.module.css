@@ -1,0 +1,28 @@
+.active-survey-list {
+  align-items: flex-start;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  height: 50vh;
+  /* width: 270px; */
+  overflow: scroll;
+}
+
+.item-checkbox {
+  height: 48px;
+  left: 150px;
+}
+
+.checkbox {
+  color: rgba(0,0,0,.54);
+}
+
+/* make sure <a> without href would look like a link */
+th a {
+    text-decoration: underline !important;
+    cursor: pointer;
+}
+
+th a:hover{
+    text-decoration: none !important;
+}

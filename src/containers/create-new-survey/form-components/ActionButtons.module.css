@@ -1,0 +1,36 @@
+.flex-box-horizontal {
+  display: flex;
+  flex-direction: row;
+}
+
+.button {
+  display: flex;
+  border-radius: 40px;
+  box-shadow: 0px 10px 10px #ff384926;
+  height: 25px;
+  justify-content: center;
+  min-width: 97px;
+  padding: 4px 11px;
+}
+
+.cancel-button {
+  background-color: #d9534f;
+  margin-right: 25px;
+}
+
+.submit-button {
+  background-color: #5CB85C;
+}
+
+.valign-text-middle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.text {
+  height: 1rem;
+  letter-spacing: 0;
+  text-align: center;
+}
+

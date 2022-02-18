@@ -3,6 +3,7 @@
   pointer-events: auto;
   transition: all .2s ease;
   width: 400px;
+  cursor: pointer;
 }
 
 .button:hover {

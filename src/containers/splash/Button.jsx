@@ -1,10 +1,11 @@
+import React from 'react';
 import classes from "./Button.module.css";
 
 const Button = (props) => {
   const { vector, text } = props;
 
   return (
-    <div className={`${classes["button"]} ${classes["smart-layers-pointer"]}`}>
+    <div className={`${classes["button"]} ${classes["smart-layers-pointer"]}`} onClick={props.onClick}>
       <div className={`${classes["overlap-group"]}`}>
         <div
           className={`${classes["background"]} ${classes["boder-1px-black"]}`}

@@ -5,16 +5,22 @@
   "homepage": "nsi-survey",
   "dependencies": {
     "@corpsmap/corpsmap": "^0.9.3",
-    "chrome": "^0.1.0",
-    "mdi-material-ui": "^6.22.1",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0",
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
+    "@material-ui/core": "^4.12.3",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.60",
+    "@mui/x-data-grid": "^5.5.0",
+    "material-ui-dropzone": "^3.5.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "react-scripts": "4.0.1",
     "redux-bundler": "^27.0.2",
-    "redux-bundler-react": "^1.2.0"
+    "redux-bundler-react": "^1.2.0",
+    "sass": "^1.38.2"
   },
   "scripts": {
-    "start": "HTTPS=true react-scripts start",
+    "start": "BROWSER='' HTTPS=true react-scripts start",
     "build": "react-scripts build"
   },
   "browserslist": {
