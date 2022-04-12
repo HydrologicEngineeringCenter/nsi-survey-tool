@@ -119,7 +119,8 @@ export default {
   reactChangeElementProperties: createSelector(
     'selectFlagShouldProcessRawData',
     'selectElement_elements',
-    (flag, rawElements) => {
+    'selectSurvey_selectedSurvey',
+    (flag, rawElements, survey_selectedSurvey) => {
       const newNames = ['fdId', 'isControl']
 
       // removed file from dropzone
@@ -143,7 +144,7 @@ export default {
           .mapRow(row => [Number(row[0]), row[1] === '1' ? true : false])
           .addIndex(1)
           .changePropertyByName('index', 'surveyOrder')
-          .addCol('surveyId', store.selectSurvey_selectedSurvey().id)
+          .addCol('surveyId', survey_selectedSurvey.id)
 
         return {
           type: ELEMENT_ACTION.STORE_PROCESSED_ELEMENTS,
