@@ -1,4 +1,3 @@
-
 class UnexpectedResponseError extends Error {
   constructor(response) {
     this.response = response
@@ -15,3 +14,4 @@ class InvalidRequestError extends Error {
   toString = () => "InvalidRequestError: " + this.message;
 }
 
+export { UnexpectedResponseError, InvalidRequestError }
