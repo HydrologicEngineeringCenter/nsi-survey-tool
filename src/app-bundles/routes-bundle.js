@@ -4,14 +4,15 @@ import MainPage from '../containers/main/MainPage';
 import FourOhFour from '../containers/404';
 import SurveySplashPage from '../containers/splash/SurveySplashPage';
 
-const routes = createRouteBundle({
-  '/nsi-survey': LoginPage,
-  '/nsi-survey/': LoginPage,
-  '/nsi-survey/main': MainPage,
-  '/nsi-survey/main/': MainPage,
-  '/nsi-survey/splash': SurveySplashPage,
-  '/nsi-survey/splash/': SurveySplashPage,
-  '*': FourOhFour
-})
+const base = process.env.REACT_APP_HOMEPAGE
+var routeObj = {}
+routeObj["/" + base] = LoginPage
+routeObj["/" + base + "/"] = LoginPage
+routeObj["/" + base + "/main"] = MainPage
+routeObj["/" + base + "/main/"] = MainPage
+routeObj["/" + base + "/splash"] = SurveySplashPage
+routeObj["/" + base + "/splash/"] = SurveySplashPage
+routeObj["*"] = FourOhFour
+const routes = createRouteBundle(routeObj)
 
-export {routes as default}
+export { routes as default }
