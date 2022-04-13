@@ -8,13 +8,14 @@ import cwbiLogo from "../../../resources/CWBI_Logo_45x45_compressed.png";
 function NavBar(props) {
 
   const { authFullname: userName } = props;
+  const base = process.env.REACT_APP_HOMEPAGE
 
   return (
     <nav className={`navbar navbar=expand-lg navbar-dark nv-bg`}>
 
       <div className={`${classes['float-left']} "nav float-left"`}>
-        <a href="/nsi-survey"><img src={mapper} alt="NSI LOGO" style={{ width: '45px' }} /> </a>
-        <a className='navbar-brand' href="/nsi-survey" style={{ paddingLeft: "15px", fontSize: '25px' }}><b>NSI Survey Tool</b></a>
+        <a href={"/" + base}><img src={mapper} alt="NSI LOGO" style={{ width: '45px' }} /> </a>
+        <a className='navbar-brand' href={"/" + base} style={{ paddingLeft: "15px", fontSize: '25px' }}><b>NSI Survey Tool</b></a>
       </div>
 
       <div className="nav pull-right">
