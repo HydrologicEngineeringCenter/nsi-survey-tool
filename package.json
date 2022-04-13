@@ -2,7 +2,7 @@
   "name": "web-map",
   "version": "0.1.0",
   "private": true,
-  "homepage": "nsi-survey",
+  "homepage": "nsi-survey2",
   "dependencies": {
     "@corpsmap/corpsmap": "^0.9.3",
     "@emotion/react": "^11.7.1",
