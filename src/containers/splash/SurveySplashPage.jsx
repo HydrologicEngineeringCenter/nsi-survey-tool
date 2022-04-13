@@ -24,7 +24,8 @@ function SurveySplashPage(props) {
   } = props;
 
   if (!authAccessToken) {
-    doUpdateUrl("/nsi-survey/");
+    let base = process.env.REACT_APP_HOMEPAGE
+    doUpdateUrl("/" + base);
   }
 
   const [flagShowCreateSurvey, setFlagShowCreateSurvey] = useState(false);

@@ -20,7 +20,8 @@ const ActiveSurveyList = (props) => {
 
   const handleRedirectToSurveyTray = survey => {
     doSurvey_updateSelectedSurvey(survey)
-    doUpdateUrl("/nsi-survey/main")
+    let base = process.env.REACT_APP_HOMEPAGE
+    doUpdateUrl("/" + base + "/main");
   }
 
   return (

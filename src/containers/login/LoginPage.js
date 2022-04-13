@@ -7,20 +7,21 @@ function LoginPage(props) {
 
   const { doUpdateUrl, authAccessToken } = props;
 
-  // maintain client-side routing for organization instead of relying on the authorization server 
+  // maintain client-side routing for organization instead of relying on the authorization server
   if (authAccessToken) {
-    doUpdateUrl("/nsi-survey/splash");
+    let base = process.env.REACT_APP_HOMEPAGE
+    doUpdateUrl("/" + base + "/splash");
   }
 
   return (
     <Fragment>
       {/* {!authLoading && */}
-        < div className="lg-bg">
-          <NavBar />
-          <div className="container-fluid">
-            <NsiDisclaimer />
-          </div>
+      < div className="lg-bg">
+        <NavBar />
+        <div className="container-fluid">
+          <NsiDisclaimer />
         </div>
+      </div>
       {/* } */}
     </Fragment >
   )
