@@ -7,7 +7,8 @@ function MainPage(props) {
   const { doUpdateUrl, authAccessToken: authNSIToken } = props;
 
   if (!authNSIToken) {
-    doUpdateUrl("/nsi-survey/");
+    let base = process.env.REACT_APP_HOMEPAGE
+    doUpdateUrl("/" + base);
   }
 
   return (

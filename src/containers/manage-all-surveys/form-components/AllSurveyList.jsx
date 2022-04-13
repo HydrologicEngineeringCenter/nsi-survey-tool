@@ -92,7 +92,6 @@ const AllSurveyList = (props) => {
 
 export default connect(
   "selectSurvey_surveys",
-  "doUpdateUrl",
   "doSurvey_loadSurveyTray",
   "doSurvey_sendRequestUpdateSurvey",
   "doManageSurvey_controlPrompt",
