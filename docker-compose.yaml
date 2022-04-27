@@ -9,7 +9,7 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - $PWD:/workspaces/nsi-survey-tool
+      - .:/workspaces/nsi-survey-tool
     env_file:
       - .devcontainer/devcontainer.ui.env
     working_dir: /workspaces/nsi-survey-tool
