@@ -138,9 +138,7 @@ const initMap = function (store) {
     const queue_len = queue.getCount()
     if (queue_len > 0) {
       queue.tilesLoading_ = 0
-      for (let i = 0; i < queue_len; i++) {
-        queue.loadMoreTiles(TILE_QUEUE_MAX_LOAD, TILE_QUEUE_MAX_LOAD)
-      }
+      queue.loadMoreTiles(TILE_QUEUE_MAX_LOAD, TILE_QUEUE_MAX_LOAD)
     }
   })
 

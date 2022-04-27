@@ -20,7 +20,7 @@ const publicFolder = process.env.PUBLIC_URL
 let markerLayer = null;
 
 
-const handleErrors = function(response) {
+const handleErrors = function (response) {
   if (response && !response.ok) {
     throw Error(response.statusText);
   }
@@ -29,7 +29,7 @@ const handleErrors = function(response) {
 
 let locationFunction = null;
 
-let clearMapfunction = function(map, evt, fun) {
+let clearMapfunction = function (map, evt, fun) {
   map.un(evt, fun)
   map.getTarget().style.cursor = 'default';
 }
@@ -60,271 +60,267 @@ const defaultSurvey = {
   roof_style: "",
 }
 
-const stBundle = function(config) {
-  return (
-    {
-      name: 'st',
+const stBundle = function (config) {
+  return ({
+    name: 'st',
 
-      getReducer: () => {
-        const initialData = {
-          _shouldInitialize: true,
-          survey: defaultSurvey,
-          surveyLoading: false,
-          surveySaved: true,
-          surveysCompleted: false,
-          appProps: {},
-        };
-        return (state = initialData, { type, payload }) => {
-          switch (type) {
-            case SURVEY_DATA_UPDATE:
-            case SURVEY_LOADING:
-            case UPDATE_SURVEY_SAVED:
-            case UPDATE_PARENT_PROPS:
-            case ST_INITIALIZE_START:
-            case ST_INITIALIZE_FINISHED:
-              return { ...state, ...payload }
-            case SURVEY_LOCATION_UPDATE:
-              let newsurvey = { "survey": { ...state.survey, ...payload } }
-              return { ...state, ...newsurvey }
-            default:
-              return state;
-          }
+    getReducer: () => {
+      const initialData = {
+        _shouldInitialize: true,
+        survey: defaultSurvey,
+        surveyLoading: false,
+        surveySaved: true,
+        surveysCompleted: false,
+        appProps: {},
+      };
+      return (state = initialData, { type, payload }) => {
+        switch (type) {
+          case SURVEY_DATA_UPDATE:
+          case SURVEY_LOADING:
+          case UPDATE_SURVEY_SAVED:
+          case UPDATE_PARENT_PROPS:
+          case ST_INITIALIZE_START:
+          case ST_INITIALIZE_FINISHED:
+            return { ...state, ...payload }
+          case SURVEY_LOCATION_UPDATE:
+            let newsurvey = { "survey": { ...state.survey, ...payload } }
+            return { ...state, ...newsurvey }
+          default:
+            return state;
         }
-      },
+      }
+    },
 
 
-      //init:(store)=>{
-      //  config.registerHook(store)
-      //},
+    //init:(store)=>{
+    //  config.registerHook(store)
+    //},
 
-      doStInitialize: () => ({ dispatch, store, anonGet }) => {
-        dispatch({
-          type: 'ST_INITIALIZE_START',
-          payload: {
-            _shouldInitialize: false
-          }
-        });
-        config.registerHook(store)
-        dispatch({ type: UPDATE_PARENT_PROPS, payload: { "appProps": config.appProps } });
-        store.doSt_openTray()
-      },
+    doStInitialize: () => ({ dispatch, store, anonGet }) => {
+      dispatch({
+        type: 'ST_INITIALIZE_START',
+        payload: {
+          _shouldInitialize: false
+        }
+      });
+      config.registerHook(store)
+      dispatch({ type: UPDATE_PARENT_PROPS, payload: { "appProps": config.appProps } });
+      store.doSt_openTray()
+    },
 
-      doSurveyUpdateData: (survey) => ({ dispatch, store }) => {
-        dispatch({
-          type: SURVEY_DATA_UPDATE,
-          payload: {
-            survey: { ...survey },
-          }
+    doSurveyUpdateData: (survey) => ({ dispatch, store }) => {
+      dispatch({
+        type: SURVEY_DATA_UPDATE,
+        payload: {
+          survey: { ...survey },
+        }
+      })
+    },
+
+    doSurveyUpdateSurveySaved: (saved) => ({ dispatch, store }) => {
+      dispatch({ type: UPDATE_SURVEY_SAVED, payload: { "surveySaved": saved } });
+    },
+
+    doSurveyFetch: () => ({ dispatch, store }) => {
+      const storeOuter = store.selectMonkeyPatchOuterStore()
+      const token = storeOuter.selectAuthAccessToken();
+      const selectedSurvey = storeOuter.selectSurvey_selectedSurvey()
+      if (token) {
+        dispatch({ type: SURVEY_LOADING, payload: { "surveyLoading": true } });
+        fetch(`${apiHost}/survey/${selectedSurvey.id}/assignment`, {
+          method: 'get',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
         })
-      },
-
-      doSurveyUpdateSurveySaved: (saved) => ({ dispatch, store }) => {
-        dispatch({ type: UPDATE_SURVEY_SAVED, payload: { "surveySaved": saved } });
-      },
-
-      doSurveyFetch: () => ({ dispatch, store }) => {
-        const storeOuter = store.selectMonkeyPatchOuterStore()
-        const token = storeOuter.selectAuthAccessToken();
-        const selectedSurvey = storeOuter.selectSurvey_selectedSurvey()
-        if (token) {
-          dispatch({ type: SURVEY_LOADING, payload: { "surveyLoading": true } });
-          fetch(`${apiHost}/survey/${selectedSurvey.id}/assignment`, {
-            method: 'get',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`,
-            },
+          .then(handleErrors())
+          .then(resp => resp.json())
+          .then(data => {
+            dispatch({ type: SURVEY_LOADING, payload: { "surveyLoading": false } });
+            if (data.result && data.result === "completed") {
+              dispatch({ type: SURVEY_DATA_UPDATE, payload: { "surveysCompleted": true } });
+            } else {
+              switch (data.occupancyType) {
+                case "RES3A":
+                case "RES3B":
+                  data.occupancyType = "RES3-AB"
+                  break;
+                case "RES3C":
+                case "RES3D":
+                  data.occupancyType = "RES3-CD"
+                  break;
+                case "RES3E":
+                case "RES3F":
+                  data.occupancyType = "RES3-EF"
+                  break;
+              }
+              let newsurvey = {
+                ...defaultSurvey,
+                'damcat': data.damcat,
+                'occupancyType': data.occupancyType,
+                'x': data.x,
+                'y': data.y,
+                'fdId': data.fdId,
+                'saId': data.saId,
+                'cbfips': data.cbfips
+              }
+              store.doSurveyUpdateData(newsurvey);
+              store.doSurveyUpdateSurveySaved(false);
+              store.doSurveyDisplayMarker();
+              store.doSurveyZoom();
+            }
           })
-            .then(handleErrors())
-            .then(resp => resp.json())
-            .then(data => {
-              dispatch({ type: SURVEY_LOADING, payload: { "surveyLoading": false } });
-              if (data.result && data.result === "completed") {
-                dispatch({ type: SURVEY_DATA_UPDATE, payload: { "surveysCompleted": true } });
-              } else {
-                switch (data.occupancyType) {
-                  case "RES3A":
-                  case "RES3B":
-                    data.occupancyType = "RES3-AB"
-                    break;
-                  case "RES3C":
-                  case "RES3D":
-                    data.occupancyType = "RES3-CD"
-                    break;
-                  case "RES3E":
-                  case "RES3F":
-                    data.occupancyType = "RES3-EF"
-                    break;
-                }
-                let newsurvey = {
-                  ...defaultSurvey,
-                  'damcat': data.damcat,
-                  'occupancyType': data.occupancyType,
-                  'x': data.x,
-                  'y': data.y,
-                  'fdId': data.fdId,
-                  'saId': data.saId,
-                  'cbfips': data.cbfips
-                }
-                store.doSurveyUpdateData(newsurvey);
-                store.doSurveyUpdateSurveySaved(false);
-                store.doSurveyDisplayMarker();
-                store.doSurveyZoom();
-              }
-            })
-            .catch(error => {
-              console.log(error);
-              dispatch({ type: SURVEY_LOADING, payload: { "surveyLoading": false } });
-            });
-        } else {
-          console.log("Not logged in or missing token.  Cannot request survey");
-        }
-      },
+          .catch(error => {
+            console.log(error);
+            dispatch({ type: SURVEY_LOADING, payload: { "surveyLoading": false } });
+          });
+      } else {
+        console.log("Not logged in or missing token.  Cannot request survey");
+      }
+    },
 
-      doSurveySave: () => ({ dispatch, store }) => {
-        const storeOuter = store.selectMonkeyPatchOuterStore()
-        const token = storeOuter.selectAuthAccessToken();
-        let survey = store.selectSurveyData()
-        if (token) {
-          fetch(`${apiHost}/survey/${storeOuter.selectSurvey_selectedSurvey().id}/assignment`, {
-            method: 'post',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`,
-            },
-            body: JSON.stringify(survey)
-          })
-            .then(handleErrors())
-            .then(resp => {
-              if (!resp.ok) {
-                store.doNotificationsFire({
-                  title: "Error",
-                  message: "Unable to save survey",
-                  level: "warning",
-                });
-              }
-              return resp.json();
-            })
-            .then(resp => {
-              if (resp.result == "success") {
-                store.doNotificationsFire({
-                  title: "Success",
-                  message: "Survey Saved",
-                  level: "success",
-                });
-              }
-              store.doSurveyUpdateSurveySaved(true)
-            })
-            .catch(error => {
-              console.log(error);
+    doSurveySave: () => ({ dispatch, store }) => {
+      const storeOuter = store.selectMonkeyPatchOuterStore()
+      const token = storeOuter.selectAuthAccessToken();
+      let survey = store.selectSurveyData()
+      if (token) {
+        fetch(`${apiHost}/survey/${storeOuter.selectSurvey_selectedSurvey().id}/assignment`, {
+          method: 'post',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify(survey)
+        })
+          .then(handleErrors())
+          .then(resp => {
+            if (!resp.ok) {
               store.doNotificationsFire({
                 title: "Error",
                 message: "Unable to save survey",
                 level: "warning",
               });
-            });
-        } else {
-          console.log("Not logged in or missing token.  Cannot request survey");
-        }
-      },
-
-      doSurveyDisplayMarker: () => ({ dispatch, store }) => {
-        const map = store.selectMap();
-
-        if (markerLayer) {
-          map.removeLayer(markerLayer);
-        }
-
-        let survey = store.selectSurveyData();
-        let coord = fromLonLat([survey.x, survey.y])
-        var surveyMarker = new Feature({
-          geometry: new Point(coord),
-          name: 'NSI Survey',
-        });
-
-        surveyMarker.setStyle(new Style({
-          image: new Icon({
-            anchor: [0.5, 0.5],
-            scale: 0.2,
-            anchorXUnits: 'fraction',
-            anchorYUnits: 'fraction',
-            src: `${publicFolder}/survey-marker.png`,
-          })
-        }));
-
-        const surveyMarkerSource = new VectorSource({
-          features: [surveyMarker]
-        });
-
-        markerLayer = new VectorLayer({
-          source: surveyMarkerSource,
-        });
-
-        map.addLayer(markerLayer);
-      },
-
-      doSurveyModifyXY: () => ({ dispatch, store }) => {
-        const map = store.selectMap()
-        if (locationFunction) {
-          clearMapfunction(map, 'singleclick', locationFunction); //locationFunction should be cleaned up automatically, but rarely it is not...
-          locationFunction = null;
-        }
-        map.getTarget().style.cursor = 'cell';
-        locationFunction = function(evt) {
-          let coord = transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
-          dispatch({
-            type: SURVEY_LOCATION_UPDATE,
-            payload: {
-              x: coord[0],
-              y: coord[1],
             }
+            return resp.json();
           })
-          clearMapfunction(map, 'singleclick', locationFunction);
-          locationFunction = null;
-          store.doSurveyDisplayMarker();
-        }
-        map.on('singleclick', locationFunction)
-      },
+          .then(resp => {
+            if (resp.result == "success") {
+              store.doNotificationsFire({
+                title: "Success",
+                message: "Survey Saved",
+                level: "success",
+              });
+            }
+            store.doSurveyUpdateSurveySaved(true)
+          })
+          .catch(error => {
+            console.log(error);
+            store.doNotificationsFire({
+              title: "Error",
+              message: "Unable to save survey",
+              level: "warning",
+            });
+          });
+      } else {
+        console.log("Not logged in or missing token.  Cannot request survey");
+      }
+    },
 
-      doSurveyZoom: () => ({ dispatch, store }) => {
-        let map = store.selectMap()
-        let survey = store.selectSurveyData()
-        let view = map.getView()
-        let coord3857 = fromLonLat([survey.x, survey.y])//@corpsmap is in espg:3857 the default.
-        let point = new Point(coord3857)
-        view.fit(point, { minResolution: 1 })
-      },
+    doSurveyDisplayMarker: () => ({ dispatch, store }) => {
+      const map = store.selectMap();
 
-      doSurveyStreetView: () => ({ dispatch, store }) => {
-        let survey = store.selectSurveyData()
-        var url = "http://maps.google.com/maps?q=" + survey.y + "," + survey.x
-        window.open(url, "_blank");
-      },
+      if (markerLayer) {
+        map.removeLayer(markerLayer);
+      }
 
-      doSt_openTray: _ => ({ store }) => {
-        store.doPrimaryPanelOpen({
-          openedBy: "Survey Tray",
-          options: null,
-          children: [SurveyTray],
+      let survey = store.selectSurveyData();
+      let coord = fromLonLat([survey.x, survey.y])
+      var surveyMarker = new Feature({
+        geometry: new Point(coord),
+        name: 'NSI Survey',
+      });
+
+      surveyMarker.setStyle(new Style({
+        image: new Icon({
+          anchor: [0.5, 0.5],
+          scale: 0.2,
+          anchorXUnits: 'fraction',
+          anchorYUnits: 'fraction',
+          src: `${publicFolder}/survey-marker.png`,
         })
-      },
+      }));
 
-      reactStShouldInitialize: (state) => {
-        if (state.st._shouldInitialize) return { actionCreator: "doStInitialize" };
-      },
+      const surveyMarkerSource = new VectorSource({
+        features: [surveyMarker]
+      });
 
+      markerLayer = new VectorLayer({
+        source: surveyMarkerSource,
+      });
 
-      selectSurveyData: (state) => state.st.survey,
-      selectSurveyLoading: state => state.st.surveyLoading,
-      selectSurveyAuthToken: state => state.st.appProps?.authNSIToken,
-      selectSurveySaved: state => state.st.surveySaved,
-      selectAllSurveysCompleted: state => state.st.surveysCompleted,
-      selectMapLoading: _ => false,
-    });
+      map.addLayer(markerLayer);
+    },
+
+    doSurveyModifyXY: () => ({ dispatch, store }) => {
+      const map = store.selectMap()
+      if (locationFunction) {
+        clearMapfunction(map, 'singleclick', locationFunction); //locationFunction should be cleaned up automatically, but rarely it is not...
+        locationFunction = null;
+      }
+      map.getTarget().style.cursor = 'cell';
+      locationFunction = function (evt) {
+        let coord = transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
+        dispatch({
+          type: SURVEY_LOCATION_UPDATE,
+          payload: {
+            x: coord[0],
+            y: coord[1],
+          }
+        })
+        clearMapfunction(map, 'singleclick', locationFunction);
+        locationFunction = null;
+        store.doSurveyDisplayMarker();
+      }
+      map.on('singleclick', locationFunction)
+    },
+
+    doSurveyZoom: () => ({ dispatch, store }) => {
+      let map = store.selectMap()
+      let survey = store.selectSurveyData()
+      let view = map.getView()
+      let coord3857 = fromLonLat([survey.x, survey.y]) //@corpsmap is in espg:3857 the default.
+      let point = new Point(coord3857)
+      store.doZoomToLocation(point.getFlatCoordinates(), 17)
+    },
+
+    doSurveyStreetView: () => ({ dispatch, store }) => {
+      let survey = store.selectSurveyData()
+      var url = "http://maps.google.com/maps?q=" + survey.y + "," + survey.x
+      window.open(url, "_blank");
+    },
+
+    doSt_openTray: _ => ({ store }) => {
+      store.doPrimaryPanelOpen({
+        openedBy: "Survey Tray",
+        options: null,
+        children: [SurveyTray],
+      })
+    },
+
+    reactStShouldInitialize: (state) => {
+      if (state.st._shouldInitialize) return { actionCreator: "doStInitialize" };
+    },
+
+    selectSurveyData: (state) => state.st.survey,
+    selectSurveyLoading: state => state.st.surveyLoading,
+    selectSurveyAuthToken: state => state.st.appProps ? state.st.appProps.authNSIToken : null,
+    selectSurveySaved: state => state.st.surveySaved,
+    selectAllSurveysCompleted: state => state.st.surveysCompleted,
+    selectMapLoading: _ => false,
+  });
 }
 
 export default stBundle;
-
-
