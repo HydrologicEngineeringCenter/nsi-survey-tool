@@ -31,3 +31,6 @@ yarn-error.log*
 .devcontainer/
 *.env
 .swp
+
+*.zip
+.vscode/
