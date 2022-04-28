@@ -152,7 +152,7 @@ export default {
     })
   },
 
-  doSurvey_updateSelectedFromSurveys: _ => ({ dispatch }) => {
+  doSurvey_updateSelectedFromSurveys: _ => ({ dispatch, store }) => {
     let workingSurveys = store.selectSurvey_surveys()
     let selected = store.selectSurvey_selectedSurvey()
     selected = workingSurveys.filter(s => s.id == selected.id)[0]
