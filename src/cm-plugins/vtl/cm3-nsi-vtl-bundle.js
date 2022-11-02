@@ -45,7 +45,7 @@ export default {
   }
 };
 const nsiLayers = {
-  'NSIP1': `${apiHost}nsi-app-pub/tiles/{z}/{x}/{y}.pbf`,
+  'NSIP1': `${apiHost}nsi-all-pub/tiles/{z}/{x}/{y}.pbf`,
 }
 
 
