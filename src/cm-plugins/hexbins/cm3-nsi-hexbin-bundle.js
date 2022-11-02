@@ -38,7 +38,7 @@ export default{
           _shouldInitialize: false,
         }
       })
-      initMap(store);      
+      initMap(store);
     },
     reactNsiHexBinShouldInitialize: (state) => {
       if(state.hexbins._shouldInitialize) return { actionCreator: "doNsiHexBinInitialize" };
@@ -51,7 +51,7 @@ const initMap=function(store){
     source: new VectorTileSource({
       attributions: 'USACE',
       format: new MVT(),
-      url:`${apiHost}hb10k/tiles/{z}/{x}/{y}.pbf`,
+      url:`${apiHost}hexbin10000/tiles/{z}/{x}/{y}.pbf`,
     })
     //style: createMapboxStreetsV6Style(Style, Fill, Stroke, Icon, Text)
   })
@@ -69,7 +69,7 @@ const initMap=function(store){
   source: new VectorTileSource({
     attributions: 'USACE',
     format: new MVT(),
-    url:`${apiHost}hb2500/tiles/{z}/{x}/{y}.pbf`,
+    url:`${apiHost}hexbin2500/tiles/{z}/{x}/{y}.pbf`,
   })
   //style: createMapboxStreetsV6Style(Style, Fill, Stroke, Icon, Text)
 })
@@ -86,7 +86,7 @@ let layer3=new VectorTileLayer({
   source: new VectorTileSource({
     attributions: 'USACE',
     format: new MVT(),
-    url:`${apiHost}hb500/tiles/{z}/{x}/{y}.pbf`,
+    url:`${apiHost}hexbin500/tiles/{z}/{x}/{y}.pbf`,
   })
   //style: createMapboxStreetsV6Style(Style, Fill, Stroke, Icon, Text)
 })

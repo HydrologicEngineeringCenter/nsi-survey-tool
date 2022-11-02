@@ -69,8 +69,8 @@ const auth = {
       realm: keycloakRealm,
       client: keycloakClient,
       redirectUrl: keycloakRedirect,
-      refreshInterval: 30,
-      sessionEndWarning: 600,
+      refreshInterval: 600,
+      sessionEndWarning: 500,
       clientSecret: keycloakClientSecret,
 
       onAuthenticate: (token) => {
