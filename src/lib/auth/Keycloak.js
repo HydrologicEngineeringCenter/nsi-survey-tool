@@ -31,6 +31,9 @@ class Keycloak {
    */
   authenticate() {
     let url = `${this.config.keycloakUrl}/realms/${this.config.realm}/protocol/openid-connect/auth?response_type=code&client_id=${this.config.client}&scope=openid&nocache=${(new Date()).getTime()}&redirect_uri=${this.config.redirectUrl}`
+    // if (this.config.clientSecret !== "" && this.config.clientSecret !== undefined) {
+    //   url = url + "&client_secret=" + this.config.clientSecret
+    // }
     // let url = `${this.config.keycloakUrl}/realms/${this.config.realm}/protocol/openid-connect/auth?response_type=code&client_id=${this.config.client}&scope=openid&nocache=${(new Date()).getTime()}`
     window.location.href = url;
   }
@@ -53,7 +56,7 @@ class Keycloak {
     let self = this;
     let resp = null;
 
-    xhr.onload = function () {
+    xhr.onload = function() {
       switch (xhr.status) {
         case (400): // 400 - bad request
           self.accessToken = null;
@@ -86,14 +89,14 @@ class Keycloak {
             if (self.sessionEndingCallback)
               self.sessionEndingCallback(remainingTime);
           }
-          setTimeout(function () {
+          setTimeout(function() {
             self.refresh(keycloakResp.refresh_token);
           }, self.refreshInterval(keycloakResp.expires_in));
           self.authCallback(keycloakResp.access_token);
       }
     };
 
-    xhr.onerror = function () {
+    xhr.onerror = function() {
       if (xhr.responseText) {
         self.errCallback(JSON.parse(xhr.responseText));
       } else {
@@ -155,10 +158,10 @@ class Keycloak {
   }
 }
 
-const tokenToObject = function (token) {
+const tokenToObject = function(token) {
   let base64Url = token.split('.')[1];
   let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-  let jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+  let jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
     return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
   }).join(''));
 

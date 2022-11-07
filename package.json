@@ -4,7 +4,7 @@
     "private": true,
     "homepage": "nsi-survey2",
     "dependencies": {
-        "@corpsmap/corpsmap": "^1.1.0",
+        "@corpsmap/corpsmap": "^0.9.3",
         "@emotion/react": "^11.7.1",
         "@emotion/styled": "^11.6.0",
         "@material-ui/core": "^4.12.3",

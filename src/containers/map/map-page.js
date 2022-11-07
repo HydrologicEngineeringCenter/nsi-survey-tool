@@ -23,8 +23,9 @@ import nsiVTL from '../../cm-plugins/vtl/index'
 import nsiDL from '../../cm-plugins/nsi/index'
 import st from '../../cm-plugins/survey-tray/index'
 import monkeyPatchPlugin from '../../cm-plugins/cm3-monkeypatch-plugin'
+import './MapPage.css'
 
-/*import nsiHexBin from '../../cm-plugins/hexbins/index' */
+import nsiHexBin from '../../cm-plugins/hexbins/index'
 
 let mapHook = null
 
@@ -41,21 +42,19 @@ function MapPage(props) {
         plugins={[
           // addData,
           basemapSwitcher,
-          // bookmarks,
+          bookmarks,
           coordDisplay,
           // draw,
           treeView(),
-          // geocoder,
+          geocoder,
           // identify,
-          // measureTools,
+          measureTools,
           rotateNorth,
           zoomInOut,
           zoomHome,
-          // zoomToBox,
-          // printMap,
           themeSwitcher,
           nsiVTL,
-          //nsiDL,
+          // nsiHexBin,
           st({
             appProps: props,
             registerHook: function(mapstore) {
