@@ -10,6 +10,7 @@ import ModifyExistingSvg from "../../resources/survey-splash/edit_white_24dp.svg
 import ManageAllSvg from "../../resources/survey-splash/settings_white_24dp.svg";
 
 import Button from "./Button";
+import HelpButton from "./HelpButton";
 import CreateNewSurveyPrompt from "../create-new-survey/CreateNewSurveyPrompt";
 import ChooseActiveSurveyPrompt from "../choose-active-survey/ChooseActiveSurveyPrompt";
 import ManageAllSurveysPrompt from "../manage-all-surveys/ManageAllSurveysPrompt";
@@ -98,6 +99,9 @@ function SurveySplashPage(props) {
           />
         </div>
       </div>
+
+      <HelpButton />
+
     </div>
   );
 }
