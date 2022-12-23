@@ -100,7 +100,9 @@ function SurveySplashPage(props) {
         </div>
       </div>
 
-      <HelpButton />
+      <div className={classes["help-button"]}>
+        <HelpButton />
+      </div>
 
     </div>
   );
